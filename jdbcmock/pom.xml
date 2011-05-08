@@ -259,9 +259,9 @@
                                     <goal>single</goal>
                                 </goals>
                                 <configuration>
-                                    <descriptorRefs>
-                                        <descriptorRef>jdbcmock-sources</descriptorRef>
-                                    </descriptorRefs>
+                                    <descriptors>
+                                        <descriptor>src/main/assembly/sources.xml</descriptor>
+                                    </descriptors>
                                 </configuration>
                             </execution>
                         </executions>
