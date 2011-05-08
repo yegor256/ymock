@@ -360,7 +360,7 @@
                                         <!-- version defined in build/pluginManagement section -->
                                         <configuration>
                                             <failOnError>true</failOnError>
-                                            <stylesheetfile>javadoc/screen.css</stylesheetfile>
+                                            <stylesheetfile>${basedir}/src/main/maven/javadoc/screen.css</stylesheetfile>
                                             <windowtitle>
                                                 ${project.name} ${project.version}/${buildNumber} API
                                             </windowtitle>
