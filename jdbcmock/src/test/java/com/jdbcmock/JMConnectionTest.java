@@ -7,6 +7,7 @@ import org.junit.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import java.sql.Connection;
+import java.sql.Driver;
 import java.util.Properties;
 import java.util.HashMap;
 
@@ -17,7 +18,7 @@ public class JMConnectionTest {
         Driver driver = new JMDriver();
         Connection ctn = driver.connect("url:something", new Properties());
         ctn.isWrapperFor(String.class);
-        ctn.unwrap(String.class);
+        ctn.unwrap(java.io.InputStream.class);
         ctn.clearWarnings();
         ctn.close();
         ctn.commit();
