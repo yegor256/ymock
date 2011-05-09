@@ -843,32 +843,6 @@
         </dependency>
         <dependency>
             <!--
-            This library simplifies string operations. This is
-            org.apache.commons.lang.*.
-            -->
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>2.5</version> <!-- 15 Oct 2010 -->
-        </dependency>
-        <dependency>
-            <!--
-            This library simplifies manipulations with collections.
-            This is org.apache.commons.collections.*.
-            -->
-            <groupId>commons-collections</groupId>
-            <artifactId>commons-collections</artifactId>
-            <version>3.2.1</version> <!-- 4 Apr 2011 -->
-        </dependency>
-        <dependency>
-            <!--
-            This library simplifies file-management operations.
-            -->
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.0.1</version> <!-- 7 Mar 2011 -->
-        </dependency>
-        <dependency>
-            <!--
             We are using JUnit framework for unit test organization
             and management. This framework is the most stable and mature
             in the market. Other options considered: TestNG.
