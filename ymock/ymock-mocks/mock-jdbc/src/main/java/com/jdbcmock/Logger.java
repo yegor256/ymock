@@ -35,7 +35,7 @@ package com.ymock;
 import org.slf4j.LoggerFactory;
 
 /**
- * Universal logger, and adapter between JdbcMock
+ * Universal logger, and adapter between yMock
  * and a third-party logging facility (SLF4J at the moment).
  *
  * <p>This class is used

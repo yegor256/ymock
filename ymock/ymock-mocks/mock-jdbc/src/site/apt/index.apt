@@ -1,5 +1,5 @@
  ------
- Introduction to JdbcMock
+ Introduction to yMock
  ------
  Yegor Bugayenko
  ------
@@ -40,5 +40,5 @@
 
 Introduction
 
-  JdbcMock is a JDBC mocking library.
+  yMock is a JDBC mocking library.
 
