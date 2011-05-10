@@ -1,7 +1,7 @@
 /**
  * @version $Id$
  */
-package com.jdbcmock;
+package com.ymock;
 
 import org.junit.*;
 import static org.junit.Assert.*;
@@ -37,21 +37,21 @@ public class LoggerTest {
     public void attachAppender() {
         this.appender = new MockAppender();
         org.apache.log4j.Logger.getRootLogger().addAppender(this.appender);
-        this.savedLevel = org.apache.log4j.Logger.getLogger("com.jdbcmock").getLevel();
-        org.apache.log4j.Logger.getLogger("com.jdbcmock").setLevel(Level.TRACE);
+        this.savedLevel = org.apache.log4j.Logger.getLogger("com.ymock").getLevel();
+        org.apache.log4j.Logger.getLogger("com.ymock").setLevel(Level.TRACE);
     }
 
     @After
     public void dettachAppender() {
         org.apache.log4j.Logger.getRootLogger().removeAppender(this.appender);
         this.appender = null;
-        org.apache.log4j.Logger.getLogger("com.jdbcmock").setLevel(this.savedLevel);
+        org.apache.log4j.Logger.getLogger("com.ymock").setLevel(this.savedLevel);
     }
 
     @Test
     public void testValidatesCorrectDetectionOfLogger() throws Exception {
         Logger.debug(this, "test message, ignore it");
-        assertEquals("com.jdbcmock.LoggerTest", this.appender.event.getLoggerName());
+        assertEquals("com.ymock.LoggerTest", this.appender.event.getLoggerName());
     }
 
     @Test
@@ -98,7 +98,7 @@ public class LoggerTest {
 
     @Test
     public void testIsDebugEnabledMethod() throws Exception {
-        String pkg = "com.jdbcmock";
+        String pkg = "com.ymock";
         Level level = org.apache.log4j.Logger.getLogger(pkg).getLevel();
         org.apache.log4j.Logger.getLogger(pkg).setLevel(Level.DEBUG);
         boolean enabled = Logger.isDebugEnabled(this);
@@ -108,7 +108,7 @@ public class LoggerTest {
 
     @Test
     public void testIsTraceEnabledMethod() throws Exception {
-        String pkg = "com.jdbcmock";
+        String pkg = "com.ymock";
         Level level = org.apache.log4j.Logger.getLogger(pkg).getLevel();
         org.apache.log4j.Logger.getLogger(pkg).setLevel(Level.TRACE);
         boolean enabled = Logger.isTraceEnabled(this);
@@ -128,7 +128,7 @@ public class LoggerTest {
     @Test
     public void testSendsLogMessageFromNestedClass() throws Exception {
         new InnerClass().log();
-        assertEquals("com.jdbcmock.LoggerTest$InnerClass", this.appender.event.getLoggerName());
+        assertEquals("com.ymock.LoggerTest$InnerClass", this.appender.event.getLoggerName());
     }
 
 }

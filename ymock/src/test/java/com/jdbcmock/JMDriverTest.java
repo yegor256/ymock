@@ -1,7 +1,7 @@
 /**
  * @version $Id$
  */
-package com.jdbcmock;
+package com.ymock;
 
 import org.junit.*;
 import static org.hamcrest.MatcherAssert.assertThat;

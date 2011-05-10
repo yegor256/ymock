@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, JdbcMock.com
+ * Copyright (c) 2011, yMock.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -9,7 +9,7 @@
  * disclaimer. 2) Redistributions in binary form must reproduce the above
  * copyright notice, this list of conditions and the following
  * disclaimer in the documentation and/or other materials provided
- * with the distribution. 3) Neither the name of the JdbcMock.com nor
+ * with the distribution. 3) Neither the name of the yMock.com nor
  * the names of its contributors may be used to endorse or promote
  * products derived from this software without specific prior written
  * permission.
@@ -27,7 +27,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.jdbcmock;
+package com.ymock;
 
 // Third-party logging facility. This is the only
 // place in the project where we include slf4j classes.,
@@ -49,7 +49,7 @@ import org.slf4j.LoggerFactory;
  *
  * <pre>
  * {@code
- * package com.jdbcmock;
+ * package com.ymock;
  * public class MyClass {
  *   public void foo(Integer num) {
  *     Logger.info(this, "foo(%d) just called", num);
@@ -77,7 +77,7 @@ import org.slf4j.LoggerFactory;
  * }
  * </pre>
  *
- * @author Yegor Bugayenko (yegor@jdbcmock.com)
+ * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
 final class Logger {

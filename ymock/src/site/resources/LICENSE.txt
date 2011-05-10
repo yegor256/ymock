@@ -2,12 +2,12 @@ JdbcMock
 
 This source file is subject to the new BSD license that is bundled
 with this package in the file LICENSE.txt. It is also available
-through the world-wide-web at this URL: http://www.jdbcmock.com/LICENSE.txt
+through the world-wide-web at this URL: http://www.ymock.com/LICENSE.txt
 If you did not receive a copy of the license and are unable to
 obtain it through the world-wide-web, please send an email
-to license@jdbcmock.com so we can send you a copy immediately.
+to license@ymock.com so we can send you a copy immediately.
 
-Copyright (c) 2011, JdbcMock.com
+Copyright (c) 2011, yMock.com
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or
@@ -23,7 +23,7 @@ conditions are met:
     disclaimer in the documentation and/or other materials
     provided with the distribution.
 
-  * Neither the name of JdbcMock.com, Inc. nor the names of its
+  * Neither the name of yMock.com, Inc. nor the names of its
     contributors may be used to endorse or promote products derived
     from this software without specific prior written permission.
 

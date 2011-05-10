@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!--
  *
- * Copyright (c) 2011, JdbcMock.com
+ * Copyright (c) 2011, yMock.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -11,7 +11,7 @@
  * disclaimer. 2) Redistributions in binary form must reproduce the above
  * copyright notice, this list of conditions and the following
  * disclaimer in the documentation and/or other materials provided
- * with the distribution. 3) Neither the name of the JdbcMock.com nor
+ * with the distribution. 3) Neither the name of the yMock.com nor
  * the names of its contributors may be used to endorse or promote
  * products derived from this software without specific prior written
  * permission.
@@ -35,7 +35,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0
     http://maven.apache.org/xsd/decoration-1.0.0.xsd"
-    name="jdbcmock">
+    name="ymock">
 
     <skin>
         <groupId>org.apache.maven.skins</groupId>
@@ -46,7 +46,7 @@
     <bannerLeft>
         <name>JdbcMock</name>
         <src>images/logo.png</src>
-        <href>http://www.jdbcmock.com/</href>
+        <href>http://www.ymock.com/</href>
     </bannerLeft>
 
     <poweredBy>
@@ -57,10 +57,10 @@
     <body>
         <head>
             <link href="/images/favicon.gif" rel="shortcut icon" />
-            <link href="/css/jdbcmock.css" rel="stylesheet" type="text/css" />
+            <link href="/css/ymock.css" rel="stylesheet" type="text/css" />
         </head>
         <breadcrumbs>
-            <item name="jdbcmock.com" href="http://www.jdbcmock.com"/>
+            <item name="ymock.com" href="http://www.ymock.com"/>
         </breadcrumbs>
         <links>
             <item name="Built with Maven 2" href="http://maven.apache.org/" />

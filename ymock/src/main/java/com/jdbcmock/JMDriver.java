@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, JdbcMock.com
+ * Copyright (c) 2011, yMock.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -9,7 +9,7 @@
  * disclaimer. 2) Redistributions in binary form must reproduce the above
  * copyright notice, this list of conditions and the following
  * disclaimer in the documentation and/or other materials provided
- * with the distribution. 3) Neither the name of the JdbcMock.com nor
+ * with the distribution. 3) Neither the name of the yMock.com nor
  * the names of its contributors may be used to endorse or promote
  * products derived from this software without specific prior written
  * permission.
@@ -27,7 +27,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.jdbcmock;
+package com.ymock;
 
 // JDBC API 3.0
 import java.sql.Connection;
@@ -40,7 +40,7 @@ import java.util.Properties;
 /**
  * Jdbc Mock Driver.
  *
- * @author Yegor Bugayenko (yegor@jdbcmock.com)
+ * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  * @see <a href="http://download.oracle.com/javase/6/docs/api/java/sql/Driver.html">java.sql.Driver</a>
  */
