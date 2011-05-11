@@ -34,4 +34,4 @@
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-package com.ymock;
+package com.ymock.mock.jdbc;
