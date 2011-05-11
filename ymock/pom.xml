@@ -252,6 +252,13 @@
                         <plugin>
                             <artifactId>maven-assembly-plugin</artifactId>
                             <version>2.2</version>
+                            <dependencies>
+                                <dependency>
+                                    <groupId>com.ymock</groupId>
+                                    <artifactId>ymock-tk</artifactId>
+                                    <version>1.0-SNAPSHOT</version>
+                                </dependency>
+                            </dependencies>
                         </plugin>
                     </plugins>
                 </pluginManagement>
@@ -373,7 +380,7 @@
                                         <!-- version defined in build/pluginManagement section -->
                                         <configuration>
                                             <failOnError>true</failOnError>
-                                            <stylesheetfile>${basedir}/src/main/maven/javadoc/screen.css</stylesheetfile>
+                                            <stylesheetfile>javadoc/screen.css</stylesheetfile>
                                             <windowtitle>
                                                 ${project.name} ${project.version}/${buildNumber} API
                                             </windowtitle>
@@ -431,6 +438,13 @@
                                     </plugin>
                                 </reportPlugins>
                             </configuration>
+                            <dependencies>
+                                <dependency>
+                                    <groupId>com.ymock</groupId>
+                                    <artifactId>ymock-tk</artifactId>
+                                    <version>1.0-SNAPSHOT</version>
+                                </dependency>
+                            </dependencies>
                         </plugin>
                     </plugins>
                 </pluginManagement>
@@ -481,7 +495,35 @@
                                         </replace>
                                         <target>${project.build.directory}/site</target>
                                     </properties>
-                                    <source>${basedir}/src/groovy/SiteMarkers.groovy</source>
+                                    <source>
+                                        <![CDATA[
+                                        import org.apache.commons.io.FileUtils;
+                                        import org.apache.commons.io.filefilter.*;
+                                        import org.apache.commons.lang.StringUtils;
+                                        def dir = new File(project.properties['target'])
+                                        if (!dir.exists()) {
+                                            log.info("Directory is absent: " + dir)
+                                            return
+                                        }
+                                        def it = FileUtils.iterateFiles(
+                                            dir,
+                                            new SuffixFileFilter(".html"),
+                                            TrueFileFilter.INSTANCE
+                                        )
+                                        def find = StringUtils.stripAll(
+                                            StringUtils.split(project.properties['find'], "\n")
+                                        )
+                                        def replace = StringUtils.stripAll(
+                                            StringUtils.split(project.properties['replace'], "\n")
+                                        )
+                                        while (it.hasNext()) {
+                                            def File file = it.next()
+                                            def contents = FileUtils.readFileToString(file)
+                                            contents = StringUtils.replaceEach(contents, find, replace)
+                                            FileUtils.writeStringToFile(file, contents)
+                                        }
+                                        ]]>
+                                    </source>
                                 </configuration>
                             </execution>
                         </executions>
@@ -548,6 +590,13 @@
                                 <configLocation>checkstyle/checks.xml</configLocation>
                                 <headerLocation>checkstyle/LICENSE.txt</headerLocation>
                             </configuration>
+                            <dependencies>
+                                <dependency>
+                                    <groupId>com.ymock</groupId>
+                                    <artifactId>ymock-tk</artifactId>
+                                    <version>1.0-SNAPSHOT</version>
+                                </dependency>
+                            </dependencies>
                         </plugin>
                         <plugin>
                             <!--
@@ -567,6 +616,13 @@
                                     <ruleset>pmd/ruleset.xml</ruleset>
                                 </rulesets>
                             </configuration>
+                            <dependencies>
+                                <dependency>
+                                    <groupId>com.ymock</groupId>
+                                    <artifactId>ymock-tk</artifactId>
+                                    <version>1.0-SNAPSHOT</version>
+                                </dependency>
+                            </dependencies>
                         </plugin>
                         <plugin>
                             <!--
@@ -719,10 +775,6 @@
                         </executions>
                     </plugin>
                     <plugin>
-                        <!--
-                        @todo #2 These groovy scripts shall be placed into
-                                 ymock-tk src/main/resources/groovy directory.
-                        -->
                         <!-- version and configuration is in pluginManagement section -->
                         <groupId>org.codehaus.gmaven</groupId>
                         <artifactId>gmaven-plugin</artifactId>
@@ -746,7 +798,32 @@
                                         <xml>${project.build.directory}/findbugsXml.xml</xml>
                                         <failOnError>true</failOnError>
                                     </properties>
-                                    <source>groovy/FindbugsXml.groovy</source>
+                                    <source>
+                                        <![CDATA[
+                                        def file = new File(project.properties['xml'])
+                                        if (!file.exists()) {
+                                            log.info("No FindBugs XML report, nothing to parse")
+                                            return
+                                        }
+                                        def xml = new XmlParser().parse(file)
+                                        def bugs = xml.BugInstance
+                                        def total = bugs.size()
+                                        if (total <= 0) { log.info("No errors/warnings found"); return
+                                        }
+                                        log.info("Total bugs: " + total)
+                                        for (i in 0..total-1) {
+                                            def bug = bugs[i]
+                                            log.info(
+                                                bug.LongMessage.text()
+                                                + " " + bug.Class.'@classname'
+                                                + " " + bug.Class.SourceLine.Message.text()
+                                            )
+                                        }
+                                        if (project.properties['failOnError']) {
+                                            fail(total + " FindBugs error(s)")
+                                        }
+                                        ]]>
+                                    </source>
                                 </configuration>
                             </execution>
                         </executions>
