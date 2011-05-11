@@ -39,7 +39,7 @@
         <artifactId>ymock</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>ymock</artifactId>
+    <artifactId>ymock-client</artifactId>
     <packaging>jar</packaging>
     <name>ymock-client</name>
 

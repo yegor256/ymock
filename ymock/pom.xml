@@ -266,9 +266,14 @@
                                     <goal>single</goal>
                                 </goals>
                                 <configuration>
-                                    <descriptors>
-                                        <descriptor>src/main/assembly/sources.xml</descriptor>
-                                    </descriptors>
+                                    <descriptorRefs>
+                                        <!--
+                                        This descriptor is in ymock-tk sub-module, which is in classpath of
+                                        this plugin.
+                                        @see http://maven.apache.org/plugins/maven-assembly-plugin/examples/sharing-descriptors.html
+                                        -->
+                                        <descriptorRef>ymock-sources</descriptorRef>
+                                    </descriptorRefs>
                                 </configuration>
                             </execution>
                         </executions>
@@ -313,6 +318,7 @@
                         <plugin>
                             <artifactId>maven-site-plugin</artifactId>
                             <!-- version defined in build/pluginManagement section -->
+                            <inherited>false</inherited>
                             <configuration>
                                 <reportPlugins>
                                     <plugin>
@@ -539,8 +545,8 @@
                                 <logViolationsToConsole>true</logViolationsToConsole>
                                 <violationSeverity>info</violationSeverity>
                                 <!-- the files are inside :ymock-tk module -->
-                                <configLocation>${basedir}/src/test/maven/checkstyle/checks.xml</configLocation>
-                                <headerLocation>${basedir}/src/test/maven/checkstyle/LICENSE.txt</headerLocation>
+                                <configLocation>checkstyle/checks.xml</configLocation>
+                                <headerLocation>checkstyle/LICENSE.txt</headerLocation>
                             </configuration>
                         </plugin>
                         <plugin>
@@ -558,7 +564,7 @@
                                 <verbose>true</verbose>
                                 <linkXRef>false</linkXRef>
                                 <rulesets>
-                                    <ruleset>${basedir}/src/test/maven/pmd/ruleset.xml</ruleset>
+                                    <ruleset>pmd/ruleset.xml</ruleset>
                                 </rulesets>
                             </configuration>
                         </plugin>
@@ -740,7 +746,7 @@
                                         <xml>${project.build.directory}/findbugsXml.xml</xml>
                                         <failOnError>true</failOnError>
                                     </properties>
-                                    <source>${basedir}/src/test/groovy/FindbugsXml.groovy</source>
+                                    <source>groovy/FindbugsXml.groovy</source>
                                 </configuration>
                             </execution>
                         </executions>
