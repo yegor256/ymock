@@ -824,69 +824,71 @@
         </profile>
     </profiles>
 
-    <dependencies>
-        <dependency>
-            <!--
-            Since every framework uses its own logging mechanism
-            this SLF4J is going to help to control everything from
-            one point.
-            -->
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.6.1</version> <!-- 8 Nov 2010 -->
-        </dependency>
-        <dependency>
-            <!--
-            Mediator between SLF4j and LOG4j.
-            -->
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.6.1</version> <!-- 8 Nov 2010 -->
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <!--
-            Main logging facility. All other packages shall
-            be forwarded to LOG4J through SLF4J
-            -->
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.16</version> <!-- 5 Nov 2010 -->
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <!--
-            We are using JUnit framework for unit test organization
-            and management. This framework is the most stable and mature
-            in the market. Other options considered: TestNG.
-            @link http://www.junit.org/
-            -->
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.8.2</version> <!-- 28 Feb 2011 -->
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <!--
-            Assertions and matchers for unit tests.
-            @link http://code.google.com/p/hamcrest/wiki/Tutorial
-            -->
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-all</artifactId>
-            <version>1.1</version> <!-- 6 Apr 2011 -->
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <!--
-            Mockito is used as a mocking library during testing.
-            Other options: jMock.
-            @link http://www.mockito.org/
-            -->
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <version>1.8.5</version> <!-- 9 Oct 2010 -->
-        </dependency>
-    </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <!--
+                Since every framework uses its own logging mechanism
+                this SLF4J is going to help to control everything from
+                one point.
+                -->
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.6.1</version> <!-- 8 Nov 2010 -->
+            </dependency>
+            <dependency>
+                <!--
+                Mediator between SLF4j and LOG4j.
+                -->
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>1.6.1</version> <!-- 8 Nov 2010 -->
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <!--
+                Main logging facility. All other packages shall
+                be forwarded to LOG4J through SLF4J
+                -->
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>1.2.16</version> <!-- 5 Nov 2010 -->
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <!--
+                We are using JUnit framework for unit test organization
+                and management. This framework is the most stable and mature
+                in the market. Other options considered: TestNG.
+                @link http://www.junit.org/
+                -->
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.8.2</version> <!-- 28 Feb 2011 -->
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <!--
+                Assertions and matchers for unit tests.
+                @link http://code.google.com/p/hamcrest/wiki/Tutorial
+                -->
+                <groupId>org.hamcrest</groupId>
+                <artifactId>hamcrest-all</artifactId>
+                <version>1.1</version> <!-- 6 Apr 2011 -->
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <!--
+                Mockito is used as a mocking library during testing.
+                Other options: jMock.
+                @link http://www.mockito.org/
+                -->
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-all</artifactId>
+                <version>1.8.5</version> <!-- 9 Oct 2010 -->
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <resources>

@@ -59,7 +59,6 @@ public final class JMDriver implements Driver {
      */
     @Override
     public Connection connect(final String url, final Properties info) {
-        Logger.info(this, "#connect('%s'): connected", url);
         return new JMConnection();
     }
 

@@ -44,4 +44,22 @@
     <packaging>jar</packaging>
     <name>mock-jdbc</name>
 
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <!-- other details in parent pom dependencyManagement section -->
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-all</artifactId>
+            <!-- other details in parent pom dependencyManagement section -->
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <!-- other details in parent pom dependencyManagement section -->
+        </dependency>
+    </dependencies>
+
 </project>
