@@ -27,31 +27,46 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.mock.jdbc;
+package com.ymock.server.responses;
 
-import java.sql.Driver;
-import java.util.Properties;
-import org.junit.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+// the API
+import com.ymock.server.Response;
 
 /**
+ * Text response.
+ *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class JMDriverTest {
+public final class TextResponse implements Response {
 
-    @Test
-    public void testSampleOperations() throws Exception {
-        final Driver driver = new JMDriver();
-        assertThat(driver.acceptsURL("url:something"), is(true));
-        assertThat(
-            driver.connect("url:some-url", new Properties()),
-            is(not(nullValue()))
-        );
-        assertThat(driver.getMajorVersion(), is(not(nullValue())));
-        assertThat(driver.getMinorVersion(), is(not(nullValue())));
-        assertThat(driver.jdbcCompliant(), is(true));
+    /**
+     * The text.
+     */
+    private final String text;
+
+    /**
+     * Public ctor.
+     * @param txt The text
+     */
+    public TextResponse(final String txt) {
+        this.text = txt;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getText() {
+        return this.text;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isSuccessful() {
+        return true;
     }
 
 }

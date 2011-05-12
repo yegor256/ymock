@@ -27,31 +27,45 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.mock.jdbc;
+package com.ymock.server;
 
-import java.sql.Driver;
-import java.util.Properties;
-import org.junit.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+// collection management
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
+ * RESTful Server.
+ *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
+ * @todo #1 This is just a stub and it should be implemented
+ *       via Grizzly server and Jersey framework.
  */
-public final class JMDriverTest {
+final class RestfulServer implements CallsProvider {
 
-    @Test
-    public void testSampleOperations() throws Exception {
-        final Driver driver = new JMDriver();
-        assertThat(driver.acceptsURL("url:something"), is(true));
-        assertThat(
-            driver.connect("url:some-url", new Properties()),
-            is(not(nullValue()))
-        );
-        assertThat(driver.getMajorVersion(), is(not(nullValue())));
-        assertThat(driver.getMinorVersion(), is(not(nullValue())));
-        assertThat(driver.jdbcCompliant(), is(true));
+    /**
+     * Singleton instance.
+     */
+    public static final CallsProvider INSTANCE = new RestfulServer();
+
+    /**
+     * List of catchers registered.
+     */
+    private final Collection<Catcher> catchers = new ArrayList<Catcher>();
+
+    /**
+     * Private ctor.
+     */
+    private RestfulServer() {
+        // intentionally empty
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void register(final Catcher catcher) {
+        this.catchers.add(catcher);
     }
 
 }

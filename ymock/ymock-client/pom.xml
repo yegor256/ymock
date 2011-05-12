@@ -43,4 +43,22 @@
     <packaging>jar</packaging>
     <name>ymock-client</name>
 
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <!-- all other details are in parent module dependencyManagement section -->
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-all</artifactId>
+            <!-- all other details are in parent module dependencyManagement section -->
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <!-- all other details are in parent module dependencyManagement section -->
+        </dependency>
+    </dependencies>
+
 </project>

@@ -27,31 +27,41 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.mock.jdbc;
+package com.ymock.server.matchers;
 
-import java.sql.Driver;
-import java.util.Properties;
-import org.junit.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+// matcher
+import com.ymock.server.Matcher;
+
+// regex
+import java.util.regex.Pattern;
 
 /**
+ * Regex matcher.
+ *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class JMDriverTest {
+public final class RegexMatcher implements Matcher {
 
-    @Test
-    public void testSampleOperations() throws Exception {
-        final Driver driver = new JMDriver();
-        assertThat(driver.acceptsURL("url:something"), is(true));
-        assertThat(
-            driver.connect("url:some-url", new Properties()),
-            is(not(nullValue()))
-        );
-        assertThat(driver.getMajorVersion(), is(not(nullValue())));
-        assertThat(driver.getMinorVersion(), is(not(nullValue())));
-        assertThat(driver.jdbcCompliant(), is(true));
+    /**
+     * The pattern to match against.
+     */
+    private final Pattern pattern;
+
+    /**
+     * Public ctor.
+     * @param regex Regular expression
+     */
+    public RegexMatcher(final String regex) {
+        this.pattern = Pattern.compile(regex);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean matches(final String request) {
+        return this.pattern.matcher(request).matches();
     }
 
 }

@@ -43,4 +43,28 @@
     <packaging>jar</packaging>
     <name>ymock-server</name>
 
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <!-- all other details are in parent module dependencyManagement section -->
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-all</artifactId>
+            <!-- all other details are in parent module dependencyManagement section -->
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <!-- all other details are in parent module dependencyManagement section -->
+        </dependency>
+        <dependency>
+            <groupId>com.ymock</groupId>
+            <artifactId>ymock-client</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
 </project>

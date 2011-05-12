@@ -30,6 +30,8 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * @version $Id$
+ * @todo #1 At the moment it's just a stub. The module has
+ *       to be implemented in full, ready for real-life use cases.
  -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
@@ -58,6 +60,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
+            <scope>compile</scope>
             <!-- other details in parent pom dependencyManagement section -->
         </dependency>
     </dependencies>

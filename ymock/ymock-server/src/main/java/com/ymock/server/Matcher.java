@@ -27,31 +27,21 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.mock.jdbc;
-
-import java.sql.Driver;
-import java.util.Properties;
-import org.junit.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+package com.ymock.server;
 
 /**
+ * Matcher.
+ *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class JMDriverTest {
+public interface Matcher {
 
-    @Test
-    public void testSampleOperations() throws Exception {
-        final Driver driver = new JMDriver();
-        assertThat(driver.acceptsURL("url:something"), is(true));
-        assertThat(
-            driver.connect("url:some-url", new Properties()),
-            is(not(nullValue()))
-        );
-        assertThat(driver.getMajorVersion(), is(not(nullValue())));
-        assertThat(driver.getMinorVersion(), is(not(nullValue())));
-        assertThat(driver.jdbcCompliant(), is(true));
-    }
+    /**
+     * Matches?
+     * @param request The request
+     * @return It matches?
+     */
+    boolean matches(final String request);
 
 }

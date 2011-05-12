@@ -27,31 +27,47 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.mock.jdbc;
+package com.ymock.server.responses;
 
-import java.sql.Driver;
-import java.util.Properties;
-import org.junit.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+// the API
+import com.ymock.server.Response;
 
 /**
+ * Error response.
+ *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class JMDriverTest {
+public final class ErrorResponse implements Response {
 
-    @Test
-    public void testSampleOperations() throws Exception {
-        final Driver driver = new JMDriver();
-        assertThat(driver.acceptsURL("url:something"), is(true));
-        assertThat(
-            driver.connect("url:some-url", new Properties()),
-            is(not(nullValue()))
-        );
-        assertThat(driver.getMajorVersion(), is(not(nullValue())));
-        assertThat(driver.getMinorVersion(), is(not(nullValue())));
-        assertThat(driver.jdbcCompliant(), is(true));
+    /**
+     * The error message.
+     */
+    private final String message;
+
+    /**
+     * Public ctor.
+     * @param msg The message
+     * @param args Arguments of string formatting
+     */
+    public ErrorResponse(final String msg, final Object... args) {
+        this.message = String.format(msg, args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getText() {
+        return this.message;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isSuccessful() {
+        return false;
     }
 
 }

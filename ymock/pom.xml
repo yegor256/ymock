@@ -325,7 +325,6 @@
                         <plugin>
                             <artifactId>maven-site-plugin</artifactId>
                             <!-- version defined in build/pluginManagement section -->
-                            <inherited>false</inherited>
                             <configuration>
                                 <reportPlugins>
                                     <plugin>
@@ -741,10 +740,23 @@
                         <artifactId>maven-checkstyle-plugin</artifactId>
                         <executions>
                             <execution>
+                                <id>check-sources</id>
                                 <phase>verify</phase>
                                 <goals>
                                     <goal>check</goal>
                                 </goals>
+                            </execution>
+                            <execution>
+                                <id>check-test-sources</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                                <configuration>
+                                    <!-- the files are inside :ymock-tk module -->
+                                    <configLocation>checkstyle/checks-test.xml</configLocation>
+                                    <sourceDirectory>${project.build.testSourceDirectory}</sourceDirectory>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
@@ -963,6 +975,11 @@
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-all</artifactId>
                 <version>1.8.5</version> <!-- 9 Oct 2010 -->
+            </dependency>
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>2.5</version> <!-- 15 Oct 2010 -->
             </dependency>
         </dependencies>
     </dependencyManagement>

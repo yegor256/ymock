@@ -27,31 +27,45 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.mock.jdbc;
-
-import java.sql.Driver;
-import java.util.Properties;
-import org.junit.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+package com.ymock.client;
 
 /**
+ * RESTful client.
+ *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class JMDriverTest {
+public final class YMockClient {
 
-    @Test
-    public void testSampleOperations() throws Exception {
-        final Driver driver = new JMDriver();
-        assertThat(driver.acceptsURL("url:something"), is(true));
-        assertThat(
-            driver.connect("url:some-url", new Properties()),
-            is(not(nullValue()))
-        );
-        assertThat(driver.getMajorVersion(), is(not(nullValue())));
-        assertThat(driver.getMinorVersion(), is(not(nullValue())));
-        assertThat(driver.jdbcCompliant(), is(true));
+    /**
+     * The connector to use.
+     */
+    private Connector connector;
+
+    /**
+     * Public ctor.
+     * @param name The unique name of the client
+     */
+    public YMockClient(final String name) {
+        this(name, new HttpConnector());
+    }
+
+    /**
+     * Public ctor.
+     * @param name The unique name of the client
+     * @param conn The connector to use
+     */
+    public YMockClient(final String name, final Connector conn) {
+        this.connector = conn;
+    }
+
+    /**
+     * Make a call to server and return a response.
+     * @param request The request string
+     * @return The response
+     */
+    public String call(final String request) {
+        return this.connector.call(request);
     }
 
 }

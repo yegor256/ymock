@@ -27,10 +27,8 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.mock.jdbc;
+package com.ymock.client;
 
-import java.sql.Driver;
-import java.util.Properties;
 import org.junit.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -39,19 +37,13 @@ import static org.hamcrest.Matchers.*;
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class JMDriverTest {
+public final class HttpConnectorTest {
 
-    @Test
-    public void testSampleOperations() throws Exception {
-        final Driver driver = new JMDriver();
-        assertThat(driver.acceptsURL("url:something"), is(true));
-        assertThat(
-            driver.connect("url:some-url", new Properties()),
-            is(not(nullValue()))
-        );
-        assertThat(driver.getMajorVersion(), is(not(nullValue())));
-        assertThat(driver.getMinorVersion(), is(not(nullValue())));
-        assertThat(driver.jdbcCompliant(), is(true));
+    @Test(expected = UnsupportedOperationException.class)
+    public void testSimpleCallToServer() throws Exception {
+        final Connector connector = new HttpConnector();
+        assertThat(connector, is(not(nullValue())));
+        connector.call("abc");
     }
 
 }
