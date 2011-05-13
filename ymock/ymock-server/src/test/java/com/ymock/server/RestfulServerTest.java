@@ -42,8 +42,7 @@ public final class RestfulServerTest {
 
     @Test
     public void testServerInstantiation() throws Exception {
-        final CallsProvider provider = RestfulServer.INSTANCE;
-        assertThat(provider, is(instanceOf(CallsProvider.class)));
+        final CallsProvider provider = new RestfulServer();
         provider.register(new SimpleCatcher());
     }
 

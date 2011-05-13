@@ -33,39 +33,82 @@ package com.ymock.server;
 import java.util.ArrayList;
 import java.util.Collection;
 
+// for JAX-RS
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+// Grizzly Web Server
+import com.sun.grizzly.http.embed.GrizzlyWebServer;
+import com.sun.grizzly.http.servlet.ServletAdapter;
+
+// Jersey JAX-RS implementation
+import com.sun.jersey.spi.container.servlet.ServletContainer;
+
 /**
  * RESTful Server.
  *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
- * @todo #1 This is just a stub and it should be implemented
- *       via Grizzly server and Jersey framework.
  */
+@Path("/mock")
 final class RestfulServer implements CallsProvider {
 
     /**
-     * Singleton instance.
+     * Catcher registered.
      */
-    public static final CallsProvider INSTANCE = new RestfulServer();
+    private Catcher catcher = null;
 
     /**
-     * List of catchers registered.
+     * Public ctor.
      */
-    private final Collection<Catcher> catchers = new ArrayList<Catcher>();
-
-    /**
-     * Private ctor.
-     */
-    private RestfulServer() {
-        // intentionally empty
+    public RestfulServer() {
+        final GrizzlyWebServer gws = new GrizzlyWebServer(8089, ".");
+        final ServletAdapter adapter = new ServletAdapter();
+        adapter.addInitParameter(
+            "com.sun.jersey.config.property.packages",
+            "com.ymock.server"
+        );
+        adapter.setContextPath("/ymock");
+        adapter.setServletInstance(new ServletContainer());
+        gws.addGrizzlyAdapter(adapter, new String[] {"/ymock"});
+        try {
+            gws.start();
+        } catch (java.io.IOException ex) {
+            throw new IllegalStateException(ex);
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void register(final Catcher catcher) {
-        this.catchers.add(catcher);
+    public void register(final Catcher ctr) {
+        this.catcher = ctr;
+    }
+
+    /**
+     * Make a request and return response.
+     * @return The response
+     */
+    @POST
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_PLAIN)
+    public javax.ws.rs.core.Response call(final String input) {
+        final Response response = this.catcher.call(input);
+        javax.ws.rs.core.Response.Status status;
+        if (response.isSuccessful()) {
+            status = javax.ws.rs.core.Response.Status.OK;
+        } else {
+            status = javax.ws.rs.core.Response.Status.BAD_REQUEST;
+        }
+        return javax.ws.rs.core.Response
+            .status(status)
+            .type(MediaType.TEXT_PLAIN)
+            .entity(response.getText())
+            .build();
     }
 
 }

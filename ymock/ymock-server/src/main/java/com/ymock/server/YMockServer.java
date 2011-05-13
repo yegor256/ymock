@@ -62,7 +62,7 @@ public final class YMockServer implements Catcher {
      * @param client ID of the client to listen to
      */
     public YMockServer(final String client) {
-        this(client, RestfulServer.INSTANCE);
+        this(client, new RestfulServer());
     }
 
     /**

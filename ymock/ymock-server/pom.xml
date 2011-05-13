@@ -43,6 +43,16 @@
     <packaging>jar</packaging>
     <name>ymock-server</name>
 
+    <repositories>
+        <repository>
+            <!-- for Grizzly Web Server -->
+            <id>java.net</id>
+            <name>Java.net Maven2 Repository</name>
+            <url>http://download.java.net/maven/2</url>
+            <layout>default</layout>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -64,6 +74,23 @@
             <artifactId>ymock-client</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <!--
+            Jersey is an open-source implementation of JAX-RS
+            specification, which we're using for RESTful functionality.
+            Other options considered: RESTEasy.
+            @link http://en.wikipedia.org/wiki/JAX-RS
+            @link https://jersey.dev.java.net/
+            -->
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-server</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.grizzly</groupId>
+            <artifactId>grizzly-servlet-webserver</artifactId>
+            <version>1.9.10</version>
         </dependency>
     </dependencies>
 
