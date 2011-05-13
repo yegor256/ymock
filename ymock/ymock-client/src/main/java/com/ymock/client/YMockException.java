@@ -45,4 +45,12 @@ public final class YMockException extends Exception {
         super(cause);
     }
 
+    /**
+     * Public ctor.
+     * @param cause The cause of exception
+     */
+    public YMockException(final Throwable cause) {
+        super(cause);
+    }
+
 }

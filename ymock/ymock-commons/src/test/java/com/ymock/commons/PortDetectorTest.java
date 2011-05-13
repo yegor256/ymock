@@ -27,30 +27,22 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.client;
+package com.ymock.commons;
 
 import org.junit.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.*;
 
 /**
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class YMockClientTest {
-
-    private static final String ID = "test";
+public final class PortDetectorTest {
 
     @Test
-    public void testSimpleCallToServerViaMock() throws Exception {
-        final String request = "abc";
-        final String response = "works fine";
-        final Connector connector = mock(Connector.class);
-        doReturn(response).when(connector).call(request);
-        final YMockClient client = new YMockClient(this.ID, connector);
-        final String returned = client.call(request);
-        assertThat(returned, is(equalTo(response)));
+    public void testDetectsPortNumber() throws Exception {
+        final Integer port = new PortDetector().port();
+        assertThat(port, is(greaterThan(0)));
     }
 
 }

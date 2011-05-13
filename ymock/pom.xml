@@ -46,6 +46,7 @@
     <name>yMock</name>
 
     <modules>
+        <module>ymock-commons</module>
         <module>ymock-tk</module>
         <module>ymock-client</module>
         <module>ymock-server</module>

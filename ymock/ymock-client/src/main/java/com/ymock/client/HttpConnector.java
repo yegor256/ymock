@@ -29,6 +29,17 @@
  */
 package com.ymock.client;
 
+// commons
+import com.ymock.commons.PortDetector;
+
+// apache httpcomponents:httpclient
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 /**
  * HTTP connector between YMockClient and remote YMockServer.
  *
@@ -38,11 +49,50 @@ package com.ymock.client;
 public final class HttpConnector implements Connector {
 
     /**
+     * HTTP client.
+     */
+    private final HttpClient client;
+
+    /**
+     * Public ctor.
+     */
+    public HttpConnector() {
+        this(new DefaultHttpClient());
+    }
+
+    /**
+     * Protected ctor, only for unit testing.
+     */
+    protected HttpConnector(final HttpClient clt) {
+        this.client = clt;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
-    public String call(final String request) {
-        throw new UnsupportedOperationException("#call()");
+    public String call(final String request) throws YMockException {
+        final HttpPost http = new HttpPost(this.url());
+        final ResponseHandler<String> handler = new BasicResponseHandler();
+        String body;
+        try {
+            body = this.client.execute(http, handler);
+        } catch (java.io.IOException ex) {
+            throw new YMockException(ex);
+        } finally {
+            this.client.getConnectionManager().shutdown();
+        }
+        return body;
+    }
+
+    /**
+     * Build URL to connect to.
+     * @return The URL
+     */
+    private String url() {
+        return "http://localhost:"
+            + new PortDetector().port()
+            + "/ymock/mock";
     }
 
 }

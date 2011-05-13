@@ -29,9 +29,12 @@
  */
 package com.ymock.client;
 
+import org.apache.http.client.HttpClient;
+import org.apache.http.conn.ClientConnectionManager;
 import org.junit.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Yegor Bugayenko (yegor@ymock.com)
@@ -39,9 +42,12 @@ import static org.hamcrest.Matchers.*;
  */
 public final class HttpConnectorTest {
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testSimpleCallToServer() throws Exception {
-        final Connector connector = new HttpConnector();
+        final HttpClient client = mock(HttpClient.class);
+        final ClientConnectionManager mgr = mock(ClientConnectionManager.class);
+        doReturn(mgr).when(client).getConnectionManager();
+        final Connector connector = new HttpConnector(client);
         assertThat(connector, is(not(nullValue())));
         connector.call("abc");
     }
