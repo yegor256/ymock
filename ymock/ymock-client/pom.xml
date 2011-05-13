@@ -65,12 +65,25 @@
             <!-- all other details are in parent module dependencyManagement section -->
         </dependency>
         <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <!-- all other details are in parent module dependencyManagement section -->
+        </dependency>
+        <dependency>
             <!--
             This is for testing of embedded Grizzly.
             -->
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>4.1.1</version>
+        </dependency>
+        <dependency>
+            <!--
+            This is for testing of embedded Grizzly.
+            -->
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+            <version>4.1</version>
         </dependency>
     </dependencies>
 

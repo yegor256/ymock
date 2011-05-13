@@ -32,12 +32,15 @@ package com.ymock.client;
 // commons
 import com.ymock.commons.PortDetector;
 
+// IO utils from commons-io:commons-io
+import org.apache.commons.io.IOUtils;
+
 // apache httpcomponents:httpclient
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 /**
@@ -51,17 +54,18 @@ public final class HttpConnector implements Connector {
     /**
      * HTTP client.
      */
-    private final HttpClient client;
+    private HttpClient client = new DefaultHttpClient();
 
     /**
      * Public ctor.
      */
     public HttpConnector() {
-        this(new DefaultHttpClient());
+        // intentionally empty
     }
 
     /**
      * Protected ctor, only for unit testing.
+     * @param clt Custom HTTP client
      */
     protected HttpConnector(final HttpClient clt) {
         this.client = clt;
@@ -72,17 +76,22 @@ public final class HttpConnector implements Connector {
      */
     @Override
     public String call(final String request) throws YMockException {
-        final HttpPost http = new HttpPost(this.url());
-        final ResponseHandler<String> handler = new BasicResponseHandler();
-        String body;
         try {
-            body = this.client.execute(http, handler);
+            final HttpPost post = new HttpPost(this.url());
+            final HttpResponse response = this.client.execute(post);
+            final HttpEntity entity = response.getEntity();
+            String body = "";
+            if (entity != null) {
+                body = IOUtils.toString(entity.getContent());
+                this.client.getConnectionManager().shutdown();
+            }
+            if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+                throw new YMockException(body);
+            }
+            return body;
         } catch (java.io.IOException ex) {
             throw new YMockException(ex);
-        } finally {
-            this.client.getConnectionManager().shutdown();
         }
-        return body;
     }
 
     /**

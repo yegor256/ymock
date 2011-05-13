@@ -29,8 +29,12 @@
  */
 package com.ymock.client;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.conn.ClientConnectionManager;
 import org.junit.*;
@@ -47,17 +51,46 @@ public final class HttpConnectorTest {
     @Test
     public void testSimpleCallToServer() throws Exception {
         final String message = "some text";
+        final Connector connector = new HttpConnector(
+            this.client(message, HttpStatus.SC_OK)
+        );
+        final String response = connector.call("something...");
+        assertThat(response, equalTo(message));
+    }
+
+    @Test(expected = YMockException.class)
+    public void testCallWithErrorResponse() throws Exception {
+        final Connector connector = new HttpConnector(
+            this.client("msg", HttpStatus.SC_BAD_REQUEST)
+        );
+        connector.call("doesn't matter what");
+    }
+
+    @Test(expected = YMockException.class)
+    public void testCallWithIOException() throws Exception {
         final HttpClient client = mock(HttpClient.class);
         final ClientConnectionManager mgr = mock(ClientConnectionManager.class);
         doReturn(mgr).when(client).getConnectionManager();
-        doReturn(message).when(client).execute(
-            (HttpUriRequest) anyObject(),
-            (ResponseHandler<String>) anyObject()
+        doThrow(new java.io.IOException("test")).when(client).execute(
+            (HttpUriRequest) anyObject()
         );
-        final Connector connector = new HttpConnector(client);
-        assertThat(connector, is(not(nullValue())));
-        String response = connector.call("something...");
-        assertThat(response, equalTo(message));
+        new HttpConnector(client).call("simple text");
+    }
+
+    private HttpClient client(final String msg, final Integer code)
+        throws Exception {
+        final HttpClient client = mock(HttpClient.class);
+        final ClientConnectionManager mgr = mock(ClientConnectionManager.class);
+        doReturn(mgr).when(client).getConnectionManager();
+        final HttpResponse response = mock(HttpResponse.class);
+        doReturn(response).when(client).execute((HttpUriRequest) anyObject());
+        final HttpEntity entity = mock(HttpEntity.class);
+        doReturn(entity).when(response).getEntity();
+        doReturn(IOUtils.toInputStream(msg)).when(entity).getContent();
+        final StatusLine line = mock(StatusLine.class);
+        doReturn(line).when(response).getStatusLine();
+        doReturn(code).when(line).getStatusCode();
+        return client;
     }
 
 }
