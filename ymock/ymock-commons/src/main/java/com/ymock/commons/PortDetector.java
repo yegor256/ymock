@@ -34,7 +34,6 @@ package com.ymock.commons;
  *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
- * @see RestfulServer#port()
  */
 public final class PortDetector {
 
