@@ -34,8 +34,6 @@ package com.ymock.client;
  *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
- * @todo #1 The class is just a stub and should be implemented
- *       completely via Apache Httpclient.
  */
 public final class HttpConnector implements Connector {
 

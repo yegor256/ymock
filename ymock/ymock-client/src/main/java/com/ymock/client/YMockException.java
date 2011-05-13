@@ -30,20 +30,19 @@
 package com.ymock.client;
 
 /**
- * Connector between YMockClient and remote YMockServer.
+ * Exception.
  *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public interface Connector {
+public final class YMockException extends Exception {
 
     /**
-     * Send a query and return response.
-     * @param request The request string
-     * @return The response
-     * @throws YMockException If something was wrong with the server
-     *         and the operation failed.
+     * Public ctor.
+     * @param cause The cause of exception
      */
-    String call(final String request) throws YMockException;
+    public YMockException(final String cause) {
+        super(cause);
+    }
 
 }

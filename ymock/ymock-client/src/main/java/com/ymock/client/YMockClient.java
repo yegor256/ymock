@@ -63,8 +63,10 @@ public final class YMockClient {
      * Make a call to server and return a response.
      * @param request The request string
      * @return The response
+     * @throws YMockException If something was wrong with the server
+     *         and the operation failed.
      */
-    public String call(final String request) {
+    public String call(final String request) throws YMockException {
         return this.connector.call(request);
     }
 
