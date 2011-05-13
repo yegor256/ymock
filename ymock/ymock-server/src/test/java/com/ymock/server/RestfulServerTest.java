@@ -83,7 +83,7 @@ public final class RestfulServerTest {
 
     @Test
     public void testServerWithNegativeResponse() throws Exception {
-        final String message = "some text";
+        final String message = "some error message";
         final CallsProvider provider = RestfulServer.INSTANCE;
         provider.register(new NegativeCatcher(message));
         final HttpClient client = new DefaultHttpClient();
@@ -117,7 +117,10 @@ public final class RestfulServerTest {
         public String handleResponse(final HttpResponse response) {
             assertThat(
                 response.getStatusLine().getStatusCode(),
-                equalTo(javax.ws.rs.core.Response.Status.BAD_REQUEST.getStatusCode())
+                equalTo(
+                    javax.ws.rs.core.Response.Status.BAD_REQUEST
+                    .getStatusCode()
+                )
             );
             try {
                 return IOUtils.toString(response.getEntity().getContent());

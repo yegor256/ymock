@@ -114,6 +114,15 @@
         </dependency>
         <dependency>
             <!--
+            This is for testing of embedded Grizzly.
+            -->
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+            <version>4.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <!--
             We protocol all operations through SLF4J.
             -->
             <groupId>org.slf4j</groupId>
