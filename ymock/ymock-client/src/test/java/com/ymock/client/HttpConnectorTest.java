@@ -30,6 +30,8 @@
 package com.ymock.client;
 
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.conn.ClientConnectionManager;
 import org.junit.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -44,12 +46,18 @@ public final class HttpConnectorTest {
 
     @Test
     public void testSimpleCallToServer() throws Exception {
+        final String message = "some text";
         final HttpClient client = mock(HttpClient.class);
         final ClientConnectionManager mgr = mock(ClientConnectionManager.class);
         doReturn(mgr).when(client).getConnectionManager();
+        doReturn(message).when(client).execute(
+            (HttpUriRequest) anyObject(),
+            (ResponseHandler<String>) anyObject()
+        );
         final Connector connector = new HttpConnector(client);
         assertThat(connector, is(not(nullValue())));
-        connector.call("abc");
+        String response = connector.call("something...");
+        assertThat(response, equalTo(message));
     }
 
 }
