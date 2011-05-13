@@ -43,6 +43,10 @@ import java.util.Map;
 // sting manipulations, from commons-lang:commons-lang
 import org.apache.commons.lang.StringUtils;
 
+// slf4j
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * RESTful Server.
  *
@@ -50,6 +54,12 @@ import org.apache.commons.lang.StringUtils;
  * @version $Id$
  */
 public final class YMockServer implements Catcher {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER =
+        LoggerFactory.getLogger(YMockServer.class);
 
     /**
      * Associative array of matchers.
@@ -72,6 +82,13 @@ public final class YMockServer implements Catcher {
      */
     public YMockServer(final String client, final CallsProvider provider) {
         provider.register(this);
+        this.LOGGER.debug(
+            String.format(
+                "server is listening to '%s' via %s",
+                client,
+                provider.getClass().getName()
+            )
+        );
     }
 
     /**

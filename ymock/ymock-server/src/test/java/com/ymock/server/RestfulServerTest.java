@@ -30,6 +30,14 @@
 package com.ymock.server;
 
 import com.ymock.server.responses.ErrorResponse;
+import com.ymock.server.responses.TextResponse;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.junit.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -42,18 +50,90 @@ public final class RestfulServerTest {
 
     @Test
     public void testServerInstantiation() throws Exception {
+        // start server
         final CallsProvider provider = RestfulServer.INSTANCE;
-        assertThat(provider, is(instanceOf(CallsProvider.class)));
-        provider.register(new SimpleCatcher());
+        final String message = "some text";
+        provider.register(new PositiveCatcher(message));
+
+        // connect to it via HTTP and retrieve response
+        final HttpClient client = new DefaultHttpClient();
+        final HttpPost httppost = new HttpPost(this.url());
+        final ResponseHandler<String> handler = new BasicResponseHandler();
+        String body;
+        try {
+            body = client.execute(httppost, handler);
+        } catch (java.io.IOException ex) {
+            throw ex;
+        } finally {
+            client.getConnectionManager().shutdown();
+        }
+        assertThat(body, equalTo(message));
     }
 
-    private static class SimpleCatcher implements Catcher {
-        public SimpleCatcher() {
+    private static class PositiveCatcher implements Catcher {
+        private final String message;
+        public PositiveCatcher(final String msg) {
+            this.message = msg;
         }
         @Override
         public Response call(final String request) {
-            return new ErrorResponse("just test");
+            return new TextResponse(this.message);
         }
+    }
+
+    @Test
+    public void testServerWithNegativeResponse() throws Exception {
+        final String message = "some error message";
+        final CallsProvider provider = RestfulServer.INSTANCE;
+        provider.register(new NegativeCatcher(message));
+        final HttpClient client = new DefaultHttpClient();
+        final HttpPost httppost = new HttpPost(this.url());
+        final ResponseHandler<String> handler = new NegativeResponseHandler();
+        String body;
+        try {
+            body = client.execute(httppost, handler);
+        } catch (java.io.IOException ex) {
+            throw ex;
+        } finally {
+            client.getConnectionManager().shutdown();
+        }
+        assertThat(body, equalTo(message));
+    }
+
+    private static class NegativeCatcher implements Catcher {
+        private final String message;
+        public NegativeCatcher(final String msg) {
+            this.message = msg;
+        }
+        @Override
+        public Response call(final String request) {
+            return new ErrorResponse(this.message);
+        }
+    }
+
+    private static class NegativeResponseHandler
+        implements ResponseHandler<String> {
+        @Override
+        public String handleResponse(final HttpResponse response) {
+            assertThat(
+                response.getStatusLine().getStatusCode(),
+                equalTo(
+                    javax.ws.rs.core.Response.Status.BAD_REQUEST
+                    .getStatusCode()
+                )
+            );
+            try {
+                return IOUtils.toString(response.getEntity().getContent());
+            } catch (java.io.IOException ex) {
+                throw new IllegalStateException(ex);
+            }
+        }
+    }
+
+    private String url() {
+        return "http://localhost:"
+            + RestfulServer.INSTANCE.port()
+            + "/ymock/mock";
     }
 
 }
