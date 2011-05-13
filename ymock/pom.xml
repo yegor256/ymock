@@ -574,8 +574,6 @@
                             Coding styling validator. Configuration is inside resources/checkstyle
                             directory. When you edit that file don't forget to install
                             the build-tool project first, and then run this project.
-                            @todo #2 We should validate tests as well, not only
-                                     sources. A special checks-test.xml shall be designed.
                             -->
                             <artifactId>maven-checkstyle-plugin</artifactId>
                             <version>2.6</version> <!-- 14 October 2010 -->
@@ -666,9 +664,6 @@
                             all unit tests are passed. Cobertura starts all tests
                             again in order to calculate code coverage, and validates
                             that this coverage is in the allowed interval.
-                            @todo #2 It doesn't work with integration tests. See
-                                     more details at the following link:
-                                     http://jira.codehaus.org/browse/MCOBERTURA-86
                             -->
                             <groupId>org.codehaus.mojo</groupId>
                             <artifactId>cobertura-maven-plugin</artifactId>
@@ -1015,7 +1010,7 @@
             <!--
             To enable site deployment by FTP.
             @link http://maven.apache.org/wagon/wagon-providers/wagon-ftp/
-            @todo #2 There is still a problem. This extension sends all possible
+            @todo #1 There is still a problem. This extension sends all possible
                      details of its execution to stdout, exposing FTP passwords
                      and logins. I already submitted a bug to its developers (WAGON-320),
                      but not luck yet. Maybe we have to create our own extension.
