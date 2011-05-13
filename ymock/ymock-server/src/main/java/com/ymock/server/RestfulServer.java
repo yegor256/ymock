@@ -29,17 +29,6 @@
  */
 package com.ymock.server;
 
-// collection management
-import java.util.ArrayList;
-import java.util.Collection;
-
-// for JAX-RS
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
 // Grizzly Web Server
 import com.sun.grizzly.http.embed.GrizzlyWebServer;
 import com.sun.grizzly.http.servlet.ServletAdapter;
@@ -47,38 +36,42 @@ import com.sun.grizzly.http.servlet.ServletAdapter;
 // Jersey JAX-RS implementation
 import com.sun.jersey.spi.container.servlet.ServletContainer;
 
+// logging
+import java.util.logging.Handler;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+
+// slf4j
+import org.slf4j.bridge.SLF4JBridgeHandler;
+
 /**
  * RESTful Server.
  *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-@Path("/mock")
 final class RestfulServer implements CallsProvider {
+
+    /**
+     * Already running instance.
+     */
+    public static final RestfulServer INSTANCE = new RestfulServer();
+
+    /**
+     * HTTP Context.
+     */
+    private static final String CONTEXT = "/ymock";
 
     /**
      * Catcher registered.
      */
-    private Catcher catcher = null;
+    private Catcher catcher;
 
     /**
-     * Public ctor.
+     * Public ctor, for a RESTful instantiation.
      */
-    public RestfulServer() {
-        final GrizzlyWebServer gws = new GrizzlyWebServer(8089, ".");
-        final ServletAdapter adapter = new ServletAdapter();
-        adapter.addInitParameter(
-            "com.sun.jersey.config.property.packages",
-            "com.ymock.server"
-        );
-        adapter.setContextPath("/ymock");
-        adapter.setServletInstance(new ServletContainer());
-        gws.addGrizzlyAdapter(adapter, new String[] {"/ymock"});
-        try {
-            gws.start();
-        } catch (java.io.IOException ex) {
-            throw new IllegalStateException(ex);
-        }
+    private RestfulServer() {
+        this.start();
     }
 
     /**
@@ -90,25 +83,50 @@ final class RestfulServer implements CallsProvider {
     }
 
     /**
-     * Make a request and return response.
+     * Make a call.
+     * @param request The request
      * @return The response
+     * @see RestfulMock#call(String)
      */
-    @POST
-    @Consumes(MediaType.TEXT_PLAIN)
-    @Produces(MediaType.TEXT_PLAIN)
-    public javax.ws.rs.core.Response call(final String input) {
-        final Response response = this.catcher.call(input);
-        javax.ws.rs.core.Response.Status status;
-        if (response.isSuccessful()) {
-            status = javax.ws.rs.core.Response.Status.OK;
-        } else {
-            status = javax.ws.rs.core.Response.Status.BAD_REQUEST;
+    public Response call(final String request) {
+        return this.catcher.call(request);
+    }
+
+    /**
+     * What HTTP port shall we use?
+     * @return The port number
+     * @see #start()
+     */
+    public Integer port() {
+        return new PortDetector().port();
+    }
+
+    /**
+     * Start HTTP server.
+     * @see #RestfulServer()
+     */
+    private void start() {
+        final Logger root = LogManager.getLogManager().getLogger("");
+        final Handler[] handlers = root.getHandlers();
+        for (int i = 0; i < handlers.length; i += 1) {
+            root.removeHandler(handlers[i]);
         }
-        return javax.ws.rs.core.Response
-            .status(status)
-            .type(MediaType.TEXT_PLAIN)
-            .entity(response.getText())
-            .build();
+        SLF4JBridgeHandler.install();
+
+        final GrizzlyWebServer gws = new GrizzlyWebServer(this.port(), ".");
+        final ServletAdapter adapter = new ServletAdapter();
+        adapter.addInitParameter(
+            "com.sun.jersey.config.property.packages",
+            "com.ymock.server"
+        );
+        adapter.setContextPath(this.CONTEXT);
+        adapter.setServletInstance(new ServletContainer());
+        gws.addGrizzlyAdapter(adapter, new String[] {this.CONTEXT});
+        try {
+            gws.start();
+        } catch (java.io.IOException ex) {
+            throw new IllegalStateException(ex);
+        }
     }
 
 }
