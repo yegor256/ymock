@@ -1,6 +1,4 @@
-<?xml version="1.0"?>
-<!--
- *
+/**
  * Copyright (c) 2011, yMock.com
  * All rights reserved.
  *
@@ -28,32 +26,12 @@
  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/**
+ * Common components.
  *
+ * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
- -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>com.ymock</groupId>
-        <artifactId>ymock</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
-    <artifactId>ymock-commons</artifactId>
-    <packaging>jar</packaging>
-    <name>ymock-commons</name>
-
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <!-- all other details are in parent module dependencyManagement section -->
-        </dependency>
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-all</artifactId>
-            <!-- all other details are in parent module dependencyManagement section -->
-        </dependency>
-    </dependencies>
-
-</project>
+ */
+package com.ymock.commons;
