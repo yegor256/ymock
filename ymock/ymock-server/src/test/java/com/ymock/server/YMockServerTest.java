@@ -31,6 +31,7 @@ package com.ymock.server;
 
 import com.ymock.client.Connector;
 import com.ymock.client.YMockClient;
+import com.ymock.client.YMockException;
 import org.junit.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -118,7 +119,12 @@ public final class YMockServerTest {
             this.client = new YMockClient(YMockServerTest.ID, connector);
         }
         public void run() {
-            final String response = this.client.call(YMockServerTest.REQUEST);
+            String response;
+            try {
+                response = this.client.call(YMockServerTest.REQUEST);
+            } catch (YMockException ex) {
+                throw new IllegalStateException(ex);
+            }
             assertThat(response, is(equalTo(YMockServerTest.RESPONSE)));
         }
     }
