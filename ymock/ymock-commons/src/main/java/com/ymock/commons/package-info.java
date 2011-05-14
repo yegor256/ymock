@@ -27,34 +27,11 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.server;
 
 /**
- * Port detector.
+ * Common components.
  *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
- * @see RestfulServer#port()
  */
-final class PortDetector {
-
-    /**
-     * Default port number.
-     */
-    private static final Integer DEFAULT = 8099;
-
-    /**
-     * What HTTP port shall we use?
-     * @return The port number
-     * @todo #2 This is just a stub for now. The method should get
-     *       get the port number from one of these sources (in order
-     *       of importance):
-     *       - java system property "ymock.port"
-     *       - environment variable YMOCK_PORT
-     *       - default value
-     */
-    public Integer port() {
-        return this.DEFAULT;
-    }
-
-}
+package com.ymock.commons;

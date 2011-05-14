@@ -29,22 +29,83 @@
  */
 package com.ymock.client;
 
+// commons
+import com.ymock.commons.PortDetector;
+
+// IO utils from commons-io:commons-io
+import org.apache.commons.io.IOUtils;
+
+// apache httpcomponents:httpclient
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 /**
  * HTTP connector between YMockClient and remote YMockServer.
  *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
- * @todo #1 The class is just a stub and should be implemented
- *       completely via Apache Httpclient.
  */
 public final class HttpConnector implements Connector {
+
+    /**
+     * HTTP client.
+     */
+    private HttpClient client = new DefaultHttpClient();
+
+    /**
+     * Public ctor.
+     */
+    public HttpConnector() {
+        // intentionally empty
+    }
+
+    /**
+     * Protected ctor, only for unit testing.
+     * @param clt Custom HTTP client
+     */
+    protected HttpConnector(final HttpClient clt) {
+        this.client = clt;
+    }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String call(final String request) {
-        throw new UnsupportedOperationException("#call()");
+    public String call(final String request) throws YMockException {
+        final HttpPost post = new HttpPost(this.url());
+        HttpResponse response;
+        try {
+            response = this.client.execute(post);
+        } catch (java.io.IOException ex) {
+            throw new YMockException(ex);
+        } finally {
+            this.client.getConnectionManager().shutdown();
+        }
+        final HttpEntity entity = response.getEntity();
+        String body;
+        try {
+            body = IOUtils.toString(entity.getContent());
+        } catch (java.io.IOException ex) {
+            throw new YMockException(ex);
+        }
+        if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+            throw new YMockException(body);
+        }
+        return body;
+    }
+
+    /**
+     * Build URL to connect to.
+     * @return The URL
+     */
+    private String url() {
+        return "http://localhost:"
+            + new PortDetector().port()
+            + "/ymock/mock";
     }
 
 }

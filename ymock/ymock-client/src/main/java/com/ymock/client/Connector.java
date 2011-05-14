@@ -41,7 +41,9 @@ public interface Connector {
      * Send a query and return response.
      * @param request The request string
      * @return The response
+     * @throws YMockException If something was wrong with the server
+     *         and the operation failed.
      */
-    String call(final String request);
+    String call(final String request) throws YMockException;
 
 }

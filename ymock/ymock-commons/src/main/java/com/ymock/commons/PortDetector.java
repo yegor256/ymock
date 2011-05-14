@@ -27,30 +27,33 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.client;
-
-import org.junit.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.*;
+package com.ymock.commons;
 
 /**
+ * Port detector.
+ *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class YMockClientTest {
+public final class PortDetector {
 
-    private static final String ID = "test";
+    /**
+     * Default port number.
+     */
+    private static final Integer DEFAULT = 8099;
 
-    @Test
-    public void testSimpleCallToServerViaMock() throws Exception {
-        final String request = "abc";
-        final String response = "works fine";
-        final Connector connector = mock(Connector.class);
-        doReturn(response).when(connector).call(request);
-        final YMockClient client = new YMockClient(this.ID, connector);
-        final String returned = client.call(request);
-        assertThat(returned, is(equalTo(response)));
+    /**
+     * What HTTP port shall we use?
+     * @return The port number
+     * @todo #2 This is just a stub for now. The method should get
+     *       get the port number from one of these sources (in order
+     *       of importance):
+     *       - java system property "ymock.port"
+     *       - environment variable YMOCK_PORT
+     *       - default value
+     */
+    public Integer port() {
+        return this.DEFAULT;
     }
 
 }
