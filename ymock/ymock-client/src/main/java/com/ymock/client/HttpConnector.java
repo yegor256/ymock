@@ -76,22 +76,26 @@ public final class HttpConnector implements Connector {
      */
     @Override
     public String call(final String request) throws YMockException {
+        final HttpPost post = new HttpPost(this.url());
+        HttpResponse response;
         try {
-            final HttpPost post = new HttpPost(this.url());
-            final HttpResponse response = this.client.execute(post);
-            final HttpEntity entity = response.getEntity();
-            String body = "";
-            if (entity != null) {
-                body = IOUtils.toString(entity.getContent());
-                this.client.getConnectionManager().shutdown();
-            }
-            if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
-                throw new YMockException(body);
-            }
-            return body;
+            response = this.client.execute(post);
+        } catch (java.io.IOException ex) {
+            throw new YMockException(ex);
+        } finally {
+            this.client.getConnectionManager().shutdown();
+        }
+        final HttpEntity entity = response.getEntity();
+        String body;
+        try {
+            body = IOUtils.toString(entity.getContent());
         } catch (java.io.IOException ex) {
             throw new YMockException(ex);
         }
+        if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+            throw new YMockException(body);
+        }
+        return body;
     }
 
     /**
