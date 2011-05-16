@@ -63,7 +63,7 @@ public final class HttpConnectorTest {
         final Connector connector = new HttpConnector(
             this.client("msg", HttpStatus.SC_BAD_REQUEST)
         );
-        connector.call("doesn't matter what");
+        connector.call("some request, ignored");
     }
 
     @Test(expected = YMockException.class)
@@ -75,6 +75,29 @@ public final class HttpConnectorTest {
             (HttpUriRequest) anyObject()
         );
         new HttpConnector(client).call("simple text");
+    }
+
+    @Test(expected = YMockException.class)
+    public void testCallWithRealSocket() throws Exception {
+        final Connector connector = new HttpConnector();
+        connector.call("doesn't matter what");
+    }
+
+    @Test
+    public void testTwoConsequetiveCalls() throws Exception {
+        final Connector connector = new HttpConnector();
+        try {
+            connector.call("first request");
+        } catch (YMockException ex) {
+            // swallow it
+            assertThat(ex, is(instanceOf(YMockException.class)));
+        }
+        try {
+            connector.call("second request");
+        } catch (YMockException ex) {
+            // swallow it
+            assertThat(ex, is(instanceOf(YMockException.class)));
+        }
     }
 
     private HttpClient client(final String msg, final Integer code)

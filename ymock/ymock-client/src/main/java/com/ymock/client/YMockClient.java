@@ -54,6 +54,9 @@ public final class YMockClient {
      * Public ctor.
      * @param name The unique name of the client
      * @param conn The connector to use
+     * @todo #1 The name is just ingored now, an it's not correct. We should
+     *       use it in order to build the URL of the server. The server will
+     *       filter out requests not related to the specified name.
      */
     public YMockClient(final String name, final Connector conn) {
         this.connector = conn;
