@@ -87,12 +87,12 @@ public final class HttpConnectorTest {
     public void testTwoConsequetiveCalls() throws Exception {
         final Connector connector = new HttpConnector();
         try {
-            connector.call("doesn't matter what");
+            connector.call("first request");
         } catch (YMockException ex) {
             // swallow it
         }
         try {
-            connector.call("doesn't matter what");
+            connector.call("second request");
         } catch (YMockException ex) {
             // swallow it
         }

@@ -82,8 +82,6 @@ public final class HttpConnector implements Connector {
             response = this.client.execute(post);
         } catch (java.io.IOException ex) {
             throw new YMockException(ex);
-        } finally {
-            this.client.getConnectionManager().shutdown();
         }
         final HttpEntity entity = response.getEntity();
         String body;
