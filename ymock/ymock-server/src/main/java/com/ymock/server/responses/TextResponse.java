@@ -30,6 +30,7 @@
 package com.ymock.server.responses;
 
 // the API
+import com.ymock.commons.YMockException;
 import com.ymock.server.Response;
 
 /**
@@ -57,16 +58,8 @@ public final class TextResponse implements Response {
      * {@inheritDoc}
      */
     @Override
-    public String getText() {
+    public String process(final String input) {
         return this.text;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isSuccessful() {
-        return true;
     }
 
 }

@@ -29,6 +29,7 @@
  */
 package com.ymock.client;
 
+import com.ymock.commons.YMockException;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;

@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!--
+ *
+ * @version $Id$
+ *
+ -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.ymock.server</groupId>
+    <artifactId>simple-test</artifactId>
+    <version>1.0</version>
+    <packaging>jar</packaging>
+    <name>sample-test</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.ymock</groupId>
+            <artifactId>ymock-client</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ymock</groupId>
+            <artifactId>ymock-server</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <!-- To forward ymock logging to log4j -->
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.6.1</version>
+        </dependency>
+    </dependencies>
+
+</project>

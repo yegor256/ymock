@@ -29,6 +29,9 @@
  */
 package com.ymock.server;
 
+// commons from com.ymock:ymock-commons
+import com.ymock.commons.YMockException;
+
 // for JAX-RS
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -54,17 +57,19 @@ public final class RestfulMock {
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
     public javax.ws.rs.core.Response call(final String input) {
-        final Response response = RestfulServer.INSTANCE.call(input);
+        String response;
         javax.ws.rs.core.Response.Status status;
-        if (response.isSuccessful()) {
+        try {
+            response = RestfulServer.INSTANCE.call(input).process(input);
             status = javax.ws.rs.core.Response.Status.OK;
-        } else {
+        } catch (YMockException ex) {
+            response = ex.getMessage();
             status = javax.ws.rs.core.Response.Status.BAD_REQUEST;
         }
         return javax.ws.rs.core.Response
             .status(status)
             .type(MediaType.TEXT_PLAIN)
-            .entity(response.getText())
+            .entity(response)
             .build();
     }
 

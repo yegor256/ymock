@@ -36,8 +36,9 @@ import com.sun.grizzly.http.servlet.ServletAdapter;
 // Jersey JAX-RS implementation
 import com.sun.jersey.spi.container.servlet.ServletContainer;
 
-// commons
+// commons from com.ymock:ymock-commons
 import com.ymock.commons.PortDetector;
+import com.ymock.commons.YMockException;
 
 // logging
 import java.util.logging.Handler;
@@ -90,8 +91,9 @@ final class RestfulServer implements CallsProvider {
      * @param request The request
      * @return The response
      * @see RestfulMock#call(String)
+     * @throws YMockException If something is wrong there
      */
-    public Response call(final String request) {
+    public Response call(final String request) throws YMockException {
         return this.catcher.call(request);
     }
 

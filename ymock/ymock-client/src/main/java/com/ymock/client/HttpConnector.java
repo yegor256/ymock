@@ -31,6 +31,7 @@ package com.ymock.client;
 
 // commons
 import com.ymock.commons.PortDetector;
+import com.ymock.commons.YMockException;
 
 // IO utils from commons-io:commons-io
 import org.apache.commons.io.IOUtils;

@@ -29,6 +29,7 @@
  */
 package com.ymock.server.responses;
 
+import com.ymock.commons.YMockException;
 import com.ymock.server.Response;
 import org.junit.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -44,8 +45,11 @@ public final class ErrorResponseTest {
     public void testCoreMethods() throws Exception {
         final String text = "some text";
         final Response response = new ErrorResponse(text);
-        assertThat(response.getText(), equalTo(text));
-        assertThat(response.isSuccessful(), is(false));
+        try {
+            response.process("something");
+        } catch (YMockException ex) {
+            assertThat(ex.getMessage(), is(equalTo(text)));
+        }
     }
 
 }

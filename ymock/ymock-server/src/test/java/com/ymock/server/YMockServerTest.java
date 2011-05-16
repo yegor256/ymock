@@ -31,7 +31,7 @@ package com.ymock.server;
 
 import com.ymock.client.Connector;
 import com.ymock.client.YMockClient;
-import com.ymock.client.YMockException;
+import com.ymock.commons.YMockException;
 import org.junit.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -82,7 +82,7 @@ public final class YMockServerTest {
         new YMockServerTest.SimpleClient(connector).run();
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test(expected = IllegalStateException.class)
     public void testEntireCycleWithDuplicateMatching()
         throws Exception {
         final SimpleProvider provider = new YMockServerTest.SimpleProvider();
@@ -100,7 +100,7 @@ public final class YMockServerTest {
         new YMockServerTest.SimpleClient(connector).run();
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test(expected = IllegalStateException.class)
     public void testEntireCycleThroughMocksWithErrorInResponse()
         throws Exception {
         final SimpleProvider provider = new YMockServerTest.SimpleProvider();
@@ -135,7 +135,7 @@ public final class YMockServerTest {
             this.provider = pvr;
         }
         @Override
-        public String call(final String request) {
+        public String call(final String request) throws YMockException {
             return this.provider.call(request);
         }
     }
@@ -146,12 +146,8 @@ public final class YMockServerTest {
         public void register(final Catcher ctr) {
             this.catcher = ctr;
         }
-        public String call(final String request) {
-            final Response response = this.catcher.call(request);
-            if (!response.isSuccessful()) {
-                throw new UnsupportedOperationException(response.getText());
-            }
-            return response.getText();
+        public String call(final String request) throws YMockException {
+            return this.catcher.call(request).process(request);
         }
     }
 
@@ -174,12 +170,8 @@ public final class YMockServerTest {
             this.text = txt;
         }
         @Override
-        public String getText() {
+        public String process(final String request) {
             return this.text;
-        }
-        @Override
-        public boolean isSuccessful() {
-            return true;
         }
     }
 

@@ -44,8 +44,7 @@ public final class TextResponseTest {
     public void testCoreMethods() throws Exception {
         final String text = "some text";
         final Response response = new TextResponse(text);
-        assertThat(response.getText(), equalTo(text));
-        assertThat(response.isSuccessful(), is(true));
+        assertThat(response.process("some input"), equalTo(text));
     }
 
 }

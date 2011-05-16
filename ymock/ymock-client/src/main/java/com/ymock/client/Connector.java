@@ -29,6 +29,9 @@
  */
 package com.ymock.client;
 
+// commons
+import com.ymock.commons.YMockException;
+
 /**
  * Connector between YMockClient and remote YMockServer.
  *
