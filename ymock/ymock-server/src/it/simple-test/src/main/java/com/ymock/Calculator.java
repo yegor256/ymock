@@ -18,7 +18,7 @@ class Calculator {
         } catch (YMockException ex) {
             throw new RuntimeException(ex);
         }
-        Logger.info(this, "#calculate('%s'): returned %d", result);
+        Logger.info(this, "#calculate('%s'): returned %d", text, result);
         return result;
     }
 
