@@ -52,16 +52,17 @@ public final class RestfulServerTest {
     public void testServerInstantiation() throws Exception {
         // start server
         final CallsProvider provider = RestfulServer.INSTANCE;
+        final String request = "requested message";
         final String message = "some text";
-        provider.register(new PositiveCatcher(message));
+        provider.register(new PositiveCatcher(request, message));
 
         // connect to it via HTTP and retrieve response
         final HttpClient client = new DefaultHttpClient();
-        final HttpPost httppost = new HttpPost(this.url());
+        final HttpPost post = new HttpPost(this.url());
         final ResponseHandler<String> handler = new BasicResponseHandler();
         String body;
         try {
-            body = client.execute(httppost, handler);
+            body = client.execute(post, handler);
         } catch (java.io.IOException ex) {
             throw ex;
         } finally {
@@ -71,12 +72,15 @@ public final class RestfulServerTest {
     }
 
     private static class PositiveCatcher implements Catcher {
+        private final String expected;
         private final String message;
-        public PositiveCatcher(final String msg) {
+        public PositiveCatcher(final String rqt, final String msg) {
+            this.expected = rqt;
             this.message = msg;
         }
         @Override
         public Response call(final String request) {
+            assertThat(request, equalTo(this.expected));
             return new TextResponse(this.message);
         }
     }

@@ -109,6 +109,8 @@ final class RestfulServer implements CallsProvider {
     /**
      * Start HTTP server.
      * @see #RestfulServer()
+     * @todo #1 Would be nice to add exception mapping here, in order
+     *       to properly wrap exception messages sent to clients
      */
     private void start() {
         final Logger root = LogManager.getLogManager().getLogger("");
