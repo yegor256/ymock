@@ -36,13 +36,14 @@ import com.sun.grizzly.http.servlet.ServletAdapter;
 // Jersey JAX-RS implementation
 import com.sun.jersey.spi.container.servlet.ServletContainer;
 
-// commons
+// commons from com.ymock:ymock-commons
+import com.ymock.commons.Logger;
 import com.ymock.commons.PortDetector;
+import com.ymock.commons.YMockException;
 
 // logging
 import java.util.logging.Handler;
 import java.util.logging.LogManager;
-import java.util.logging.Logger;
 
 // slf4j
 import org.slf4j.bridge.SLF4JBridgeHandler;
@@ -90,8 +91,9 @@ final class RestfulServer implements CallsProvider {
      * @param request The request
      * @return The response
      * @see RestfulMock#call(String)
+     * @throws YMockException If something is wrong there
      */
-    public Response call(final String request) {
+    public Response call(final String request) throws YMockException {
         return this.catcher.call(request);
     }
 
@@ -107,9 +109,12 @@ final class RestfulServer implements CallsProvider {
     /**
      * Start HTTP server.
      * @see #RestfulServer()
+     * @todo #1 Would be nice to add exception mapping here, in order
+     *       to properly wrap exception messages sent to clients
      */
     private void start() {
-        final Logger root = LogManager.getLogManager().getLogger("");
+        final java.util.logging.Logger root =
+            LogManager.getLogManager().getLogger("");
         final Handler[] handlers = root.getHandlers();
         for (int i = 0; i < handlers.length; i += 1) {
             root.removeHandler(handlers[i]);
@@ -130,6 +135,10 @@ final class RestfulServer implements CallsProvider {
         } catch (java.io.IOException ex) {
             throw new IllegalStateException(ex);
         }
+        Logger.debug(
+            this,
+            "#start(): server started"
+        );
     }
 
 }

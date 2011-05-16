@@ -29,6 +29,13 @@
  */
 package com.ymock.server;
 
+// commons from com.ymock:ymock-commons
+import com.ymock.commons.Logger;
+import com.ymock.commons.YMockException;
+
+// IO
+import java.io.InputStream;
+
 // for JAX-RS
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -36,35 +43,55 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+// IO
+import org.apache.commons.io.IOUtils;
+
 /**
  * RESTful Mock.
  *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
+ * @todo #1 At the moment this NAME param is just ignored. Which is not
+ *       correct. We should pass it to RestfulServer and it will use it
+ *       for filtering of matchers.
  */
-@Path("/mock")
+@Path("/{name}")
 public final class RestfulMock {
 
     /**
      * Make a request and return response.
-     * @param input Incoming HTTP stream
+     * @param stream Incoming HTTP stream
      * @return The response
      */
     @POST
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
-    public javax.ws.rs.core.Response call(final String input) {
-        final Response response = RestfulServer.INSTANCE.call(input);
+    public javax.ws.rs.core.Response call(final InputStream stream) {
+        String input;
+        try {
+            input = IOUtils.toString(stream);
+        } catch (java.io.IOException ex) {
+            throw new IllegalArgumentException(ex);
+        }
+        String response;
         javax.ws.rs.core.Response.Status status;
-        if (response.isSuccessful()) {
+        try {
+            response = RestfulServer.INSTANCE.call(input).process(input);
             status = javax.ws.rs.core.Response.Status.OK;
-        } else {
+        } catch (YMockException ex) {
+            response = ex.getMessage();
             status = javax.ws.rs.core.Response.Status.BAD_REQUEST;
         }
+        Logger.debug(
+            this,
+            "#call('%d bytes'): returned %d bytes",
+            input.length(),
+            response.length()
+        );
         return javax.ws.rs.core.Response
             .status(status)
             .type(MediaType.TEXT_PLAIN)
-            .entity(response.getText())
+            .entity(response)
             .build();
     }
 

@@ -57,16 +57,8 @@ public final class TextResponse implements Response {
      * {@inheritDoc}
      */
     @Override
-    public String getText() {
+    public String process(final String input) {
         return this.text;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isSuccessful() {
-        return true;
     }
 
 }

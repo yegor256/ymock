@@ -29,6 +29,9 @@
  */
 package com.ymock.server;
 
+// commons from com.ymock:ymock-commons
+import com.ymock.commons.YMockException;
+
 /**
  * Catcher of messages from RESTful servlet.
  *
@@ -41,7 +44,8 @@ public interface Catcher {
      * Catch the message and return the message back.
      * @param request The request
      * @return The response
+     * @throws YMockException If something goes wrong
      */
-    Response call(final String request);
+    Response call(final String request) throws YMockException;
 
 }

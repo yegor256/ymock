@@ -913,16 +913,6 @@
         <dependencies>
             <dependency>
                 <!--
-                Since every framework uses its own logging mechanism
-                this SLF4J is going to help to control everything from
-                one point.
-                -->
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>1.6.1</version> <!-- 8 Nov 2010 -->
-            </dependency>
-            <dependency>
-                <!--
                 Mediator between SLF4j and LOG4j.
                 -->
                 <groupId>org.slf4j</groupId>

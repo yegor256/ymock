@@ -30,6 +30,7 @@
 package com.ymock.server.responses;
 
 // the API
+import com.ymock.commons.YMockException;
 import com.ymock.server.Response;
 
 /**
@@ -58,16 +59,8 @@ public final class ErrorResponse implements Response {
      * {@inheritDoc}
      */
     @Override
-    public String getText() {
-        return this.message;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isSuccessful() {
-        return false;
+    public String process(final String input) throws YMockException {
+        throw new YMockException(this.message);
     }
 
 }

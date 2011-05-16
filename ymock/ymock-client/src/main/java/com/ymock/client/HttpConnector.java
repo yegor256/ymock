@@ -30,17 +30,19 @@
 package com.ymock.client;
 
 // commons
+import com.ymock.commons.Logger;
 import com.ymock.commons.PortDetector;
+import com.ymock.commons.YMockException;
 
 // IO utils from commons-io:commons-io
 import org.apache.commons.io.IOUtils;
 
 // apache httpcomponents:httpclient
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 /**
@@ -76,24 +78,28 @@ public final class HttpConnector implements Connector {
      */
     @Override
     public String call(final String request) throws YMockException {
-        final HttpPost post = new HttpPost(this.url());
-        HttpResponse response;
         try {
-            response = this.client.execute(post);
+            final long start = System.currentTimeMillis();
+            final HttpPost post = new HttpPost(this.url());
+            post.setEntity(new StringEntity(request));
+            final HttpResponse response = this.client.execute(post);
+            final String body = IOUtils.toString(
+                response.getEntity().getContent()
+            );
+            if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+                throw new YMockException(body);
+            }
+            Logger.debug(
+                this,
+                "#call('%d bytes'): returned %d bytes, in %dms",
+                request.length(),
+                body.length(),
+                System.currentTimeMillis() - start
+            );
+            return body;
         } catch (java.io.IOException ex) {
             throw new YMockException(ex);
         }
-        final HttpEntity entity = response.getEntity();
-        String body;
-        try {
-            body = IOUtils.toString(entity.getContent());
-        } catch (java.io.IOException ex) {
-            throw new YMockException(ex);
-        }
-        if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
-            throw new YMockException(body);
-        }
-        return body;
     }
 
     /**

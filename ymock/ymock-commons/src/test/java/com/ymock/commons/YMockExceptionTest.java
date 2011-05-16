@@ -27,26 +27,29 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.client;
+package com.ymock.commons;
 
-// commons
-import com.ymock.commons.YMockException;
+import org.junit.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 /**
- * Connector between YMockClient and remote YMockServer.
- *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public interface Connector {
+public final class YMockExceptionTest {
 
-    /**
-     * Send a query and return response.
-     * @param request The request string
-     * @return The response
-     * @throws YMockException If something was wrong with the server
-     *         and the operation failed.
-     */
-    String call(final String request) throws YMockException;
+    @Test
+    public void testClassInstantiation() throws Exception {
+        final String msg = "some text";
+        assertThat(
+            new YMockException(msg).getMessage(),
+            containsString(msg)
+        );
+        assertThat(
+            new YMockException(new IllegalArgumentException(msg)).getMessage(),
+            containsString(msg)
+        );
+    }
 
 }
