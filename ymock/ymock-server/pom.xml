@@ -126,14 +126,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <!--
-            We protocol all operations through SLF4J.
-            -->
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.6.1</version> <!-- 8 Nov 2010 -->
-        </dependency>
-        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jul-to-slf4j</artifactId>
             <version>1.6.1</version> <!-- 8 Nov 2010 -->
