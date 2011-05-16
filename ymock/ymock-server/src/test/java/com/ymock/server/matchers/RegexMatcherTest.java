@@ -44,6 +44,8 @@ public final class RegexMatcherTest {
     public void testMatchingMechanism() throws Exception {
         final Matcher matcher = new RegexMatcher(".*t");
         assertThat(matcher.matches("test"), is(true));
+        assertThat(matcher.matches("temp"), is(false));
+        assertThat(matcher.matches(""), is(false));
     }
 
 }

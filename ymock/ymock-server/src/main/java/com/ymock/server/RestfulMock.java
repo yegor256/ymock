@@ -30,6 +30,7 @@
 package com.ymock.server;
 
 // commons from com.ymock:ymock-commons
+import com.ymock.commons.Logger;
 import com.ymock.commons.YMockException;
 
 // IO
@@ -50,8 +51,11 @@ import org.apache.commons.io.IOUtils;
  *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
+ * @todo #1 At the moment this NAME param is just ignored. Which is not
+ *       correct. We should pass it to RestfulServer and it will use it
+ *       for filtering of matchers.
  */
-@Path("/mock")
+@Path("/{name}")
 public final class RestfulMock {
 
     /**
@@ -78,6 +82,12 @@ public final class RestfulMock {
             response = ex.getMessage();
             status = javax.ws.rs.core.Response.Status.BAD_REQUEST;
         }
+        Logger.debug(
+            this,
+            "#call('%d bytes'): returned %d bytes",
+            input.length(),
+            response.length()
+        );
         return javax.ws.rs.core.Response
             .status(status)
             .type(MediaType.TEXT_PLAIN)

@@ -30,6 +30,7 @@
 package com.ymock.client;
 
 // commons
+import com.ymock.commons.Logger;
 import com.ymock.commons.PortDetector;
 import com.ymock.commons.YMockException;
 
@@ -77,6 +78,7 @@ public final class HttpConnector implements Connector {
      */
     @Override
     public String call(final String request) throws YMockException {
+        final long start = System.currentTimeMillis();
         final HttpPost post = new HttpPost(this.url());
         HttpResponse response;
         try {
@@ -94,6 +96,13 @@ public final class HttpConnector implements Connector {
         if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
             throw new YMockException(body);
         }
+        Logger.debug(
+            this,
+            "#call('%d bytes'): returned %d bytes, in %.3fsec",
+            request.length(),
+            body.length(),
+            (float) ((System.currentTimeMillis() - start) / 1000)
+        );
         return body;
     }
 

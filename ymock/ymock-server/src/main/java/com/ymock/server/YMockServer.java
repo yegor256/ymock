@@ -29,6 +29,9 @@
  */
 package com.ymock.server;
 
+// commons
+import com.ymock.commons.Logger;
+
 // supplementary concrete classes
 import com.ymock.server.matchers.RegexMatcher;
 import com.ymock.server.responses.ErrorResponse;
@@ -43,10 +46,6 @@ import java.util.Map;
 // sting manipulations, from commons-lang:commons-lang
 import org.apache.commons.lang.StringUtils;
 
-// slf4j
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * RESTful Server.
  *
@@ -54,12 +53,6 @@ import org.slf4j.LoggerFactory;
  * @version $Id$
  */
 public final class YMockServer implements Catcher {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER =
-        LoggerFactory.getLogger(YMockServer.class);
 
     /**
      * Associative array of matchers.
@@ -82,12 +75,11 @@ public final class YMockServer implements Catcher {
      */
     public YMockServer(final String client, final CallsProvider provider) {
         provider.register(this);
-        this.LOGGER.debug(
-            String.format(
-                "server is listening to '%s' via %s",
-                client,
-                provider.getClass().getName()
-            )
+        Logger.debug(
+            this,
+            "#YMockServer('%s', %s): listening",
+            client,
+            provider.getClass().getName()
         );
     }
 
@@ -109,6 +101,12 @@ public final class YMockServer implements Catcher {
                     );
                 } else {
                     response = entry.getValue();
+                    Logger.debug(
+                        this,
+                        "#call('%d bytes'): matched with %s",
+                        request.length(),
+                        entry.getKey().getClass().getName()
+                    );
                 }
             }
         }
@@ -121,6 +119,13 @@ public final class YMockServer implements Catcher {
                 StringUtils.join(errors, ", ")
             );
         }
+        Logger.debug(
+            this,
+            "#call('%d bytes'): response %s found (among %d)",
+            request.length(),
+            response.getClass().getName(),
+            this.matchers.size()
+        );
         return response;
     }
 

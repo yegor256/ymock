@@ -17,7 +17,10 @@ public final class ClientTest {
     public void testEntireCycleThroughMocks() throws Exception {
         final String text = "some text";
         final YMockServer server = new YMockServer("calculator");
-        server.when(new RegexMatcher(".*"), new LineLengthResponse(text));
+        server.when(
+            new RegexMatcher("\\Q" + text + "\\E"),
+            new LineLengthResponse(text)
+        );
         final Integer length = new Client().calculate(text);
         assertThat(length, equalTo(text.length()));
     }

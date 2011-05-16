@@ -85,6 +85,11 @@
             <artifactId>httpcore</artifactId>
             <version>4.1</version>
         </dependency>
+        <dependency>
+            <!-- all other details are in parent module dependencyManagement section -->
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
