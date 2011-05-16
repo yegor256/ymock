@@ -14,16 +14,6 @@
 
     <dependencies>
         <dependency>
-            <!--
-            I don't know why we need it here, but without this dependency
-            the build will fail in CI environment (with DEPLOY phase)
-            -->
-            <groupId>com.ymock</groupId>
-            <artifactId>ymock</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <type>pom</type>
-        </dependency>
-        <dependency>
             <groupId>com.ymock</groupId>
             <artifactId>ymock-client</artifactId>
             <version>1.0-SNAPSHOT</version>

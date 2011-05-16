@@ -155,10 +155,12 @@
                 <version>1.5</version> <!-- 22 Mar 2011 -->
                 <configuration>
                     <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
-                    <goals>
-                        <goal>clean</goal>
-                    </goals>
+                    <!--
+                    This line should be disabled in order to make this plugin
+                    working in Maven 3.
+                    @see http://jira.codehaus.org/browse/MINVOKER-107
                     <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+                    -->
                     <noLog>true</noLog>
                     <pomIncludes>
                         <pomInclude>*/pom.xml</pomInclude>
