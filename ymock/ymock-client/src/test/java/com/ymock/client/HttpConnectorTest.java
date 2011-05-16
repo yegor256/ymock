@@ -77,6 +77,27 @@ public final class HttpConnectorTest {
         new HttpConnector(client).call("simple text");
     }
 
+    @Test(expected = YMockException.class)
+    public void testCallWithRealSocket() throws Exception {
+        final Connector connector = new HttpConnector();
+        connector.call("doesn't matter what");
+    }
+
+    @Test
+    public void testTwoConsequetiveCalls() throws Exception {
+        final Connector connector = new HttpConnector();
+        try {
+            connector.call("doesn't matter what");
+        } catch (YMockException ex) {
+            // swallow it
+        }
+        try {
+            connector.call("doesn't matter what");
+        } catch (YMockException ex) {
+            // swallow it
+        }
+    }
+
     private HttpClient client(final String msg, final Integer code)
         throws Exception {
         final HttpClient client = mock(HttpClient.class);
