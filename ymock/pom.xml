@@ -727,6 +727,7 @@
                                     @see http://jira.codehaus.org/browse/MJAVADOC-314
                                     -->
                                     <failOnError>true</failOnError>
+                                    <quiet>true</quiet>
                                 </configuration>
                             </execution>
                         </executions>
