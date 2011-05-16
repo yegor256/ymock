@@ -30,7 +30,6 @@
 package com.ymock.server.responses;
 
 // the API
-import com.ymock.commons.YMockException;
 import com.ymock.server.Response;
 
 /**
