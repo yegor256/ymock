@@ -63,7 +63,7 @@ public final class HttpConnectorTest {
         final Connector connector = new HttpConnector(
             this.client("msg", HttpStatus.SC_BAD_REQUEST)
         );
-        connector.call("doesn't matter what");
+        connector.call("some request, ignored");
     }
 
     @Test(expected = YMockException.class)
@@ -90,11 +90,13 @@ public final class HttpConnectorTest {
             connector.call("first request");
         } catch (YMockException ex) {
             // swallow it
+            assertThat(ex, is(instanceOf(YMockException.class)));
         }
         try {
             connector.call("second request");
         } catch (YMockException ex) {
             // swallow it
+            assertThat(ex, is(instanceOf(YMockException.class)));
         }
     }
 
