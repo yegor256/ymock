@@ -29,17 +29,19 @@
  */
 package com.ymock.commons;
 
-import org.junit.*;
-import static org.junit.Assert.*;
-import org.apache.log4j.*;
+import org.apache.log4j.AppenderSkeleton;
+import org.apache.log4j.Level;
 import org.apache.log4j.spi.LoggingEvent;
+import org.junit.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
-public class LoggerTest {
+public final class LoggerTest {
 
     private static class MockAppender extends AppenderSkeleton {
-        public LoggingEvent event;
+        private LoggingEvent event;
         @Override
-        public void append(LoggingEvent evt) {
+        public void append(final LoggingEvent evt) {
             this.event = evt;
         }
         @Override
@@ -48,6 +50,7 @@ public class LoggerTest {
         }
         @Override
         public void close() {
+            // intentionally empty
         }
         @Override
         public Level getThreshold() {
@@ -55,91 +58,109 @@ public class LoggerTest {
         }
     }
 
+    private static final String ID = "com.ymock.commons";
+
+    private static final String MESSAGE = "test message, ignore it";
+
     private MockAppender appender;
 
-    private Level savedLevel;
+    private Level saved;
 
     @Before
     public void attachAppender() {
         this.appender = new MockAppender();
         org.apache.log4j.Logger.getRootLogger().addAppender(this.appender);
-        this.savedLevel = org.apache.log4j.Logger.getLogger("com.ymock.commons").getLevel();
-        org.apache.log4j.Logger.getLogger("com.ymock.commons").setLevel(Level.TRACE);
+        this.saved = org.apache.log4j.Logger.getLogger(this.ID).getLevel();
+        org.apache.log4j.Logger.getLogger(this.ID).setLevel(Level.TRACE);
     }
 
     @After
     public void dettachAppender() {
         org.apache.log4j.Logger.getRootLogger().removeAppender(this.appender);
         this.appender = null;
-        org.apache.log4j.Logger.getLogger("com.ymock.commons").setLevel(this.savedLevel);
+        org.apache.log4j.Logger.getLogger(this.ID).setLevel(this.saved);
     }
 
     @Test
     public void testValidatesCorrectDetectionOfLogger() throws Exception {
-        Logger.debug(this, "test message, ignore it");
-        assertEquals("com.ymock.commons.LoggerTest", this.appender.event.getLoggerName());
+        Logger.debug(this, this.MESSAGE);
+        assertThat(
+            this.getClass().getName(),
+            equalTo(this.appender.event.getLoggerName())
+        );
     }
 
     @Test
-    public void testValidatesCorrectPassingOfMessageToLogger() throws Exception {
-        String msg = "ignore this message";
-        Logger.debug(this, msg);
-        assertTrue(((String) this.appender.event.getMessage()).contains(msg));
+    public void testValidatesCorrectPassingOfMessageToLogger()
+        throws Exception {
+        Logger.debug(this, this.MESSAGE);
+        assertThat(
+            (String) this.appender.event.getMessage(),
+            containsString(this.MESSAGE)
+        );
     }
 
     @Test
-    public void testValidatesCorrectPassingOfMessageToLoggerWithStaticSource() throws Exception {
-        String msg = "ignore this message";
-        Logger.debug(LoggerTest.class, msg);
-        assertTrue(((String) this.appender.event.getMessage()).contains(msg));
+    public void testValidatesCorrectPassingOfMessageToLoggerWithStaticSource()
+        throws Exception {
+        Logger.debug(LoggerTest.class, this.MESSAGE);
+        assertThat(
+            (String) this.appender.event.getMessage(),
+            containsString(this.MESSAGE)
+        );
     }
 
     @Test
     public void testValidatesCorrectLoggingLevel() throws Exception {
-        String msg = "ignore this message";
-        Logger.debug(this, msg);
-        assertEquals(Level.DEBUG, this.appender.event.getLevel());
-        Logger.info(this, msg);
-        assertEquals(Level.INFO, this.appender.event.getLevel());
-        Logger.warn(this, msg);
-        assertEquals(Level.WARN, this.appender.event.getLevel());
-        Logger.error(this, msg);
-        assertEquals(Level.ERROR, this.appender.event.getLevel());
-        Logger.trace(this, msg);
-        assertEquals(Level.TRACE, this.appender.event.getLevel());
+        Logger.debug(this, this.MESSAGE);
+        assertThat(Level.DEBUG, equalTo(this.appender.event.getLevel()));
+        Logger.info(this, this.MESSAGE);
+        assertThat(Level.INFO, equalTo(this.appender.event.getLevel()));
+        Logger.warn(this, this.MESSAGE);
+        assertThat(Level.WARN, equalTo(this.appender.event.getLevel()));
+        Logger.error(this, this.MESSAGE);
+        assertThat(Level.ERROR, equalTo(this.appender.event.getLevel()));
+        Logger.trace(this, this.MESSAGE);
+        assertThat(Level.TRACE, equalTo(this.appender.event.getLevel()));
     }
 
     @Test
     public void testExperimentsWithVarArgs() throws Exception {
-        Logger.debug(this, "Log testing: we found %d files", 5);
-        assertTrue(((String) this.appender.event.getMessage()).contains("5 files"));
+        Logger.debug(this, "Log testing: we found %d file", 1);
+        assertThat(
+            (String) this.appender.event.getMessage(),
+            containsString("1 file")
+        );
         Logger.debug(
             this,
-            "Log testing: my name is '%s', I'm %d years old",
+            "Log testing: my name is '%s', I have %d son",
             "John Doe",
-            55
+            1
         );
-        assertTrue(((String) this.appender.event.getMessage()).contains("55 years old"));
+        assertThat(
+            (String) this.appender.event.getMessage(),
+            containsString("1 son")
+        );
     }
 
     @Test
     public void testIsDebugEnabledMethod() throws Exception {
-        String pkg = "com.ymock.commons";
-        Level level = org.apache.log4j.Logger.getLogger(pkg).getLevel();
-        org.apache.log4j.Logger.getLogger(pkg).setLevel(Level.DEBUG);
-        boolean enabled = Logger.isDebugEnabled(this);
-        org.apache.log4j.Logger.getLogger(pkg).setLevel(level);
-        assertTrue("Should be TRUE", enabled);
+        final Level level = org.apache.log4j.Logger.getLogger(this.ID)
+            .getLevel();
+        org.apache.log4j.Logger.getLogger(this.ID).setLevel(Level.DEBUG);
+        final boolean enabled = Logger.isDebugEnabled(this);
+        org.apache.log4j.Logger.getLogger(this.ID).setLevel(level);
+        assertThat(enabled, is(true));
     }
 
     @Test
     public void testIsTraceEnabledMethod() throws Exception {
-        String pkg = "com.ymock.commons";
-        Level level = org.apache.log4j.Logger.getLogger(pkg).getLevel();
-        org.apache.log4j.Logger.getLogger(pkg).setLevel(Level.TRACE);
-        boolean enabled = Logger.isTraceEnabled(this);
-        org.apache.log4j.Logger.getLogger(pkg).setLevel(level);
-        assertTrue("Should be TRUE", enabled);
+        final Level level = org.apache.log4j.Logger.getLogger(this.ID)
+            .getLevel();
+        org.apache.log4j.Logger.getLogger(this.ID).setLevel(Level.TRACE);
+        final boolean enabled = Logger.isTraceEnabled(this);
+        org.apache.log4j.Logger.getLogger(this.ID).setLevel(level);
+        assertThat(enabled, is(true));
     }
 
     private static class InnerClass {
@@ -154,7 +175,10 @@ public class LoggerTest {
     @Test
     public void testSendsLogMessageFromNestedClass() throws Exception {
         new InnerClass().log();
-        assertEquals("com.ymock.commons.LoggerTest$InnerClass", this.appender.event.getLoggerName());
+        assertThat(
+            "com.ymock.commons.LoggerTest$InnerClass",
+            equalTo(this.appender.event.getLoggerName())
+        );
     }
 
 }
