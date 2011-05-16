@@ -36,6 +36,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.junit.*;
@@ -59,6 +60,7 @@ public final class RestfulServerTest {
         // connect to it via HTTP and retrieve response
         final HttpClient client = new DefaultHttpClient();
         final HttpPost post = new HttpPost(this.url());
+        post.setEntity(new StringEntity(request));
         final ResponseHandler<String> handler = new BasicResponseHandler();
         String body;
         try {

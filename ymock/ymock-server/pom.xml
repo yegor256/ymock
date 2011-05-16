@@ -73,7 +73,6 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <!-- all other details are in parent module dependencyManagement section -->
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.ymock</groupId>

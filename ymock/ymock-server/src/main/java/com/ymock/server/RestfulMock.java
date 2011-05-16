@@ -32,12 +32,18 @@ package com.ymock.server;
 // commons from com.ymock:ymock-commons
 import com.ymock.commons.YMockException;
 
+// IO
+import java.io.InputStream;
+
 // for JAX-RS
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+
+// IO
+import org.apache.commons.io.IOUtils;
 
 /**
  * RESTful Mock.
@@ -50,13 +56,19 @@ public final class RestfulMock {
 
     /**
      * Make a request and return response.
-     * @param input Incoming HTTP stream
+     * @param stream Incoming HTTP stream
      * @return The response
      */
     @POST
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
-    public javax.ws.rs.core.Response call(final String input) {
+    public javax.ws.rs.core.Response call(final InputStream stream) {
+        String input;
+        try {
+            input = IOUtils.toString(stream);
+        } catch (java.io.IOException ex) {
+            throw new IllegalArgumentException(ex);
+        }
         String response;
         javax.ws.rs.core.Response.Status status;
         try {
