@@ -29,6 +29,18 @@
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.6.1</version>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.2</version> <!-- 28 Feb 2011 -->
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-all</artifactId>
+            <version>1.1</version> <!-- 6 Apr 2011 -->
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>

@@ -157,4 +157,40 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-invoker-plugin</artifactId>
+                <version>1.5</version> <!-- 22 Mar 2011 -->
+                <configuration>
+                    <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+                    <goals>
+                        <goal>clean</goal>
+                    </goals>
+                    <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+                    <noLog>true</noLog>
+                    <pomIncludes>
+                        <pomInclude>*/pom.xml</pomInclude>
+                    </pomIncludes>
+                    <postBuildHookScript>verify</postBuildHookScript>
+                    <preBuildHookScript>setup</preBuildHookScript>
+                    <projectsDirectory>src/it</projectsDirectory>
+                    <settingsFile>${basedir}/src/it/settings.xml</settingsFile>
+                    <showErrors>true</showErrors>
+                    <showVersion>false</showVersion>
+                    <streamLogs>false</streamLogs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>integration-test</id>
+                        <goals>
+                            <goal>install</goal>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
