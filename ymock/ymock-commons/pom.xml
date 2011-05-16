@@ -54,6 +54,27 @@
             <artifactId>hamcrest-all</artifactId>
             <!-- all other details are in parent module dependencyManagement section -->
         </dependency>
+        <dependency>
+            <!--
+            Since every framework uses its own logging mechanism
+            this SLF4J is going to help to control everything from
+            one point.
+            -->
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.6.1</version> <!-- 8 Nov 2010 -->
+        </dependency>
+        <dependency>
+            <!-- all other details are in parent module dependencyManagement section -->
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <!-- all other details are in parent module dependencyManagement section -->
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
