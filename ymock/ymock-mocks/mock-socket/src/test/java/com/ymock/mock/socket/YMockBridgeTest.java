@@ -29,7 +29,10 @@
  */
 package com.ymock.mock.socket;
 
+import com.ymock.commons.YMockException;
+import com.ymock.server.Response;
 import com.ymock.server.YMockServer;
+import com.ymock.server.matchers.RegexMatcher;
 import org.junit.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -51,6 +54,31 @@ public final class YMockBridgeTest {
         final DataBridge bridge = new YMockBridge();
         bridge.send(this.REQUEST);
         assertThat(bridge.receive(), equalTo(this.RESPONSE));
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testSimulatesDuplicateCallToReceive() throws Exception {
+        final YMockServer server = new YMockServer(YMockBridge.NAME);
+        server.when("\\Q" + this.REQUEST + "\\E", this.RESPONSE);
+        final DataBridge bridge = new YMockBridge();
+        bridge.receive();
+    }
+
+    @Test(expected = java.io.IOException.class)
+    public void testCallsToError() throws Exception {
+        final YMockServer server = new YMockServer(YMockBridge.NAME);
+        server.when(
+            new RegexMatcher("\\Q" + this.REQUEST + "\\E"),
+            new Response() {
+                @Override
+                public String process(final String request)
+                    throws YMockException {
+                    throw new YMockException("some text");
+                }
+            }
+        );
+        final DataBridge bridge = new YMockBridge();
+        bridge.send(this.REQUEST);
     }
 
 }
