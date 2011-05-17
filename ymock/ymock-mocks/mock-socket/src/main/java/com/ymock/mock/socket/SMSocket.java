@@ -39,6 +39,10 @@ import java.net.Socket;
  *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
+ * @todo #7 There should be some mechanism implemented in order to
+ *       watch a real connection and protocol what's going on with
+ *       it. Also extra logging should be added to this component. Now
+ *       it is very silent.
  */
 public final class SMSocket extends Socket {
 
