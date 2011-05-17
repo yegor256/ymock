@@ -29,60 +29,28 @@
  */
 package com.ymock.mock.socket;
 
-// common classes
-import com.ymock.client.YMockClient;
-import com.ymock.commons.YMockException;
-
-// JDK
-import java.io.IOException;
+import com.ymock.server.YMockServer;
+import org.junit.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 /**
- * Bridge between this component and {@link YMockClient}.
- *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-final class YMockBridge implements DataBridge {
+public final class YMockBridgeTest {
 
-    /**
-     * yMock client.
-     */
-    public static final String NAME = "com.ymock.mock.socket";
+    private static final String REQUEST = "some data";
 
-    /**
-     * yMock client.
-     */
-    private static final YMockClient CLIENT =
-        new YMockClient(YMockBridge.NAME);
+    private static final String RESPONSE = "completed";
 
-    /**
-     * The response to return to {@link #receive()}.
-     */
-    private String response;
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void send(final String message) throws IOException {
-        try {
-            this.response = this.CLIENT.call(message);
-        } catch (YMockException ex) {
-            throw new java.io.IOException(ex);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String receive() {
-        if (this.response == null) {
-            throw new IllegalStateException("Nothing to return");
-        }
-        final String msg = this.response;
-        this.response = null;
-        return msg;
+    @Test
+    public void testSimulatesYMockClientServerInteraction() throws Exception {
+        final YMockServer server = new YMockServer(YMockBridge.NAME);
+        server.when("\\Q" + this.REQUEST + "\\E", this.RESPONSE);
+        final DataBridge bridge = new YMockBridge();
+        bridge.send(this.REQUEST);
+        assertThat(bridge.receive(), equalTo(this.RESPONSE));
     }
 
 }
