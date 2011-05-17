@@ -133,8 +133,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <version>1.6.1</version> <!-- 8 Nov 2010 -->
-            <scope>test</scope>
+            <!-- all other details are in parent module dependencyManagement section -->
         </dependency>
         <dependency>
             <!--
