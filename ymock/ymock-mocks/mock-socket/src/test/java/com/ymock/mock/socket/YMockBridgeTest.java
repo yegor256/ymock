@@ -50,7 +50,7 @@ public final class YMockBridgeTest {
     @Test
     public void testSimulatesYMockClientServerInteraction() throws Exception {
         final YMockServer server = new YMockServer(YMockBridge.NAME);
-        server.when("\\Q" + this.REQUEST + "\\E", this.RESPONSE);
+        server.when(this.quote(this.REQUEST), this.RESPONSE);
         final DataBridge bridge = new YMockBridge();
         bridge.send(this.REQUEST);
         assertThat(bridge.receive(), equalTo(this.RESPONSE));
@@ -59,7 +59,7 @@ public final class YMockBridgeTest {
     @Test(expected = IllegalStateException.class)
     public void testSimulatesDuplicateCallToReceive() throws Exception {
         final YMockServer server = new YMockServer(YMockBridge.NAME);
-        server.when("\\Q" + this.REQUEST + "\\E", this.RESPONSE);
+        server.when(this.quote(this.REQUEST), this.RESPONSE);
         final DataBridge bridge = new YMockBridge();
         bridge.receive();
     }
@@ -68,7 +68,7 @@ public final class YMockBridgeTest {
     public void testCallsToError() throws Exception {
         final YMockServer server = new YMockServer(YMockBridge.NAME);
         server.when(
-            new RegexMatcher("\\Q" + this.REQUEST + "\\E"),
+            new RegexMatcher(this.quote(this.REQUEST)),
             new Response() {
                 @Override
                 public String process(final String request)
@@ -79,6 +79,10 @@ public final class YMockBridgeTest {
         );
         final DataBridge bridge = new YMockBridge();
         bridge.send(this.REQUEST);
+    }
+
+    private String quote(final String regex) {
+        return "\\Q" + regex + "\\E";
     }
 
 }
