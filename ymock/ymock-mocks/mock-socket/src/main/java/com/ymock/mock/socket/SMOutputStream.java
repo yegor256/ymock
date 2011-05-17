@@ -32,7 +32,6 @@ package com.ymock.mock.socket;
 // JDK
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.ByteBuffer;
 
 /**
  * Mock version of {@link OutputStream}.
@@ -54,12 +53,15 @@ final class SMOutputStream extends OutputStream {
      * Recent HTTP message.
      * @see #write(int)
      */
+    @SuppressWarnings("PMD.AvoidStringBufferField")
     private final StringBuffer message = new StringBuffer();
 
     /**
      * Public ctor.
+     * @param bdg The bridge to use
      * @see SMSocket#getOutputStream()
      */
+    @SuppressWarnings("PMD.CallSuperInConstructor")
     public SMOutputStream(final DataBridge bdg) {
         this.bridge = bdg;
     }

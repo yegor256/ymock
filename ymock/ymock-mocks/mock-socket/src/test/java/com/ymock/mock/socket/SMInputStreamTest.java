@@ -29,17 +29,17 @@
  */
 package com.ymock.mock.socket;
 
+import java.io.InputStream;
+import org.apache.commons.io.IOUtils;
 import org.junit.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import java.io.InputStream;
-import org.apache.commons.io.IOUtils;
 
 /**
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public class SMInputStreamTest {
+public final class SMInputStreamTest {
 
     @Test
     public void testSimulatesStreamReading() throws Exception {
@@ -64,7 +64,7 @@ public class SMInputStreamTest {
             this.message = msg;
         }
         @Override
-        public void send(final String message) {
+        public void send(final String msg) {
             // ignore it
         }
         @Override

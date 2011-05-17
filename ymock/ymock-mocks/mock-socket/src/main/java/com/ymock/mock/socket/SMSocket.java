@@ -55,6 +55,7 @@ public final class SMSocket extends Socket {
     /**
      * Public ctor.
      */
+    @SuppressWarnings("PMD.CallSuperInConstructor")
     public SMSocket() {
         this(new YMockBridge());
     }
@@ -63,6 +64,7 @@ public final class SMSocket extends Socket {
      * Public ctor.
      * @param bridge The dispatcher to use
      */
+    @SuppressWarnings("PMD.CallSuperInConstructor")
     public SMSocket(final DataBridge bridge) {
         this.outputStream = new SMOutputStream(bridge);
         this.inputStream = new SMInputStream(bridge);

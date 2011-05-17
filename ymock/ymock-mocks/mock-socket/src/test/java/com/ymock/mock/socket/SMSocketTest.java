@@ -29,20 +29,21 @@
  */
 package com.ymock.mock.socket;
 
+import java.net.Socket;
+import org.apache.commons.io.IOUtils;
 import org.junit.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import java.net.Socket;
-import java.net.URLEncoder;
-import org.apache.commons.io.IOUtils;
 
 /**
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public class SMSocketTest {
+public final class SMSocketTest {
 
-    private final static String RESPONSE = "completed";
+    private static final String REQUEST = "some data";
+
+    private static final String RESPONSE = "completed";
 
     @Test
     public void testSimulatesHttpSession() throws Exception {
@@ -50,7 +51,7 @@ public class SMSocketTest {
             new DataBridge() {
                 @Override
                 public void send(final String message) {
-                    // ignore it
+                    assertThat(message, equalTo(SMSocketTest.REQUEST));
                 }
                 @Override
                 public String receive() {
@@ -58,15 +59,13 @@ public class SMSocketTest {
                 }
             }
         );
-        final String data = URLEncoder.encode("key", "UTF-8")
-            + "=" + URLEncoder.encode("value", "UTF-8");
         final String message = "POST /index HTTP/1.0\r\n"
-            + "Content-Length: " + data.length() + "\r\n"
-            + "Content-Type: application/x-www-form-urlencoded\r\n"
-            + "\r\n";
+            + "Content-Length: " + this.REQUEST.length() + "\r\n"
+            + "Content-Type: application/x-www-form-urlencoded\r\n\r\n"
+            + this.REQUEST;
         final String response = IOUtils.toString(socket.getInputStream());
         IOUtils.write(message, socket.getOutputStream());
-        assertThat(response, equalTo(SMSocketTest.RESPONSE));
+        assertThat(response, equalTo(this.RESPONSE));
     }
 
 }

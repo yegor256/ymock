@@ -54,6 +54,7 @@ final class SMInputStream extends InputStream {
      * The message to return.
      * @see #read()
      */
+    @SuppressWarnings("PMD.AvoidStringBufferField")
     private final StringBuffer message = new StringBuffer();
 
     /**
@@ -61,12 +62,14 @@ final class SMInputStream extends InputStream {
      * amount of times, in response to {@link #read()}.
      * @see #read()
      */
-    private int eof = 0;
+    private int eof;
 
     /**
      * Public ctor.
+     * @param bdg The data bridge to use
      * @see MockSocket#getOutputStream()
      */
+    @SuppressWarnings("PMD.CallSuperInConstructor")
     public SMInputStream(final DataBridge bdg) {
         this.bridge = bdg;
     }
@@ -75,6 +78,8 @@ final class SMInputStream extends InputStream {
      * {@inheritDoc}
      * @todo #7 This implementation is very rough and not elegant.
      *       In the future would be nice to refactor the method.
+     * @checkstyle ReturnCount (20 lines)
+     * @checkstyle NestedIfDepth (20 lines)
      */
     @Override
     public int read() throws IOException {

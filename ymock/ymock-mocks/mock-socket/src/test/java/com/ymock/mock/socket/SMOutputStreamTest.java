@@ -29,19 +29,19 @@
  */
 package com.ymock.mock.socket;
 
+import java.io.OutputStream;
+import org.apache.commons.io.IOUtils;
 import org.junit.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import java.io.OutputStream;
-import org.apache.commons.io.IOUtils;
 
 /**
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public class SMOutputStreamTest {
+public final class SMOutputStreamTest {
 
-    private final static String REQUEST = "text\ntest\r\ntest3";
+    private static final String REQUEST = "text\ntest\r\ntest3";
 
     @Test
     public void testSimulatesStreamWriting() throws Exception {
