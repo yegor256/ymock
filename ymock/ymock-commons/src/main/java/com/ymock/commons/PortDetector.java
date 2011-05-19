@@ -29,6 +29,9 @@
  */
 package com.ymock.commons;
 
+// logging
+import com.ymock.util.Logger;
+
 /**
  * Port detector.
  *
