@@ -37,9 +37,11 @@ import com.sun.grizzly.http.servlet.ServletAdapter;
 import com.sun.jersey.spi.container.servlet.ServletContainer;
 
 // commons from com.ymock:ymock-commons
-import com.ymock.commons.Logger;
 import com.ymock.commons.PortDetector;
 import com.ymock.commons.YMockException;
+
+// utils from com.ymock:ymock-util
+import com.ymock.util.Logger;
 
 // logging
 import java.util.logging.Handler;

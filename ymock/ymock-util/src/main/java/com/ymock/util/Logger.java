@@ -27,7 +27,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.commons;
+package com.ymock.util;
 
 // Third-party logging facility. This is the only
 // place in the project where we include slf4j classes.,
@@ -50,7 +50,7 @@ import org.slf4j.LoggerFactory;
  * <pre>
  * {@code
  * package com.ymock.XXX;
- * import com.ymock.commons.Logger;
+ * import com.ymock.util.Logger;
  * public class MyClass {
  *   public void foo(Integer num) {
  *     Logger.info(this, "foo(%d) just called", num);

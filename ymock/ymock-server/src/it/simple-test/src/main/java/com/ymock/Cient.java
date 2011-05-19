@@ -4,7 +4,7 @@
  */
 package com.ymock;
 
-import com.ymock.commons.Logger;
+import com.ymock.util.Logger;
 
 class Client {
 

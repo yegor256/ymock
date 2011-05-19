@@ -30,8 +30,10 @@
 package com.ymock.server;
 
 // commons from com.ymock:ymock-commons
-import com.ymock.commons.Logger;
 import com.ymock.commons.YMockException;
+
+// utils from com.ymock:ymock-util
+import com.ymock.util.Logger;
 
 // IO
 import java.io.InputStream;
