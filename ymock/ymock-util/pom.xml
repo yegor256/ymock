@@ -39,16 +39,11 @@
         <artifactId>ymock</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>ymock-commons</artifactId>
+    <artifactId>ymock-util</artifactId>
     <packaging>jar</packaging>
-    <name>ymock-commons</name>
+    <name>ymock-util</name>
 
     <dependencies>
-        <dependency>
-            <groupId>com.ymock</groupId>
-            <artifactId>ymock-util</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -58,6 +53,16 @@
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-all</artifactId>
             <!-- all other details are in parent module dependencyManagement section -->
+        </dependency>
+        <dependency>
+            <!--
+            Since every framework uses its own logging mechanism
+            this SLF4J is going to help to control everything from
+            one point.
+            -->
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.6.1</version> <!-- 8 Nov 2010 -->
         </dependency>
         <dependency>
             <!-- all other details are in parent module dependencyManagement section -->

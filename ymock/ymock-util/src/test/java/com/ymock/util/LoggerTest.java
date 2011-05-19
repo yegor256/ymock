@@ -27,7 +27,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.commons;
+package com.ymock.util;
 
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Level;
@@ -58,7 +58,7 @@ public final class LoggerTest {
         }
     }
 
-    private static final String ID = "com.ymock.commons";
+    private static final String PACKAGE = "com.ymock.util";
 
     private static final String MESSAGE = "test message, ignore it";
 
@@ -70,15 +70,15 @@ public final class LoggerTest {
     public void attachAppender() {
         this.appender = new MockAppender();
         org.apache.log4j.Logger.getRootLogger().addAppender(this.appender);
-        this.saved = org.apache.log4j.Logger.getLogger(this.ID).getLevel();
-        org.apache.log4j.Logger.getLogger(this.ID).setLevel(Level.TRACE);
+        this.saved = org.apache.log4j.Logger.getLogger(this.PACKAGE).getLevel();
+        org.apache.log4j.Logger.getLogger(this.PACKAGE).setLevel(Level.TRACE);
     }
 
     @After
     public void dettachAppender() {
         org.apache.log4j.Logger.getRootLogger().removeAppender(this.appender);
         this.appender = null;
-        org.apache.log4j.Logger.getLogger(this.ID).setLevel(this.saved);
+        org.apache.log4j.Logger.getLogger(this.PACKAGE).setLevel(this.saved);
     }
 
     @Test
@@ -145,21 +145,21 @@ public final class LoggerTest {
 
     @Test
     public void testIsDebugEnabledMethod() throws Exception {
-        final Level level = org.apache.log4j.Logger.getLogger(this.ID)
+        final Level level = org.apache.log4j.Logger.getLogger(this.PACKAGE)
             .getLevel();
-        org.apache.log4j.Logger.getLogger(this.ID).setLevel(Level.DEBUG);
+        org.apache.log4j.Logger.getLogger(this.PACKAGE).setLevel(Level.DEBUG);
         final boolean enabled = Logger.isDebugEnabled(this);
-        org.apache.log4j.Logger.getLogger(this.ID).setLevel(level);
+        org.apache.log4j.Logger.getLogger(this.PACKAGE).setLevel(level);
         assertThat(enabled, is(true));
     }
 
     @Test
     public void testIsTraceEnabledMethod() throws Exception {
-        final Level level = org.apache.log4j.Logger.getLogger(this.ID)
+        final Level level = org.apache.log4j.Logger.getLogger(this.PACKAGE)
             .getLevel();
-        org.apache.log4j.Logger.getLogger(this.ID).setLevel(Level.TRACE);
+        org.apache.log4j.Logger.getLogger(this.PACKAGE).setLevel(Level.TRACE);
         final boolean enabled = Logger.isTraceEnabled(this);
-        org.apache.log4j.Logger.getLogger(this.ID).setLevel(level);
+        org.apache.log4j.Logger.getLogger(this.PACKAGE).setLevel(level);
         assertThat(enabled, is(true));
     }
 
@@ -176,7 +176,7 @@ public final class LoggerTest {
     public void testSendsLogMessageFromNestedClass() throws Exception {
         new InnerClass().log();
         assertThat(
-            "com.ymock.commons.LoggerTest$InnerClass",
+            this.PACKAGE + ".LoggerTest$InnerClass",
             equalTo(this.appender.event.getLoggerName())
         );
     }

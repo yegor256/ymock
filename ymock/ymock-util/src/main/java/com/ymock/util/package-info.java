@@ -27,38 +27,11 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.commons;
-
-// logging
-import com.ymock.util.Logger;
 
 /**
- * Port detector.
+ * Convenient utils, very useful in other projects.
  *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class PortDetector {
-
-    /**
-     * Default port number.
-     */
-    private static final Integer DEFAULT = 8099;
-
-    /**
-     * What HTTP port shall we use?
-     * @return The port number
-     * @todo #2 This is just a stub for now. The method should get
-     *       get the port number from one of these sources (in order
-     *       of importance):
-     *       - java system property "ymock.port"
-     *       - environment variable YMOCK_PORT
-     *       - default value
-     */
-    public Integer port() {
-        final Integer port = this.DEFAULT;
-        Logger.debug(this, "#port(): TCP port %d to be used", port);
-        return port;
-    }
-
-}
+package com.ymock.util;

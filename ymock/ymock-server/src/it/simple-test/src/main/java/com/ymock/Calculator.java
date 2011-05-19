@@ -5,8 +5,8 @@
 package com.ymock;
 
 import com.ymock.client.YMockClient;
-import com.ymock.commons.Logger;
 import com.ymock.commons.YMockException;
+import com.ymock.util.Logger;
 
 class Calculator {
 

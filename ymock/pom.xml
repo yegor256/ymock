@@ -47,6 +47,7 @@
 
     <modules>
         <module>ymock-commons</module>
+        <module>ymock-util</module>
         <module>ymock-tk</module>
         <module>ymock-client</module>
         <module>ymock-server</module>

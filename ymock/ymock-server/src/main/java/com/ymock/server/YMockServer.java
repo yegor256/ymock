@@ -29,13 +29,13 @@
  */
 package com.ymock.server;
 
-// commons
-import com.ymock.commons.Logger;
-
 // supplementary concrete classes
 import com.ymock.server.matchers.RegexMatcher;
 import com.ymock.server.responses.ErrorResponse;
 import com.ymock.server.responses.TextResponse;
+
+// logging
+import com.ymock.util.Logger;
 
 // maps
 import java.util.ArrayList;
