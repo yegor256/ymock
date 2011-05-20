@@ -36,6 +36,10 @@ import org.junit.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
+/**
+ * @author Yegor Bugayenko (yegor@ymock.com)
+ * @version $Id$
+ */
 public final class LoggerTest {
 
     private static class MockAppender extends AppenderSkeleton {
