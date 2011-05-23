@@ -1,9 +1,9 @@
  ------
- Introduction to yMock
+ yMock utils
  ------
  Yegor Bugayenko
  ------
- 2011-05-09
+ 2011-05-23
  ------
 
 ~~
@@ -38,7 +38,29 @@
 ~~ @version $Id$
 ~~
 
-Introduction
+Utils
 
-  yMock is a mocking library.
+  {{{./apidocs/com/ymock/util/Logger.html}<<<Logger>>>}}
+  is a convenient wrapper around slf4j:
+
++--
+  import com.ymock.util.Logger;
+  class Foo {
+    void bar(int value) {
+      Logger.debug(this, "method bar(%d) was called", value);
+    }
+  }
++--
+
+  {{{./apidocs/com/ymock/util/RuntimeProblem.html}<<<RuntimeProblem>>>}}
+  is a convenient instantiator of RuntimeException:
+
++--
+  import com.ymock.util.RuntimeProblem;
+  class Foo {
+    void bar(int value) {
+      throw RuntimeProblem.make("bar(%s) failed", value);
+    }
+  }
++--
 
