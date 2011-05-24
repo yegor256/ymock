@@ -1,9 +1,9 @@
  ------
- Introduction to yMock
+ mocks
  ------
  Yegor Bugayenko
  ------
- 2011-05-09
+ 2011-05-23
  ------
 
 ~~
@@ -38,7 +38,6 @@
 ~~ @version $Id$
 ~~
 
-Introduction
+Mocks
 
-  yMock is a mocking library.
-
+  TBD...
