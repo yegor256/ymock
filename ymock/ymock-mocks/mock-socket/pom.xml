@@ -42,9 +42,9 @@
         <version>1.0</version>
     </parent>
     <groupId>com.ymock.mock</groupId>
-    <artifactId>mock-jdbc</artifactId>
+    <artifactId>mock-socket</artifactId>
     <packaging>jar</packaging>
-    <name>mock-jdbc</name>
+    <name>mock-socket</name>
 
     <dependencies>
         <dependency>
