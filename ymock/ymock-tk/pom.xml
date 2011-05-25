@@ -45,6 +45,35 @@
         Tool Kit
         ]]>
     </description>
+    <url>http://www.ymock.com</url>
+
+    <licenses>
+        <license>
+            <name>BSD</name>
+            <url>http://www.ymock.com/LICENSE.txt</url>
+            <distribution>repo</distribution>
+            <comments>
+                <![CDATA[
+                This is free open source project, feel free to redistribute it
+                ]]>
+            </comments>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>1</id>
+            <name>Yegor Bugayenko</name>
+            <email>yegor@ymock.com</email>
+            <organization>yMock.com</organization>
+            <organizationUrl>http://www.ymock.com</organizationUrl>
+            <roles>
+                <role>Architect</role>
+                <role>Developer</role>
+            </roles>
+            <timezone>+1</timezone>
+        </developer>
+    </developers>
 
     <scm>
         <connection>scm:svn:svn://svn.fazend.com/ymock/trunk/ymock</connection>
