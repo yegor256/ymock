@@ -45,6 +45,7 @@
 
     <modules>
         <module>mock-jdbc</module>
+        <module>mock-socket</module>
     </modules>
 
 </project>
