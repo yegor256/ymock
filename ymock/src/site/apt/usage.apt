@@ -38,7 +38,63 @@
 ~~ @version $Id$
 ~~
 
-Usage
+How to use yMock in a Java project?
 
-  TBD...
+  First of all, these dependencies should be in <<<pom.xml>>>:
 
++--
+<dependency>
+  <groupId>com.ymock</groupId>
+  <artifactId>ymock-client</artifactId>
+  <version>1.0</version>
+</dependency>
+<dependency>
+  <groupId>com.ymock</groupId>
+  <artifactId>ymock-server</artifactId>
+  <version>1.0</version>
+</dependency>
++--
+
+  Then, inside your legacy application, you instantiate and use
+  {{{./ymock-client/apidocs/com/ymock/client/YMockClient.html}<<<YMockClient>>>}:
+
++--
+package com.example;
+import com.ymock.client.YMockClient;
+public final class LegacyApplication {
+  public String getName() {
+    String name;
+    // We comment this line and replace it with a call
+    // to YMockClient, which will be caught later in YMockServer
+    // during unit testing:
+    // name = makeVeryExpensiveCallToThirdPartyResource();
+    name = new YMockClient("app1").call("name");
+    return name;
+  }
+}
++--
+
+  This is your unit test, that validates the system under testing
+  (legacy application), using
+  {{{./ymock-server/apidocs/com/ymock/server/YMockServer.html}<<<YMockServer>>>}:
+
++--
+package com.example;
+import com.ymock.client.YMockServer;
+import org.junit.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+public final class LegacyTest {
+  @Test
+  public void testDataManipulations() {
+    final YMockServer server = new YMockServer("app1");
+    server.when("name", "John Doe");
+    assertThat(
+      new LegacyApplication().getName(),
+      is(equalTo("John Doe"))
+    );
+  }
+}
++--
+
+  That's it.
