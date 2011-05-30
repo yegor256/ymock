@@ -1,0 +1,115 @@
+%%
+%% Copyright (c) 2011, yMock.com
+%% All rights reserved.
+%%
+%% Redistribution and use in source and binary forms, with or without
+%% modification, are permitted provided that the following conditions
+%% are met: 1) Redistributions of source code must retain the above
+%% copyright notice, this list of conditions and the following
+%% disclaimer. 2) Redistributions in binary form must reproduce the above
+%% copyright notice, this list of conditions and the following
+%% disclaimer in the documentation and/or other materials provided
+%% with the distribution. 3) Neither the name of the yMock.com nor
+%% the names of its contributors may be used to endorse or promote
+%% products derived from this software without specific prior written
+%% permission.
+%%
+%% THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+%% "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
+%% NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+%% FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
+%% THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+%% INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+%% (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+%% SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+%% HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+%% STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+%% ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+%% OF THE POSSIBILITY OF SUCH DAMAGE.
+%%
+%% @version $Id$
+%%
+\documentclass{article}
+\input{header.tex}
+\begin{document}
+\tikzpic{
+    %
+    % CLIENT
+    \node [uml2-class, fill=white] (client) {
+        \underline{YMockClient}
+        \nodepart{second}
+        \nodepart{third}
+        call(String)
+    };
+    %
+    % MOCK
+    \umlRectangle{mock}{Mock}{component}{2.5cm}{above=1cm of client}
+    \addComponentIco{mock}{}
+    \draw [->, dashed] (mock) -- node [uml2-comment, midway] {call()} (client);
+    %
+    % ADAPTER
+    \umlRectangle{adapter}{Adapter}{component}{2.6cm}{above=1cm of mock}
+    \addComponentIco{adapter}{}
+    \draw [->, dashed] (adapter) -- (mock);
+    %
+    % DATABASE
+    \umlRectangle{db}{Resource}{component}{2.7cm}{left=2cm of adapter, fill=white}
+    \addComponentIco{db}{fill=white}
+    \draw [->, dashed, red, thick] (adapter) -- node[cross out, draw=red, line width=0.2cm, -,
+        minimum width=1cm, minimum height=0.6cm, solid] {} (db);
+    %
+    % LEGACY APP
+    \node [uml2, fill=none, fit=(adapter) (mock) (client), inner sep=1cm] (app) {};
+    \node [uml2, fill=none, draw=none, below=0cm of app.north west, anchor=north west] {Legacy Application};
+    \addComponentIco{app}{fill=white}
+    \addPort{app-port}{app.east}{fill=white}
+    \draw [->, dashed] (app-port) -- (adapter);
+    %
+    % SERVER
+    \node [uml2-class, fill=white, right=5cm of client] (server) {
+        \underline{YMockServer}
+        \nodepart{second}
+        \nodepart{third}
+        call(String)
+    };
+    \addPort{server-port}{server.west}{fill=white}
+    \umlInterface{http}{HTTP}{left=2cm of server}
+    \draw [-] (server-port) -- (http);
+    \draw [-(] (client) -- (http);
+    %
+    % MATCHER
+    \node [uml2-class, fill=white, below=1cm of server] (matcher) {
+        \underline{Matcher}
+        \nodepart{second}
+        \nodepart{third}
+        matches(String)
+    };
+    \draw [diamond-] (server) --
+        node [near end, uml2-cardinality, left=0.03cm] {*}
+        node [near start, uml2-cardinality, right=0.03cm] {1}
+        (matcher);
+    %
+    % RESPONSE
+    \node [uml2-class, fill=white, below right=1cm of server] (response) {
+        \underline{Response}
+        \nodepart{second}
+        \nodepart{third}
+        process(String)
+    };
+    \draw [diamond-] (server) --
+        node [near end, uml2-cardinality, right=0.06cm] {*}
+        node [near start, uml2-cardinality, right=0.08cm] {1}
+        (response);
+    %
+    % TESTS
+    \umlRectangle{tests}{Tests}{methods}{2cm}{above=1.6cm of server}
+    \addComponentIco{tests}{}
+    \draw [->, dashed] (tests) -- (app-port);
+    \draw [->, dashed] (tests) -- node [uml2-comment, midway] {<{}<instantiate>{}>} (server);
+    %
+    % UNIT TEST
+    \node [uml2, fill=none, fit=(tests) (matcher) (server) (response), inner sep=1cm] (test) {};
+    \node [uml2, fill=none, draw=none, below=0cm of test.north west, anchor=north west] {Unit Test};
+    \addComponentIco{test}{}
+}
+\end{document}
