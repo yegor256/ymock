@@ -535,6 +535,133 @@
                             </execution>
                             <execution>
                                 <!--
+                                Here we process all available .tex files located in
+                                "src/main/tikz" directory and add them to the project
+                                site. This operation is done during "site" lifecycle.
+                                TEX is a LaTeX format with extensive usage of TikZ/PGF.
+                                @see http://sourceforge.net/projects/pgf/
+                                -->
+                                <id>tikz</id>
+                                <phase>pre-site</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <properties>
+                                        <src>${basedir}/src/main/tikz</src>
+                                        <output>${project.build.directory}/site/tikz</output>
+                                        <temp>${project.build.directory}/tikz-processing</temp>
+                                        <scale>0.5</scale>
+                                        <!-- these files are in rempl-tk module -->
+                                        <closures>tikz/header.tex</closures>
+                                    </properties>
+                                    <classpath>
+                                        <element>
+                                            <!-- for TIKZ closures -->
+                                            <groupId>com.ymock</groupId>
+                                            <artifactId>ymock-tk</artifactId>
+                                            <version>1.1-SNAPSHOT</version>
+                                        </element>
+                                        <element>
+                                            <!-- for execution of shell commands -->
+                                            <groupId>org.apache.commons</groupId>
+                                            <artifactId>commons-exec</artifactId>
+                                            <version>1.1</version> <!-- 22 Feb 2011 -->
+                                        </element>
+                                        <element>
+                                            <!-- for file manipulations -->
+                                            <groupId>commons-io</groupId>
+                                            <artifactId>commons-io</artifactId>
+                                            <version>2.0.1</version> <!-- 7 Mar 2011 -->
+                                        </element>
+                                        <element>
+                                            <!-- for manipulations with strings -->
+                                            <groupId>commons-lang</groupId>
+                                            <artifactId>commons-lang</artifactId>
+                                            <version>2.5</version> <!-- 15 Oct 2010 -->
+                                        </element>
+                                    </classpath>
+                                    <source>
+                                        <![CDATA[
+                                        import org.apache.commons.lang.StringUtils;
+                                        import org.apache.commons.io.FileUtils;
+                                        import org.apache.commons.io.FilenameUtils;
+                                        import org.apache.commons.exec.CommandLine;
+                                        import org.apache.commons.exec.DefaultExecutor;
+                                        def srcDir = new File(project.properties['src'])
+                                        def outputDir = new File(project.properties['output'])
+                                        if (!srcDir.exists()) {
+                                            log.info("Directory is absent, nothing to compile: " + srcDir)
+                                            return
+                                        }
+                                        log.info("Reading TIKZ files from " + srcDir)
+                                        if (!outputDir.exists()) {
+                                            FileUtils.forceMkdir(outputDir)
+                                            log.info("Directory created: " + outputDir)
+                                        }
+                                        log.info("Writing PNG files to " + outputDir)
+                                        tempDir = new File(project.properties['temp'])
+                                        FileUtils.forceMkdir(tempDir)
+                                        FileUtils.copyDirectory(srcDir, tempDir)
+                                        for (closure in StringUtils.split(project.properties['closures'], ",")) {
+                                            def cfile = new File(closure);
+                                            if (!cfile.exists()) {
+                                                def url = getClass().getClassLoader().getResource(closure);
+                                                if (url == null) {
+                                                    fail("Can't find closure " + closure)
+                                                }
+                                                log.info("Closure " + closure + " found at " + url);
+                                                FileUtils.copyURLToFile(
+                                                    url, // JAR-related URL of the found file
+                                                    new File(
+                                                        tempDir.toString(),
+                                                        StringUtils.substringAfterLast(closure, "/")
+                                                    )
+                                                )
+                                            } else {
+                                                FileUtils.copyFileToDirectory(cfile, tempDir)
+                                            }
+                                            log.info("Closure " + closure + " copied to " + tempDir);
+                                        }
+                                        def files = FileUtils.listFiles(srcDir, ["tex"] as String[], false)
+                                        for (src in files) {
+                                            if (!FilenameUtils.getBaseName(src.getPath()).contains("-")) {
+                                                continue
+                                            }
+                                            def dest = new File(
+                                                outputDir.getPath(),
+                                                FilenameUtils.getBaseName(src.getPath())
+                                                + ".png"
+                                            )
+                                            if (dest.exists() && !FileUtils.isFileNewer(src, dest)) {
+                                                continue
+                                            }
+                                            FileUtils.copyFile(src, new File(tempDir.getPath(), "a.tex"))
+                                            def cmd = new String(
+                                                "latex -halt-on-error -interaction=nonstopmode a.tex && "
+                                                + "dvips -o a.ps a.dvi && "
+                                                + "echo quit "
+                                                + "| gs -q -dNOPAUSE -sDEVICE=ppmraw -sOutputFile=- -r300 a.ps"
+                                                + "| pnmalias -bgcolor rgb:ff/ff/ff -falias -fgcolor rgb:00/00/00 -weight 0.6"
+                                                + "| pnmcrop -white"
+                                                + "| pnmscale " + project.properties['scale']
+                                                + "| pnmtopng -interlace > a.png"
+                                            )
+                                            def line = new CommandLine("/bin/sh")
+                                            line.addArgument("-c")
+                                            line.addArgument(cmd, false)
+                                            def executor = new DefaultExecutor()
+                                            executor.setWorkingDirectory(tempDir)
+                                            executor.execute(line);
+                                            FileUtils.copyFile(new File(tempDir.getPath(), "a.png"), dest)
+                                        }
+                                        FileUtils.deleteDirectory(tempDir)
+                                        ]]>
+                                    </source>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <!--
                                 When site is ready we need to replace certain strings
                                 inside its HTML files, in order to improve readability
                                 of the output.
