@@ -55,7 +55,8 @@
     % DATABASE
     \umlRectangle{db}{Resource}{component}{2.7cm}{left=2cm of adapter, fill=white}
     \addComponentIco{db}{fill=white}
-    \draw [->, dashed] (adapter) -- (db);
+    \draw [->, dashed, red, thick] (adapter) -- node[cross out, draw=red, line width=0.2cm, -,
+        minimum width=1cm, minimum height=0.6cm, solid] {} (db);
     %
     % LEGACY APP
     \node [uml2, fill=none, fit=(adapter) (mock) (client), inner sep=1cm] (app) {};

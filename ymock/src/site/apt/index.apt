@@ -40,5 +40,8 @@
 
 Introduction
 
-  yMock is a mocking library for legacy applications.
+  yMock is a mocking library for legacy applications:
+
+[tikz/index-components.png] UML Components Diagram
+
 
