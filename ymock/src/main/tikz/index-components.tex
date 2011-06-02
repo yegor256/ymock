@@ -61,7 +61,7 @@
         (db);
     %
     % LEGACY APP
-    \node [uml2, fill=none, fit=(adapter) (mock) (client), inner sep=1cm] (app) {};
+    \node [uml2, fill=none, fit=(adapter) (mock) (client), inner sep=0.5cm] (app) {};
     \node [uml2, fill=none, draw=none, below=0cm of app.north west, anchor=north west] {Legacy Application};
     \addComponentIco{app}{fill=white}
     \addPort{app-port}{app.east}{fill=white}
@@ -110,7 +110,7 @@
     \draw [->, dashed] (tests) -- node [uml2-comment, midway] {<{}<instantiate>{}>} (server);
     %
     % UNIT TEST
-    \node [uml2, fill=none, fit=(tests) (matcher) (server) (response), inner sep=1cm] (test) {};
+    \node [uml2, fill=none, fit=(tests) (matcher) (server) (response), inner sep=0.5cm] (test) {};
     \node [uml2, fill=none, draw=none, below=0cm of test.north west, anchor=north west] {Unit Test};
     \addComponentIco{test}{}
 }

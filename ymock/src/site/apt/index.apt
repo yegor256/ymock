@@ -52,9 +52,9 @@ Introduction
   {{{./ymock-client/apidocs/com/ymock/client/YMockClient.html}<<<YMockClient>>>}}.
   Responses received you send back to the "adapter".
 
-  In the unit test you instantiates
+  In the unit test you instantiate
   {{{./ymock-server/apidocs/com/ymock/server/YMockServer.html}<<<YMockServer>>>}},
-  which makes an HTTP connection with the client. You configure the
+  which listens to HTTP requests from the client. You configure the
   server with custom "matchers" and "responses".
 
   Now you can safely call legacy application and mimic the
