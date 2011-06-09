@@ -61,7 +61,7 @@ How to use yMock in a Java project?
 +--
 package com.example;
 import com.ymock.client.YMockClient;
-public final class LegacyApplication {
+public final class LegacyCode {
   public String getName() {
     String name;
     // We comment this line and replace it with a call
@@ -90,8 +90,8 @@ public final class LegacyTest {
     final YMockServer server = new YMockServer("app1");
     server.when("name", "John Doe");
     assertThat(
-      new LegacyApplication().getName(),
-      is(equalTo("John Doe"))
+      new LegacyCode().getName(),
+      describedAs("expected name", is(equalTo("John Doe")))
     );
   }
 }
