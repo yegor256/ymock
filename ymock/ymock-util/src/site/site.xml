@@ -40,7 +40,7 @@
     <body>
         <menu ref="parent" />
         <menu name="Overview">
-            <item name="Introduction" href="./index.html" />
+            <item name="Introduction" href="index.html" />
         </menu>
         <menu ref="reports" />
     </body>

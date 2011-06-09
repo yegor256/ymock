@@ -3,7 +3,7 @@
  ------
  Yegor Bugayenko
  ------
- 2011-05-09
+ 2011-06-09
  ------
 
 ~~
@@ -40,24 +40,29 @@
 
 Introduction
 
-  yMock is a mocking library for legacy applications:
+  yMock (pronounced "<why-mock>") is a mocking library for
+  {{{http://en.wikipedia.org/wiki/Legacy_code}Legacy Code}}:
 
 [tikz/index-components.png] UML Components Diagram
 
-  Legacy application depends on a third-party resource, which
+  Legacy Code depends on a third-party resource, which
   can't be used during testing, for many reasons. You find the
-  place in the legacy application ("adapter"), which is responsible
+  place in the Legacy Code ("adapter"), which is responsible
   for making calls to such a third-party resource. You re-route
   all calls to a custom "mock", which instantiates
   {{{./ymock-client/apidocs/com/ymock/client/YMockClient.html}<<<YMockClient>>>}}.
   Responses received you send back to the "adapter".
 
-  In the unit test you instantiates
+  In the unit test you instantiate
   {{{./ymock-server/apidocs/com/ymock/server/YMockServer.html}<<<YMockServer>>>}},
-  which makes an HTTP connection with the client. You configure the
+  which listens to HTTP requests from the client. You configure the
   server with custom "matchers" and "responses".
 
-  Now you can safely call legacy application and mimic the
+  Now you can safely call Legacy Code and mimic the
   behavior of the third-party resource from inside the unit test.
 
-  See some more Java {{{./usage.html}examples}}.
+  See some more {{{./usage.html}Java examples}}.
+
+  Besides that the framework provides a number of useful instruments
+  for simplification of typical operations like logging, exception
+  class instantiation, etc. Read more in {{{./ymock-util}<<<ymock-util>>>}} sub-module.
