@@ -16,17 +16,17 @@
         <dependency>
             <groupId>com.ymock</groupId>
             <artifactId>ymock-client</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.ymock</groupId>
             <artifactId>ymock-util</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.ymock</groupId>
             <artifactId>ymock-server</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <!-- To forward ymock logging to log4j -->

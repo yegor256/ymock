@@ -32,6 +32,8 @@ package com.ymock.util;
 // Third-party logging facility. This is the only
 // place in the project where we include slf4j classes.,
 // in the entire project.
+import com.ymock.util.formatter.Formatter;
+import com.ymock.util.formatter.FormatterManager;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -191,4 +193,17 @@ public final class Logger {
         return String.format(msg, args);
     }
 
+    /**
+     * Formats the passed args according to the formatter defined by key argument.
+     *
+     * <p>Formatter specified by key argument should be registered in {@link FormatterManager}
+     * @see FormatterManager#registerFormatter(String, com.ymock.util.formatter.Formatter)
+     *
+     * @param key key for the formatter to be used to format the arguments
+     * @param args arguments to be formatted
+     * @return formatted arguments string
+     */
+    public static String format(String key, Object... args){
+        return FormatterManager.getInstance().format(key, args);
+    }
 }

@@ -29,10 +29,17 @@
  */
 package com.ymock.util;
 
+import com.ymock.util.formatter.Formatter;
+import com.ymock.util.formatter.FormatterManager;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Level;
 import org.apache.log4j.spi.LoggingEvent;
+import org.easymock.IMocksControl;
 import org.junit.*;
+
+import static junit.framework.Assert.assertEquals;
+import static org.easymock.EasyMock.createControl;
+import static org.easymock.EasyMock.expect;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
@@ -70,12 +77,17 @@ public final class LoggerTest {
 
     private Level saved;
 
+    private IMocksControl control;
+    private FormatterManager formatterManager;
+
     @Before
     public void attachAppender() {
         this.appender = new MockAppender();
         org.apache.log4j.Logger.getRootLogger().addAppender(this.appender);
         this.saved = org.apache.log4j.Logger.getLogger(this.PACKAGE).getLevel();
         org.apache.log4j.Logger.getLogger(this.PACKAGE).setLevel(Level.TRACE);
+        control = createControl();
+        formatterManager = FormatterManager.getInstance();
     }
 
     @After
@@ -183,6 +195,23 @@ public final class LoggerTest {
             this.PACKAGE + ".LoggerTest$InnerClass",
             equalTo(this.appender.event.getLoggerName())
         );
+    }
+
+    @Test
+    public void testFormat() throws Exception {
+        Formatter formatter = control.createMock(Formatter.class);
+
+        formatterManager.registerFormatter("key", formatter);
+
+        expect(formatter.format("aaa")).andReturn("bbb");
+
+        control.replay();
+        String s = Logger.format("key", "aaa");
+        control.verify();
+
+        assertEquals(s, "bbb");
+
+        formatterManager.unregisterFormatter("key");
     }
 
 }
