@@ -1149,19 +1149,7 @@
                 <version>4.8.2</version> <!-- 28 Feb 2011 -->
                 <scope>test</scope>
             </dependency>
-            <dependency>
-                <groupId>org.easymock</groupId>
-                <artifactId>easymock</artifactId>
-                <version>3.0</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.easymock</groupId>
-                <artifactId>easymockclassextension</artifactId>
-                <version>3.0</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
+           <dependency>
                 <!--
                 Assertions and matchers for unit tests.
                 @link http://code.google.com/p/hamcrest/wiki/Tutorial

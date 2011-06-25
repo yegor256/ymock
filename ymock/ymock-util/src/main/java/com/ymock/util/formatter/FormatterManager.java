@@ -1,11 +1,13 @@
 package com.ymock.util.formatter;
 
 import com.ymock.util.Logger;
+import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Class is a log helper used to format logging arguments
@@ -24,27 +26,35 @@ public final class FormatterManager {
 
     /**
      * Private constructor.
-     * Initialize the object, registers system available formatters.
+     * Initialize the object, registers all available formatters -
+     * implementations of {@link Formatter} interface.
      *
-     * @see #registerSystemFormatters()
+     * @see #registerFormatters()
      */
     private FormatterManager() {
         formatters = new HashMap<String, Formatter>();
-        registerSystemFormatters();
+        registerFormatters();
     }
 
 
     /**
-     * TODO #19 register all system formatters - formatters that should be
-     * available and registered by default.
-     * Their access keys should be either this
-     * class public constants, or the public constants in the
-     * formatter implementation corresponding classes.
-     * <p/>
-     * Registers all the system available formatters
+     * Registers all the available formatters, looks up in classpath for all
+     * the implementations of the {@link Formatter} interface and registers them
+     * to the manager
      */
-    protected final void registerSystemFormatters() {
-
+    protected final void registerFormatters() {
+        Reflections reflections = new Reflections("", new SubTypesScanner());
+        Set<Class<? extends Formatter>> subTypes = reflections.getSubTypesOf(Formatter.class);
+        for (Class<? extends Formatter> subType : subTypes) {
+            try {
+                Formatter formatter = subType.newInstance();
+                formatters.put(formatter.getFormatterKey(), formatter);
+            } catch (InstantiationException e) {
+                Logger.warn(this, "Cannot instantiate Formatter: %s", subType);
+            } catch (IllegalAccessException e) {
+                Logger.warn(this, "Cannot instantiate Formatter: %s", subType);
+            }
+        }
     }
 
     /**
@@ -57,25 +67,6 @@ public final class FormatterManager {
             instance = new FormatterManager();
         }
         return instance;
-    }
-
-    /**
-     * Registers formatter by the specified key
-     *
-     * @param key       key onder which the passed formatter is registred
-     * @param formatter formatter to register
-     */
-    public void registerFormatter(String key, Formatter formatter) {
-        formatters.put(key, formatter);
-    }
-
-    /**
-     * Unregisters formatter by the specified keyters formatter
-     *
-     * @param key key for which formatter should be unregistered
-     */
-    public void unregisterFormatter(String key) {
-        formatters.remove(key);
     }
 
     /**

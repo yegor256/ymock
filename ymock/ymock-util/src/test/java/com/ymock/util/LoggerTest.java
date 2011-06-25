@@ -29,17 +29,16 @@
  */
 package com.ymock.util;
 
-import com.ymock.util.formatter.Formatter;
 import com.ymock.util.formatter.FormatterManager;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Level;
 import org.apache.log4j.spi.LoggingEvent;
-import org.easymock.IMocksControl;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 
 import static junit.framework.Assert.assertEquals;
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.expect;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
@@ -51,18 +50,22 @@ public final class LoggerTest {
 
     private static class MockAppender extends AppenderSkeleton {
         private LoggingEvent event;
+
         @Override
         public void append(final LoggingEvent evt) {
             this.event = evt;
         }
+
         @Override
         public boolean requiresLayout() {
             return false;
         }
+
         @Override
         public void close() {
             // intentionally empty
         }
+
         @Override
         public Level getThreshold() {
             return Level.ALL;
@@ -77,7 +80,6 @@ public final class LoggerTest {
 
     private Level saved;
 
-    private IMocksControl control;
     private FormatterManager formatterManager;
 
     @Before
@@ -86,7 +88,6 @@ public final class LoggerTest {
         org.apache.log4j.Logger.getRootLogger().addAppender(this.appender);
         this.saved = org.apache.log4j.Logger.getLogger(this.PACKAGE).getLevel();
         org.apache.log4j.Logger.getLogger(this.PACKAGE).setLevel(Level.TRACE);
-        control = createControl();
         formatterManager = FormatterManager.getInstance();
     }
 
@@ -183,6 +184,7 @@ public final class LoggerTest {
         public void log() {
             this.innerLog();
         }
+
         private void innerLog() {
             Logger.info(this, "Inner log message");
         }
@@ -199,19 +201,8 @@ public final class LoggerTest {
 
     @Test
     public void testFormat() throws Exception {
-        Formatter formatter = control.createMock(Formatter.class);
-
-        formatterManager.registerFormatter("key", formatter);
-
-        expect(formatter.format("aaa")).andReturn("bbb");
-
-        control.replay();
-        String s = Logger.format("key", "aaa");
-        control.verify();
-
-        assertEquals(s, "bbb");
-
-        formatterManager.unregisterFormatter("key");
+        String s = formatterManager.format("testFormatterKey", "aaa");
+        assertEquals(s, "aaaformatted");
     }
 
 }
