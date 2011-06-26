@@ -91,7 +91,7 @@ public final class RuntimeProblem extends RuntimeException {
     /**
      * Create a custom exception class, using the params provided.
      * @param message The exception message
-     * @param args Optional arguments for <tt>System.format()</tt>
+     * @param args Optional arguments for <tt>System.fmt()</tt>
      * @return The problem created
      */
     public static RuntimeProblem make(final String message,
@@ -112,7 +112,7 @@ public final class RuntimeProblem extends RuntimeException {
      * Create a custom exception class, using the params provided.
      * @param cause Previous problem
      * @param message The exception message
-     * @param args Optional arguments for <tt>System.format()</tt>
+     * @param args Optional arguments for <tt>System.fmt()</tt>
      * @return The problem created
      */
     public static RuntimeProblem make(final Throwable cause,

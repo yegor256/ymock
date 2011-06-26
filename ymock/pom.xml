@@ -212,9 +212,6 @@
                                         <requireJavaVersion>
                                             <version>${jdk.version}</version>
                                         </requireJavaVersion>
-                                        <requireOS>
-                                            <family>unix</family>
-                                        </requireOS>
                                     </rules>
                                 </configuration>
                             </execution>

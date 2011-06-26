@@ -14,13 +14,13 @@ public class FormatterManagerTest extends TestCase {
 
     @Test
     public void testFormat() throws Exception {
-        String s = formatterManager.format("testFormatterKey", "aaa");
+        String s = formatterManager.fmt("testFormatterKey", "aaa");
         assertEquals(s, "aaaformatted");
     }
 
     @Test
     public void testFormatFormatterDoesntExist() throws Exception {
-        String s = formatterManager.format("notExistantKey", "aaa");
+        String s = formatterManager.fmt("notExistantKey", "aaa");
         assertEquals(s, "aaa");
     }
 
