@@ -30,14 +30,19 @@
 package com.ymock.util.formatter;
 
 import com.ymock.util.Logger;
-
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import org.reflections.Reflections;
-import org.reflections.scanners.SubTypesScanner;
+import org.reflections.scanners.TypeAnnotationsScanner;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
+
 
 /**
  * Class is a log helper used to fmt logging arguments.
@@ -52,41 +57,58 @@ public final class FormatterManager {
     /**
      * Storage of all the registered formatters.
      */
-    private Map<String, Formatter> formatters;
+    private Map<String, FormatterBean> formatters;
 
     /**
      * Private constructor.
      * Initialize the object, registers all available formatters -
-     * implementations of {@link Formatter} interface.
+     * annotated with {@link FormatGroup} and {@link Format} annotetions
      *
      * @see #registerFormatters()
      */
     private FormatterManager() {
-        this.formatters = new HashMap<String, Formatter>();
+        this.formatters = new HashMap<String, FormatterBean>();
         this.registerFormatters();
     }
 
 
     /**
      * Registers all the available formatters, looks up in classpath for all
-     * the implementations of the {@link Formatter} interface and registers them
+     * the classes annotated with {@link FormatGroup} and methods
+     * annotated with {@link Format} annotetions and registers them
      * to the manager.
      */
     protected void registerFormatters() {
-        final Reflections reflections = new Reflections("",
-            new SubTypesScanner());
-        final Set<Class<? extends Formatter>> subTypes = reflections.
-            getSubTypesOf(Formatter.class);
-        for (Class<? extends Formatter> subType : subTypes) {
-            final String errorMsg = "Cannot instantiate Formatter: %s";
-            try {
-                final Formatter formatter = subType.newInstance();
-                this.formatters.put(formatter.getFormatterKey(), formatter);
-            } catch (InstantiationException e) {
-                Logger.warn(this, errorMsg, subType);
-            } catch (IllegalAccessException e) {
-                Logger.warn(this, errorMsg, subType);
+        final Set<URL> urls = ClasspathHelper.getUrlsForPackagePrefix("");
+        final Reflections reflections = new Reflections(
+            new ConfigurationBuilder()
+                .setUrls(urls)
+                .setScanners(new TypeAnnotationsScanner()));
+        final Set<Class<?>> formatGroups = reflections.
+            getTypesAnnotatedWith(FormatGroup.class);
+        for (Class<?> formatGroup : formatGroups) {
+            final FormatGroup annotationFormatGroup =
+                formatGroup.getAnnotation(FormatGroup.class);
+            for (Method m : formatGroup.getMethods()) {
+                if (m.isAnnotationPresent(Format.class)) {
+                    final Format annotationFormat =
+                        m.getAnnotation(Format.class);
+                    final String errorMsg =
+                        "Cannot create formatter for class: %s method: %s";
+                    try {
+                        final FormatterBean formatterBean =
+                            new FormatterBean(formatGroup.newInstance(), m);
+                        this.formatters.put(annotationFormatGroup.value()
+                            + "." + annotationFormat.value(), formatterBean);
+                    } catch (InstantiationException e) {
+                        Logger.warn(this, errorMsg, formatGroup, m);
+                    } catch (IllegalAccessException e) {
+                        Logger.warn(this, errorMsg, formatGroup, m);
+                    }
+
+                }
             }
+
         }
     }
 
@@ -95,6 +117,7 @@ public final class FormatterManager {
      *
      * @return the singleton instance of {@link FormatterManager}
      */
+
     public static FormatterManager getInstance() {
         if (instance == null) {
             instance = new FormatterManager();
@@ -112,18 +135,73 @@ public final class FormatterManager {
      * @return formatted arguments string
      */
     public String fmt(final String key, final Object... args) {
-        final Formatter formatter = this.formatters.get(key);
-        if (formatter == null) {
+        final FormatterBean formatterBean = this.formatters.get(key);
+        if (formatterBean == null) {
             Logger.warn(this, "Formatter is not registered for key: %s", key);
-            String unformattedReturn = null;
-            if (args.length == 1) {
-                unformattedReturn = args[0].toString();
-            } else {
-                unformattedReturn = Arrays.toString(args);
+        } else {
+            final String errorMsg =
+                "Error invoking formatter method for class: %s method: %s";
+            try {
+                return formatterBean.getMethod().
+                    invoke(formatterBean.getGroup(), args).toString();
+            } catch (IllegalAccessException e) {
+                Logger.warn(this, errorMsg, formatterBean.getGroup().getClass()
+                    , formatterBean.getMethod());
+            } catch (InvocationTargetException e) {
+                Logger.warn(this, errorMsg, formatterBean.getGroup().getClass()
+                    , formatterBean.getMethod());
             }
-            return unformattedReturn;
+        }
+        String unformattedReturn = null;
+        if (args.length == 1) {
+            unformattedReturn = args[0].toString();
+        } else {
+            unformattedReturn = Arrays.toString(args);
+        }
+        return unformattedReturn;
+    }
+
+    /**
+     * Internal class holding info to cal formatter method.
+     */
+    class FormatterBean {
+        /**
+         * formatter group.
+         */
+        private Object group;
+
+        /**
+         * formatter method.
+         */
+        private Method method;
+
+        /**
+         * FormatterBean constructor.
+         *
+         * @param groupParam  formatter group
+         * @param methodParam formatter method
+         */
+        FormatterBean(final Object groupParam, final Method methodParam) {
+            this.group = groupParam;
+            this.method = methodParam;
         }
 
-        return formatter.format(args);
+        /**
+         * Return formatter group.
+         *
+         * @return formatter group
+         */
+        public Object getGroup() {
+            return this.group;
+        }
+
+        /**
+         * Returns formatter method.
+         *
+         * @return formatter method
+         */
+        public Method getMethod() {
+            return this.method;
+        }
     }
 }

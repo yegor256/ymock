@@ -4,6 +4,8 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.Method;
+
 public class FormatterManagerTest extends TestCase {
     private FormatterManager formatterManager;
 
@@ -14,13 +16,13 @@ public class FormatterManagerTest extends TestCase {
 
     @Test
     public void testFormat() throws Exception {
-        String s = formatterManager.fmt("testFormatterKey", "aaa");
+        String s = formatterManager.fmt("group.format", "aaa");
         assertEquals(s, "aaaformatted");
     }
 
     @Test
     public void testFormatFormatterDoesntExist() throws Exception {
-        String s = formatterManager.fmt("notExistantKey", "aaa");
+        String s = formatterManager.fmt("group.aaa", "aaa");
         assertEquals(s, "aaa");
     }
 

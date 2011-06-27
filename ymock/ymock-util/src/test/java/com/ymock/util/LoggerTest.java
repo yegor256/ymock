@@ -201,7 +201,7 @@ public final class LoggerTest {
 
     @Test
     public void testFormat() throws Exception {
-        String s = formatterManager.fmt("testFormatterKey", "aaa");
+        String s = formatterManager.fmt("group.format", "aaa");
         assertEquals(s, "aaaformatted");
     }
 
