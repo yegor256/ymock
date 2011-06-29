@@ -34,11 +34,13 @@ import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Level;
 import org.apache.log4j.spi.LoggingEvent;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 
 import static junit.framework.Assert.assertEquals;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
@@ -202,7 +204,7 @@ public final class LoggerTest {
     @Test
     public void testFormat() throws Exception {
         String s = formatterManager.fmt("group.format", "aaa");
-        assertEquals(s, "aaaformatted");
+        Assert.assertThat(s, equalTo("aaaformatted"));
     }
 
 }

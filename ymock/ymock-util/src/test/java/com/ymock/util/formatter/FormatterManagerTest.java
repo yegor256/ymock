@@ -6,6 +6,9 @@ import org.junit.Test;
 
 import java.lang.reflect.Method;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
+
 public class FormatterManagerTest extends TestCase {
     private FormatterManager formatterManager;
 
@@ -18,12 +21,13 @@ public class FormatterManagerTest extends TestCase {
     public void testFormat() throws Exception {
         String s = formatterManager.fmt("group.format", "aaa");
         assertEquals(s, "aaaformatted");
+        assertThat(s, equalTo("aaaformatted"));
     }
 
     @Test
     public void testFormatFormatterDoesntExist() throws Exception {
         String s = formatterManager.fmt("group.aaa", "aaa");
-        assertEquals(s, "aaa");
+        assertThat(s, equalTo("aaa"));
     }
 
 }
