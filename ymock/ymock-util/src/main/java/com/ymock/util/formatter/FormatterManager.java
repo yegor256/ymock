@@ -78,6 +78,11 @@ public final class FormatterManager {
      * annotated with {@link Format} annotetions and registers them
      * to the manager.
      */
+    /**
+     * @todo #19 The basic list of formatters should be defined and they should
+     *           be implemented on the basis of {@link FormatGroup} and
+     *           {@link Format} interfaces
+     */
     protected void registerFormatters() {
         final Set<URL> urls = ClasspathHelper.getUrlsForPackagePrefix("");
         final Reflections reflections = new Reflections(
