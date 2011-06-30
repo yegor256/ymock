@@ -124,10 +124,10 @@ public final class FormatterManager {
      */
 
     public static FormatterManager getInstance() {
-        if (instance == null) {
-            instance = new FormatterManager();
+        if (FormatterManager.instance == null) {
+            FormatterManager.instance = new FormatterManager();
         }
-        return instance;
+        return FormatterManager.instance;
     }
 
     /**
