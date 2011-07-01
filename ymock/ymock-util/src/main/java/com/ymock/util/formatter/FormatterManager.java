@@ -30,6 +30,7 @@
 package com.ymock.util.formatter;
 
 import com.ymock.util.Logger;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -48,7 +49,17 @@ import org.reflections.util.ConfigurationBuilder;
  * Class is a log helper used to fmt logging arguments.
  */
 public final class FormatterManager {
+    /**
+     * Error message creating formatter.
+     */
+    private static final String ERROR_MSG =
+        "Cannot create formatter for class: %s method: %s";
 
+    /**
+     * Error message invoking formatter method.
+     */
+    private static final String ERROR_MSG2 =
+        "Error invoking formatter method for class: %s method: %s";
     /**
      * Singleton instance of the FormatterManager class.
      */
@@ -80,8 +91,8 @@ public final class FormatterManager {
      */
     /**
      * @todo #19 The basic list of formatters should be defined and they should
-     *           be implemented on the basis of {@link FormatGroup} and
-     *           {@link Format} interfaces
+     * be implemented on the basis of {@link FormatGroup} and
+     * {@link Format} interfaces
      */
     protected void registerFormatters() {
         final Set<URL> urls = ClasspathHelper.getUrlsForPackagePrefix("");
@@ -92,28 +103,27 @@ public final class FormatterManager {
         final Set<Class<?>> formatGroups = reflections.
             getTypesAnnotatedWith(FormatGroup.class);
         for (Class<?> formatGroup : formatGroups) {
-            final FormatGroup annotationFormatGroup =
+            final FormatGroup annotatedGroup =
                 formatGroup.getAnnotation(FormatGroup.class);
             for (Method m : formatGroup.getMethods()) {
                 if (m.isAnnotationPresent(Format.class)) {
                     final Format annotationFormat =
                         m.getAnnotation(Format.class);
-                    final String errorMsg =
-                        "Cannot create formatter for class: %s method: %s";
                     try {
                         final FormatterBean formatterBean =
                             new FormatterBean(formatGroup.newInstance(), m);
-                        this.formatters.put(annotationFormatGroup.value()
+                        this.formatters.put(annotatedGroup.value()
                             + "." + annotationFormat.value(), formatterBean);
                     } catch (InstantiationException e) {
-                        Logger.warn(this, errorMsg, formatGroup, m);
+                        Logger.warn(this, FormatterManager.ERROR_MSG,
+                            annotatedGroup, m);
                     } catch (IllegalAccessException e) {
-                        Logger.warn(this, errorMsg, formatGroup, m);
+                        Logger.warn(this, FormatterManager.ERROR_MSG,
+                            annotatedGroup, m);
                     }
 
                 }
             }
-
         }
     }
 
@@ -124,10 +134,12 @@ public final class FormatterManager {
      */
 
     public static FormatterManager getInstance() {
-        if (FormatterManager.instance == null) {
-            FormatterManager.instance = new FormatterManager();
+        synchronized (FormatterManager.class) {
+            if (FormatterManager.instance == null) {
+                FormatterManager.instance = new FormatterManager();
+            }
+            return FormatterManager.instance;
         }
-        return FormatterManager.instance;
     }
 
     /**
@@ -144,16 +156,16 @@ public final class FormatterManager {
         if (formatterBean == null) {
             Logger.warn(this, "Formatter is not registered for key: %s", key);
         } else {
-            final String errorMsg =
-                "Error invoking formatter method for class: %s method: %s";
             try {
                 return formatterBean.getMethod().
                     invoke(formatterBean.getGroup(), args).toString();
             } catch (IllegalAccessException e) {
-                Logger.warn(this, errorMsg, formatterBean.getGroup().getClass()
+                Logger.warn(this, FormatterManager.ERROR_MSG2,
+                    formatterBean.getGroup().getClass()
                     , formatterBean.getMethod());
             } catch (InvocationTargetException e) {
-                Logger.warn(this, errorMsg, formatterBean.getGroup().getClass()
+                Logger.warn(this, FormatterManager.ERROR_MSG2,
+                    formatterBean.getGroup().getClass()
                     , formatterBean.getMethod());
             }
         }
@@ -169,7 +181,7 @@ public final class FormatterManager {
     /**
      * Internal class holding info to cal formatter method.
      */
-    class FormatterBean {
+    static class FormatterBean {
         /**
          * formatter group.
          */

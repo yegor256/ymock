@@ -30,11 +30,14 @@
 package com.ymock.util.formatter;
 
 @FormatGroup("group")
-public class TestFormatter {
+public class TestFormatter2 {
 
-    @Format("format")
+    public TestFormatter2(final String param) {
+    }
+
+    @Format("format2")
     public final String format(final String s) {
-        return s.toString() + "formatted";
+        return s.toString() + "formatted2";
     }
 
 }
