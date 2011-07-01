@@ -29,10 +29,14 @@
  */
 package com.ymock.util;
 
+import com.ymock.util.formatter.FormatterManager;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Level;
 import org.apache.log4j.spi.LoggingEvent;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
@@ -44,18 +48,22 @@ public final class LoggerTest {
 
     private static class MockAppender extends AppenderSkeleton {
         private LoggingEvent event;
+
         @Override
         public void append(final LoggingEvent evt) {
             this.event = evt;
         }
+
         @Override
         public boolean requiresLayout() {
             return false;
         }
+
         @Override
         public void close() {
             // intentionally empty
         }
+
         @Override
         public Level getThreshold() {
             return Level.ALL;
@@ -70,12 +78,15 @@ public final class LoggerTest {
 
     private Level saved;
 
+    private FormatterManager formatterManager;
+
     @Before
     public void attachAppender() {
         this.appender = new MockAppender();
         org.apache.log4j.Logger.getRootLogger().addAppender(this.appender);
         this.saved = org.apache.log4j.Logger.getLogger(this.PACKAGE).getLevel();
         org.apache.log4j.Logger.getLogger(this.PACKAGE).setLevel(Level.TRACE);
+        this.formatterManager = FormatterManager.getInstance();
     }
 
     @After
@@ -171,6 +182,7 @@ public final class LoggerTest {
         public void log() {
             this.innerLog();
         }
+
         private void innerLog() {
             Logger.info(this, "Inner log message");
         }
@@ -183,6 +195,12 @@ public final class LoggerTest {
             this.PACKAGE + ".LoggerTest$InnerClass",
             equalTo(this.appender.event.getLoggerName())
         );
+    }
+
+    @Test
+    public void testFormat() throws Exception {
+        final String s = this.formatterManager.fmt("group.format", "aaa");
+        assertThat(s, equalTo("aaaformatted"));
     }
 
 }

@@ -212,9 +212,6 @@
                                         <requireJavaVersion>
                                             <version>${jdk.version}</version>
                                         </requireJavaVersion>
-                                        <requireOS>
-                                            <family>unix</family>
-                                        </requireOS>
                                     </rules>
                                 </configuration>
                             </execution>
@@ -1149,7 +1146,7 @@
                 <version>4.8.2</version> <!-- 28 Feb 2011 -->
                 <scope>test</scope>
             </dependency>
-            <dependency>
+           <dependency>
                 <!--
                 Assertions and matchers for unit tests.
                 @link http://code.google.com/p/hamcrest/wiki/Tutorial
