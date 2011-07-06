@@ -47,8 +47,12 @@ import org.reflections.util.ConfigurationBuilder;
 
 /**
  * Class is a log helper used to fmt logging arguments.
+ *
+ * @author Yegor Bugayenko (yegor@ymock.com)
+ * @version $Id: Logger.java 188 2011-07-01 21:08:13Z guard $
  */
 public final class FormatterManager {
+
     /**
      * Error message creating formatter.
      */
@@ -60,6 +64,7 @@ public final class FormatterManager {
      */
     private static final String ERROR_MSG2 =
         "Error invoking formatter method for class: %s method: %s";
+
     /**
      * Singleton instance of the FormatterManager class.
      */
@@ -82,17 +87,14 @@ public final class FormatterManager {
         this.registerFormatters();
     }
 
-
     /**
      * Registers all the available formatters, looks up in classpath for all
      * the classes annotated with {@link FormatGroup} and methods
      * annotated with {@link Format} annotetions and registers them
      * to the manager.
-     */
-    /**
      * @todo #19 The basic list of formatters should be defined and they should
-     * be implemented on the basis of {@link FormatGroup} and
-     * {@link Format} interfaces
+     *       be implemented on the basis of {@link FormatGroup} and
+     *       {@link Format} interfaces
      */
     protected void registerFormatters() {
         final Set<URL> urls = ClasspathHelper.getUrlsForPackagePrefix("");
@@ -129,10 +131,8 @@ public final class FormatterManager {
 
     /**
      * Returns the singleton instance of {@link FormatterManager}.
-     *
-     * @return the singleton instance of {@link FormatterManager}
+     * @return the singleton instance
      */
-
     public static FormatterManager getInstance() {
         synchronized (FormatterManager.class) {
             if (FormatterManager.instance == null) {
@@ -147,9 +147,9 @@ public final class FormatterManager {
      * key argument.
      * Is used by {@link Logger#fmt(String, Object...)}
      *
-     * @param key  key for the formatter to be used to fmt the arguments
-     * @param args arguments to be formatted
-     * @return formatted arguments string
+     * @param key Key for the formatter to be used to fmt the arguments
+     * @param args Arguments to be formatted
+     * @return Formatted arguments string
      */
     public String fmt(final String key, final Object... args) {
         final FormatterBean formatterBean = this.formatters.get(key);
@@ -181,20 +181,17 @@ public final class FormatterManager {
     /**
      * Internal class holding info to cal formatter method.
      */
-    static class FormatterBean {
+    private static class FormatterBean {
         /**
          * formatter group.
          */
         private Object group;
-
         /**
          * formatter method.
          */
         private Method method;
-
         /**
          * FormatterBean constructor.
-         *
          * @param groupParam  formatter group
          * @param methodParam formatter method
          */
@@ -202,23 +199,20 @@ public final class FormatterManager {
             this.group = groupParam;
             this.method = methodParam;
         }
-
         /**
          * Return formatter group.
-         *
          * @return formatter group
          */
         public Object getGroup() {
             return this.group;
         }
-
         /**
          * Returns formatter method.
-         *
          * @return formatter method
          */
         public Method getMethod() {
             return this.method;
         }
     }
+
 }
