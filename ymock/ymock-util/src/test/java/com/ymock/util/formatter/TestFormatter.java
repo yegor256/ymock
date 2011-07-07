@@ -29,6 +29,10 @@
  */
 package com.ymock.util.formatter;
 
+/**
+ * @author Yegor Bugayenko (yegor@ymock.com)
+ * @version $Id: LoggerTest.java 188 2011-07-01 21:08:13Z guard $
+ */
 @FormatGroup("group")
 public class TestFormatter {
 

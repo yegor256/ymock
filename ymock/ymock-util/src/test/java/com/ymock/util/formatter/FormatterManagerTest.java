@@ -32,12 +32,15 @@ package com.ymock.util.formatter;
 import org.junit.Before;
 import org.junit.Test;
 
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-
+/**
+ * @author Yegor Bugayenko (yegor@ymock.com)
+ * @version $Id: LoggerTest.java 188 2011-07-01 21:08:13Z guard $
+ */
 public class FormatterManagerTest {
+
     private static final String STRING_TO_FORMAT = "aaa";
     private static final String FORMATTED = "formatted";
 

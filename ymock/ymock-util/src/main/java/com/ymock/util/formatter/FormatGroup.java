@@ -43,6 +43,9 @@ import java.lang.annotation.Target;
  * {@link com.ymock.util.formatter.FormatterManager} by key =
  * {@link FormatGroup#value()}.
  * {@link Format#value()}
+ *
+ * @author Yegor Bugayenko (yegor@ymock.com)
+ * @version $Id: Logger.java 188 2011-07-01 21:08:13Z guard $
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

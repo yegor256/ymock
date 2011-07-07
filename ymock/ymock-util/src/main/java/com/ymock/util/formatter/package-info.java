@@ -30,5 +30,8 @@
 
 /**
  * Formatting related classes.
+ *
+ * @author Yegor Bugayenko (yegor@ymock.com)
+ * @version $Id: Logger.java 188 2011-07-01 21:08:13Z guard $
  */
 package com.ymock.util.formatter;
