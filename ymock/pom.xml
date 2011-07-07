@@ -315,7 +315,7 @@
                         <plugin>
                             <groupId>com.rempl.plugins</groupId>
                             <artifactId>rempl-maven-plugin</artifactId>
-                            <version>1.2-SNAPSHOT</version>
+                            <version>1.1.1</version>
                         </plugin>
                         <plugin>
                             <artifactId>maven-project-info-reports-plugin</artifactId>
@@ -469,9 +469,9 @@
                                     <classpath>
                                         <element>
                                             <!-- this is where placeholders directory is located -->
-                                            <groupId>com.rempl</groupId>
-                                            <artifactId>rempl-tk</artifactId>
-                                            <version>1.2-SNAPSHOT</version>
+                                            <groupId>com.ymock</groupId>
+                                            <artifactId>ymock-tk</artifactId>
+                                            <version>1.1-SNAPSHOT</version>
                                         </element>
                                         <element>
                                             <!-- for file manipulations -->
