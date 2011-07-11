@@ -50,7 +50,7 @@
             <url>http://reflections.googlecode.com/svn/repo</url>
         </repository>
     </repositories>
-    
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -60,6 +60,11 @@
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-all</artifactId>
+            <!-- all other details are in parent module dependencyManagement section -->
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
             <!-- all other details are in parent module dependencyManagement section -->
         </dependency>
         <dependency>
@@ -87,6 +92,12 @@
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
             <version>0.9.5-RC2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-classic</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 

@@ -77,7 +77,8 @@ public final class FormatterManager {
 
     /**
      * Private constructor.
-     * Initialize the object, registers all available formatters -
+     *
+     * <p>Initialize the object, registers all available formatters -
      * annotated with {@link FormatGroup} and {@link Format} annotetions
      *
      * @see #registerFormatters()
