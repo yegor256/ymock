@@ -46,9 +46,9 @@
     <name>yMock</name>
 
     <modules>
+        <module>ymock-tk</module>
         <module>ymock-commons</module>
         <module>ymock-util</module>
-        <module>ymock-tk</module>
         <module>ymock-client</module>
         <module>ymock-server</module>
         <module>ymock-cli</module>
@@ -108,38 +108,43 @@
 
     <issueManagement>
         <system>trac</system>
-        <url>http://trac.fazend.com/ymock/</url>
+        <url>http://trac.ymock.com/ymock/</url>
     </issueManagement>
 
     <ciManagement>
         <system>hudson</system>
-        <url>http://hudson.fazend.com/hudson/job/ymock</url>
+        <url>http://hudson.ymock.com/hudson/job/ymock</url>
     </ciManagement>
 
     <scm>
-        <connection>scm:svn:svn://svn.fazend.com/ymock/trunk/ymock</connection>
-        <developerConnection>scm:svn:svn://svn.fazend.com/ymock/trunk/ymock</developerConnection>
-        <url>http://svn.fazend.com/ymock/trunk/ymock</url>
+        <connection>scm:svn:svn://svn.ymock.com/ymock/trunk/ymock</connection>
+        <developerConnection>scm:svn:svn://svn.ymock.com/ymock/trunk/ymock</developerConnection>
+        <url>http://svn.ymock.com/ymock/trunk/ymock</url>
     </scm>
 
     <distributionManagement>
         <downloadUrl>https://oss.sonatype.org/content/groups/public</downloadUrl>
         <repository>
             <uniqueVersion>false</uniqueVersion>
-            <id>sonatype-nexus-staging</id>
-            <name>Sonatype OSS Repository</name>
+            <id>sonatype.nexus</id>
+            <name>Sonatype OSS Repository (for releases)</name>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
         </repository>
         <snapshotRepository>
             <uniqueVersion>false</uniqueVersion>
-            <id>sonatype-nexus-snapshots</id>
-            <name>Sonatype OSS Repository</name>
+            <id>sonatype.nexus</id>
+            <name>Sonatype OSS Repository (for snapshots)</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
         <site>
-            <id>www.ymock.com</id>
+            <!--
+            Deploying the site to Amazon S3. "ymock.s3" server details
+            are defined in "settings.xml" file, provided by continuous integration
+            server during build cycle.
+            -->
+            <id>ymock.s3</id>
             <name>yMock.com Project Site</name>
-            <url>${site.deploy.url}</url>
+            <url>s3://www.ymock.com/</url>
         </site>
     </distributionManagement>
 
@@ -1202,20 +1207,14 @@
             </testResource>
         </testResources>
         <extensions>
-            <!--
-            To enable site deployment by FTP.
-            @link http://maven.apache.org/wagon/wagon-providers/wagon-ftp/
-            @todo #1 There is still a problem. This extension sends all possible
-                     details of its execution to stdout, exposing FTP passwords
-                     and logins. I already submitted a bug to its developers (WAGON-320),
-                     but not luck yet. Maybe we have to create our own extension.
-                     @see http://stackoverflow.com/questions/4564018
-                     @see http://jira.codehaus.org/browse/WAGON-320
-            -->
             <extension>
-                <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-ftp</artifactId>
-                <version>1.0-beta-7</version> <!-- 18 Dec 2010 -->
+                <!--
+                Artifacts deployment to Amazon Web Services, S3.
+                @see http://blog.cyclopsgroup.org/2011/06/publish-maven-site-with-amazon-s3-and.html
+                -->
+                <groupId>org.cyclopsgroup</groupId>
+                <artifactId>awss3-maven-wagon</artifactId>
+                <version>0.1</version>
             </extension>
         </extensions>
         <pluginManagement>

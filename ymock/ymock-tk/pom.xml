@@ -76,25 +76,28 @@
     </developers>
 
     <scm>
-        <connection>scm:svn:svn://svn.fazend.com/ymock/trunk/ymock</connection>
-        <developerConnection>scm:svn:svn://svn.fazend.com/ymock/trunk/ymock</developerConnection>
-        <url>http://svn.fazend.com/ymock/trunk/ymock</url>
+        <connection>scm:svn:svn://svn.ymock.com/ymock/trunk/ymock</connection>
+        <developerConnection>scm:svn:svn://svn.ymock.com/ymock/trunk/ymock</developerConnection>
+        <url>http://svn.ymock.com/ymock/trunk/ymock</url>
     </scm>
 
     <distributionManagement>
         <downloadUrl>https://oss.sonatype.org/content/groups/public</downloadUrl>
         <repository>
             <uniqueVersion>false</uniqueVersion>
-            <id>sonatype-nexus-staging</id>
-            <name>Sonatype OSS Repository</name>
+            <id>sonatype.nexus</id>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
         </repository>
         <snapshotRepository>
             <uniqueVersion>false</uniqueVersion>
-            <id>sonatype-nexus-snapshots</id>
-            <name>Sonatype OSS Repository</name>
+            <id>sonatype.nexus</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
+        <site>
+            <id>ymock.s3</id>
+            <name>yMock.com Project Site</name>
+            <url>s3://www.ymock.com/ymock-tk</url>
+        </site>
     </distributionManagement>
 
     <prerequisites>
@@ -135,6 +138,13 @@
     </profiles>
 
     <build>
+        <extensions>
+            <extension>
+                <groupId>org.cyclopsgroup</groupId>
+                <artifactId>awss3-maven-wagon</artifactId>
+                <version>0.1</version>
+            </extension>
+        </extensions>
         <plugins>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
