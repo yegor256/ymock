@@ -76,23 +76,21 @@
     </developers>
 
     <scm>
-        <connection>scm:svn:svn://svn.fazend.com/ymock/trunk/ymock</connection>
-        <developerConnection>scm:svn:svn://svn.fazend.com/ymock/trunk/ymock</developerConnection>
-        <url>http://svn.fazend.com/ymock/trunk/ymock</url>
+        <connection>scm:svn:svn://svn.ymock.com/ymock/trunk/ymock</connection>
+        <developerConnection>scm:svn:svn://svn.ymock.com/ymock/trunk/ymock</developerConnection>
+        <url>http://svn.ymock.com/ymock/trunk/ymock</url>
     </scm>
 
     <distributionManagement>
         <downloadUrl>https://oss.sonatype.org/content/groups/public</downloadUrl>
         <repository>
             <uniqueVersion>false</uniqueVersion>
-            <id>sonatype-nexus-staging</id>
-            <name>Sonatype OSS Repository</name>
+            <id>sonatype.nexus</id>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
         </repository>
         <snapshotRepository>
             <uniqueVersion>false</uniqueVersion>
-            <id>sonatype-nexus-snapshots</id>
-            <name>Sonatype OSS Repository</name>
+            <id>sonatype.nexus</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
         <site>

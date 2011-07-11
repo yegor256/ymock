@@ -108,18 +108,18 @@
 
     <issueManagement>
         <system>trac</system>
-        <url>http://trac.fazend.com/ymock/</url>
+        <url>http://trac.ymock.com/ymock/</url>
     </issueManagement>
 
     <ciManagement>
         <system>hudson</system>
-        <url>http://hudson.fazend.com/hudson/job/ymock</url>
+        <url>http://hudson.ymock.com/hudson/job/ymock</url>
     </ciManagement>
 
     <scm>
-        <connection>scm:svn:svn://svn.fazend.com/ymock/trunk/ymock</connection>
-        <developerConnection>scm:svn:svn://svn.fazend.com/ymock/trunk/ymock</developerConnection>
-        <url>http://svn.fazend.com/ymock/trunk/ymock</url>
+        <connection>scm:svn:svn://svn.ymock.com/ymock/trunk/ymock</connection>
+        <developerConnection>scm:svn:svn://svn.ymock.com/ymock/trunk/ymock</developerConnection>
+        <url>http://svn.ymock.com/ymock/trunk/ymock</url>
     </scm>
 
     <distributionManagement>
