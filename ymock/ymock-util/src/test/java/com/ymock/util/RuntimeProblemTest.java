@@ -32,6 +32,7 @@ package com.ymock.util;
 import org.junit.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Yegor Bugayenko (yegor@ymock.com)
@@ -72,6 +73,46 @@ public final class RuntimeProblemTest {
         final Throwable ex = RuntimeProblem.make("number %d", 3);
         assertThat(ex, is(instanceOf(RuntimeProblem.class)));
         assertThat(ex.getMessage(), equalTo("number 3"));
+    }
+
+    /**
+     * @todo #24:1 The test doesn't work because functionality is not
+     *           implemented yet. We should implement proper exception
+     *           catching inside RuntimeProblem class. This test method
+     *           should be enabled
+     *           as soon as the functionality is implemented. It should NOT
+     *           be altered, just enabled (Ignore annotation to be removed).
+     */
+    @Ignore
+    @Test
+    public void testProblemCreationWithInvalidArguments() {
+        assertThat(
+            RuntimeProblem.make("data %d").getMessage(),
+            equalTo(
+                "number %d (java.util.MissingFormatArgumentException:"
+                + " Format specifier 'd')"
+            )
+        );
+        assertThat(
+            RuntimeProblem.make("num %d", "test").getMessage(),
+            equalTo(
+                "num %d (java.util.IllegalFormatConversionException:"
+                + " d != java.lang.String)"
+            )
+        );
+        assertThat(
+            RuntimeProblem.make("number %1z", "text").getMessage(),
+            equalTo(
+                "number %1z (java.util.UnknownFormatConversionException:"
+                + " Conversion = 'z')"
+            )
+        );
+        final Object obj = mock(Object.class);
+        doThrow(new IllegalArgumentException("oops..")).when(obj).toString();
+        assertThat(
+            RuntimeProblem.make("text %s", obj).getMessage(),
+            equalTo("number %s (java.lang.IllegalArgumentException: oops..)")
+        );
     }
 
 }
