@@ -126,13 +126,13 @@
         <downloadUrl>https://oss.sonatype.org/content/groups/public</downloadUrl>
         <repository>
             <uniqueVersion>false</uniqueVersion>
-            <id>sonatype-nexus-staging</id>
+            <id>sonatype.nexus</id>
             <name>Sonatype OSS Repository</name>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
         </repository>
         <snapshotRepository>
             <uniqueVersion>false</uniqueVersion>
-            <id>sonatype-nexus-snapshots</id>
+            <id>sonatype.nexus</id>
             <name>Sonatype OSS Repository</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
