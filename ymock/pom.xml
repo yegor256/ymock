@@ -46,9 +46,9 @@
     <name>yMock</name>
 
     <modules>
+        <module>ymock-tk</module>
         <module>ymock-commons</module>
         <module>ymock-util</module>
-        <module>ymock-tk</module>
         <module>ymock-client</module>
         <module>ymock-server</module>
         <module>ymock-cli</module>
@@ -127,13 +127,13 @@
         <repository>
             <uniqueVersion>false</uniqueVersion>
             <id>sonatype.nexus</id>
-            <name>Sonatype OSS Repository</name>
+            <name>Sonatype OSS Repository (for releases)</name>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
         </repository>
         <snapshotRepository>
             <uniqueVersion>false</uniqueVersion>
             <id>sonatype.nexus</id>
-            <name>Sonatype OSS Repository</name>
+            <name>Sonatype OSS Repository (for snapshots)</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
         <site>
