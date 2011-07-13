@@ -43,8 +43,7 @@ import java.lang.annotation.Target;
  * {@link FormatGroup#value()}.
  * {@link Format#value()}}
  *
- * @author Yegor Bugayenko (yegor@ymock.com)
- * @version $Id: Logger.java 188 2011-07-01 21:08:13Z guard $
+ * @author Marina Kosenko (marina.kosenko@gmail.com)
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

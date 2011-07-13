@@ -27,17 +27,51 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.util.formatter;
+package com.ymock.util.formatter.impl;
+
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 
 /**
+ * @todo #25! Provide implementation, write javadoc
  * @author Marina Kosenko (marina.kosenko@gmail.com)
  */
-@FormatGroup("group")
-public class TestFormatter {
+public class PasswordFormatterTest {
 
-    @Format("format")
-    public final String format(final String s) {
-        return s.toString() + "formatted";
+    private PasswordFormatter passwordFormatter;
+
+    @Before
+    public final void setUp() throws Exception {
+        this.passwordFormatter = new PasswordFormatter();
     }
 
+    @Test
+    public final void testFormatFake() {
+        this.passwordFormatter.format(null);
+    }
+
+    @Test
+    @Ignore
+    public final void testFormat() {
+        final String formatted = this.passwordFormatter.format("abcdefghij");
+        assertThat(formatted, equalTo("a*****j"));
+    }
+
+    @Test
+    @Ignore
+    public final void testFormatNull() {
+        final String formatted = this.passwordFormatter.format(null);
+        assertThat(formatted, equalTo("NULL"));
+    }
+
+    @Test
+    @Ignore
+    public final void testFormatEmpty() {
+        final String formatted = this.passwordFormatter.format("");
+        assertThat(formatted, equalTo(""));
+    }
 }

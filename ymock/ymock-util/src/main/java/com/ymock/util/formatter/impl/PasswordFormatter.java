@@ -27,17 +27,25 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.util.formatter;
+package com.ymock.util.formatter.impl;
+
+import com.ymock.util.formatter.Format;
+import com.ymock.util.formatter.FormatGroup;
 
 /**
  * @author Marina Kosenko (marina.kosenko@gmail.com)
  */
-@FormatGroup("group")
-public class TestFormatter {
+@FormatGroup("secret")
+public class PasswordFormatter {
 
-    @Format("format")
-    public final String format(final String s) {
-        return s.toString() + "formatted";
+
+    /**
+     * Javadoc.
+     * @param password param
+     * @return result
+     */
+    @Format("password")
+    public final String format(final String password) {
+        return null;
     }
-
 }

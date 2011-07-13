@@ -27,17 +27,61 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.util.formatter;
+package com.ymock.util.formatter.impl;
+
+import java.io.File;
+
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 
 /**
+ * @todo #25! Provide implementation, write javadoc
  * @author Marina Kosenko (marina.kosenko@gmail.com)
  */
-@FormatGroup("group")
-public class TestFormatter {
+public class SizeFormatterTest {
 
-    @Format("format")
-    public final String format(final String s) {
-        return s.toString() + "formatted";
+    private static final String ERROR = "ERROR";
+    private static final int N_5 = 5;
+
+    private SizeFormatter sizeFormatter;
+
+    @Before
+    public final void setUp() throws Exception {
+        this.sizeFormatter = new SizeFormatter();
     }
 
+    @Test
+    public final void testFormatFake() {
+        this.sizeFormatter.format(null);
+    }
+
+    @Test
+    @Ignore
+    public final void testFormat() {
+        final File testfile = mock(File.class);
+        doReturn(this.N_5).when(testfile).length();
+        final String formatted = this.sizeFormatter.format(testfile);
+        assertThat(formatted, equalTo("5 bytes"));
+    }
+
+    @Test
+    @Ignore
+    public final void testFormatNull() {
+        final String formatted = this.sizeFormatter.format(null);
+        assertThat(formatted, equalTo(this.ERROR));
+    }
+
+    @Test
+    @Ignore
+    public final void testFormatEmpty() {
+        final File testfile = new File("donotexist");
+        final String formatted = this.sizeFormatter.format(testfile);
+        assertThat(formatted, equalTo(this.ERROR));
+    }
 }

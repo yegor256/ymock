@@ -27,17 +27,55 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.util.formatter;
+package com.ymock.util.formatter.impl;
 
 /**
  * @author Marina Kosenko (marina.kosenko@gmail.com)
  */
-@FormatGroup("group")
-public class TestFormatter {
+public class TestObject {
+    private int intField;
+    private String stringField;
+    private String[] stringArrayField;
+    private TestObject testObjectField;
 
-    @Format("format")
-    public final String format(final String s) {
-        return s.toString() + "formatted";
+    public TestObject(final int param) {
+        this.intField = param;
     }
 
+    public final int getIntField() {
+        return this.intField;
+    }
+
+    public final void setIntField(final int param) {
+        this.intField = param;
+    }
+
+    public final String getStringField() {
+        return this.stringField;
+    }
+
+    public final void setStringField(final String param) {
+        this.stringField = param;
+    }
+
+    public final String[] getStringArrayField() {
+        return this.stringArrayField;
+    }
+
+    public final void setStringArrayField(final String[] param) {
+        this.stringArrayField = param;
+    }
+
+    public final TestObject getTestObjectField() {
+        return this.testObjectField;
+    }
+
+    public final void setTestObjectField(final TestObject param) {
+        this.testObjectField = param;
+    }
+
+    @Override
+    public final String toString() {
+        return "TestObject:" + this.intField;
+    }
 }

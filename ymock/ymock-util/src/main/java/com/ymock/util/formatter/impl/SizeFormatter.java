@@ -27,17 +27,26 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.util.formatter;
+package com.ymock.util.formatter.impl;
+
+import com.ymock.util.formatter.Format;
+import com.ymock.util.formatter.FormatGroup;
+
+import java.io.File;
 
 /**
  * @author Marina Kosenko (marina.kosenko@gmail.com)
  */
-@FormatGroup("group")
-public class TestFormatter {
+@FormatGroup("size")
+public class SizeFormatter {
 
-    @Format("format")
-    public final String format(final String s) {
-        return s.toString() + "formatted";
+    /**
+     * Javadoc.
+     * @param file param
+     * @return result
+     */
+    @Format("bytes")
+    public final String format(final File file) {
+        return null;
     }
-
 }

@@ -27,17 +27,10 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.util.formatter;
 
 /**
- * @author Marina Kosenko (marina.kosenko@gmail.com)
+ * Formatter implementation.
+ *
+ * @author Marina Kosenko
  */
-@FormatGroup("group")
-public class TestFormatter {
-
-    @Format("format")
-    public final String format(final String s) {
-        return s.toString() + "formatted";
-    }
-
-}
+package com.ymock.util.formatter.impl;
