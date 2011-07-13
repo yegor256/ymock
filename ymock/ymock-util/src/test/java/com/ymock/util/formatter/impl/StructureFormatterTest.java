@@ -27,10 +27,16 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.util.formatter;
+package com.ymock.util.formatter.impl;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.powermock.core.classloader.annotations.PrepareForTest;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -38,33 +44,57 @@ import static org.hamcrest.Matchers.equalTo;
 /**
  * @author Marina kosenko
  */
-public class FormatterManagerTest {
+@PrepareForTest(System.class)
+public class StructureFormatterTest {
 
-    private static final String STRING_TO_FORMAT = "aaa";
-    private static final String FORMATTED = "formatted";
-
-    private FormatterManager formatterManager;
+    private StructureFormatter structureFormatter;
 
     @Before
     public final void setUp() throws Exception {
-        this.formatterManager = FormatterManager.getInstance();
+        this.structureFormatter = new StructureFormatter();
     }
 
     @Test
-    public final void testFormat() throws Exception {
-        final String s = this.formatterManager.fmt("group.format",
-            FormatterManagerTest.STRING_TO_FORMAT);
-        assertThat(s, equalTo(FormatterManagerTest.STRING_TO_FORMAT
-            + FormatterManagerTest.FORMATTED));
-        assertThat(s, equalTo(FormatterManagerTest.STRING_TO_FORMAT
-            + FormatterManagerTest.FORMATTED));
+    public final void testFormatFake() {
+        this.structureFormatter.formatCollection(null);
+        this.structureFormatter.formatObject(null);
     }
 
     @Test
-    public final void testFormatFormatterDoesntExist() throws Exception {
-        final String s = this.formatterManager.fmt("group.aaa",
-            FormatterManagerTest.STRING_TO_FORMAT);
-        assertThat(s, equalTo(FormatterManagerTest.STRING_TO_FORMAT));
+    @Ignore
+    public final void testFormatCollectionObjects() {
+        final List objects = Arrays.asList(new TestObject(1),
+            new TestObject(2), new TestObject(5));
+        final String formatted = this.structureFormatter
+            .formatCollection(objects);
+        assertThat(formatted,
+            equalTo("TestObject:1, TestObject:2, TestObject:5"));
+    }
+
+    @Test
+    @Ignore
+    public final void testFormatCollectionInts() {
+        final List objects = Arrays.asList(1, 2, 5);
+        final String formatted = this.structureFormatter
+            .formatCollection(objects);
+        assertThat(formatted,
+            equalTo("1, 2, 5"));
+    }
+
+    @Test
+    @Ignore
+    public final void testFormatCollectionNull() {
+        final String formatted = this.structureFormatter
+            .formatCollection(null);
+        assertThat(formatted, equalTo("NULL"));
+    }
+
+    @Test
+    @Ignore
+    public final void testFormatCollectionEmpty() {
+        final String formatted = this.structureFormatter
+            .formatCollection(new ArrayList());
+        assertThat(formatted, equalTo(""));
     }
 
 }

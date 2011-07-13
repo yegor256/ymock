@@ -27,34 +27,60 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.util.formatter;
+package com.ymock.util.formatter.impl;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.io.File;
+
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 
 /**
- * The annotation for all the log parameters formatters.
- * All the classes annotated with this annotation will be automatically
- * loaded and registered by {@link com.ymock.util.formatter.FormatterManager}
- * class. All it's formattiong methods should be annotated with
- * {@link Format} annotation. They'll be registered in
- * {@link com.ymock.util.formatter.FormatterManager} by key =
- * {@link FormatGroup#value()}.
- * {@link Format#value()}
- *
- * @author Yegor Bugayenko (yegor@ymock.com)
- * @version $Id: Logger.java 188 2011-07-01 21:08:13Z guard $
+ * @author Marina kosenko
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface FormatGroup {
+public class SizeFormatterTest {
 
-    /**
-     * Format group key.
-     */
-     String value();
+    private static final String ERROR = "ERROR";
+    private static final int N_5 = 5;
 
+    private SizeFormatter sizeFormatter;
+
+    @Before
+    public final void setUp() throws Exception {
+        this.sizeFormatter = new SizeFormatter();
+    }
+
+    @Test
+    public final void testFormatFake() {
+        this.sizeFormatter.format(null);
+    }
+
+    @Test
+    @Ignore
+    public final void testFormat() {
+        final File testfile = mock(File.class);
+        doReturn(this.N_5).when(testfile).length();
+        final String formatted = this.sizeFormatter.format(testfile);
+        assertThat(formatted, equalTo("5 bytes"));
+    }
+
+    @Test
+    @Ignore
+    public final void testFormatNull() {
+        final String formatted = this.sizeFormatter.format(null);
+        assertThat(formatted, equalTo(this.ERROR));
+    }
+
+    @Test
+    @Ignore
+    public final void testFormatEmpty() {
+        final File testfile = new File("donotexist");
+        final String formatted = this.sizeFormatter.format(testfile);
+        assertThat(formatted, equalTo(this.ERROR));
+    }
 }
-

@@ -27,34 +27,55 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.util.formatter;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+package com.ymock.util.formatter.impl;
 
 /**
- * The annotation for all the log parameters formatters.
- * All the classes annotated with this annotation will be automatically
- * loaded and registered by {@link com.ymock.util.formatter.FormatterManager}
- * class. All it's formattiong methods should be annotated with
- * {@link Format} annotation. They'll be registered in
- * {@link com.ymock.util.formatter.FormatterManager} by key =
- * {@link FormatGroup#value()}.
- * {@link Format#value()}
- *
- * @author Yegor Bugayenko (yegor@ymock.com)
- * @version $Id: Logger.java 188 2011-07-01 21:08:13Z guard $
+ * @author Marina Kosenko
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface FormatGroup {
+public class TestObject {
+    private int intField;
+    private String stringField;
+    private String[] stringArrayField;
+    private TestObject testObjectField;
 
-    /**
-     * Format group key.
-     */
-     String value();
+    public TestObject(final int param) {
+        this.intField = param;
+    }
 
+    public final int getIntField() {
+        return this.intField;
+    }
+
+    public final void setIntField(final int param) {
+        this.intField = param;
+    }
+
+    public final String getStringField() {
+        return this.stringField;
+    }
+
+    public final void setStringField(final String param) {
+        this.stringField = param;
+    }
+
+    public final String[] getStringArrayField() {
+        return this.stringArrayField;
+    }
+
+    public final void setStringArrayField(final String[] param) {
+        this.stringArrayField = param;
+    }
+
+    public final TestObject getTestObjectField() {
+        return this.testObjectField;
+    }
+
+    public final void setTestObjectField(final TestObject param) {
+        this.testObjectField = param;
+    }
+
+    @Override
+    public final String toString() {
+        return "TestObject:" + this.intField;
+    }
 }
-

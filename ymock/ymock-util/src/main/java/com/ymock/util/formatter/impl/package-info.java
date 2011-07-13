@@ -27,34 +27,10 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.util.formatter;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 
 /**
- * The annotation for all the log parameters formatters.
- * All the classes annotated with this annotation will be automatically
- * loaded and registered by {@link com.ymock.util.formatter.FormatterManager}
- * class. All it's formattiong methods should be annotated with
- * {@link Format} annotation. They'll be registered in
- * {@link com.ymock.util.formatter.FormatterManager} by key =
- * {@link FormatGroup#value()}.
- * {@link Format#value()}
+ * Formatter implementation.
  *
- * @author Yegor Bugayenko (yegor@ymock.com)
- * @version $Id: Logger.java 188 2011-07-01 21:08:13Z guard $
+ * @author Marina Kosenko
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface FormatGroup {
-
-    /**
-     * Format group key.
-     */
-     String value();
-
-}
-
+package com.ymock.util.formatter.impl;
