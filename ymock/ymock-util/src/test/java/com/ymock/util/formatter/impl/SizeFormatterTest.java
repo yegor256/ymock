@@ -41,7 +41,8 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
 /**
- * @author Marina kosenko
+ * @todo #25! Provide implementation, write javadoc
+ * @author Marina Kosenko (marina.kosenko@gmail.com)
  */
 public class SizeFormatterTest {
 

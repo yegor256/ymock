@@ -48,8 +48,7 @@ import org.reflections.util.ConfigurationBuilder;
 /**
  * Class is a log helper used to fmt logging arguments.
  *
- * @author Yegor Bugayenko (yegor@ymock.com)
- * @version $Id: Logger.java 188 2011-07-01 21:08:13Z guard $
+ * @author Marina Kosenko (marina.kosenko@gmail.com)
  */
 public final class FormatterManager {
 

@@ -33,8 +33,7 @@ import com.ymock.util.formatter.Format;
 import com.ymock.util.formatter.FormatGroup;
 
 /**
- * @todo #25! Provide implementation, write javadoc
- * @author Marina Kosenko
+ * @author Marina Kosenko (marina.kosenko@gmail.com)
  */
 @FormatGroup("time")
 public class TimeFormatter {

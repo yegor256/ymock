@@ -35,8 +35,7 @@ import com.ymock.util.formatter.FormatGroup;
 import java.io.File;
 
 /**
- * @todo #25! Provide implementation, write javadoc
- * @author Marina Kosenko
+ * @author Marina Kosenko (marina.kosenko@gmail.com)
  */
 @FormatGroup("size")
 public class SizeFormatter {

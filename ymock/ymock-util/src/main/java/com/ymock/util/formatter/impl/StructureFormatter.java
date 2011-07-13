@@ -35,11 +35,7 @@ import com.ymock.util.formatter.FormatGroup;
 import java.util.Collection;
 
 /**
- * @todo #25! Provide implementation, write javadoc, create test for
- * formatObject method. Format object should print object content in
- * decent way. Investigate existent frameworks.
- *
- * @author Marina Kosenko
+ * @author Marina Kosenko (marina.kosenko@gmail.com)
  */
 @FormatGroup("struct")
 public class StructureFormatter {

@@ -42,7 +42,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 /**
- * @author Marina kosenko
+ * @todo #25! Provide implementation, write javadoc, create test for
+ * formatObject method. Format object should print object content in
+ * decent way. Investigate existent frameworks.
+ *
+ * @author Marina Kosenko (marina.kosenko@gmail.com)
  */
 @PrepareForTest(System.class)
 public class StructureFormatterTest {

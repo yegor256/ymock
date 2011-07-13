@@ -40,12 +40,20 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 /**
+ * @todo #25! Provide implementation, write javadoc
  * @author Marina kosenko
  */
 @PrepareForTest(System.class)
 public class TimeFormatterTest {
 
+    /**
+     * half a second
+     */
     private static final long NANO_HALF_SEC = 500000000L;
+
+    /**
+     * half a second
+     */
     private static final long MILLI_HALF_SEC = 500L;
 
     /**
@@ -77,8 +85,20 @@ public class TimeFormatterTest {
      * second * 2 + second * 60 * 5 + second * 60 * 60 * 45
      */
     private static final long CURRENT_TIME_DAYS_MILLI = 162302000L;
+
+    /**
+     * result time with hours
+     */
     private static final String RESULT_TIME_HOUR = "45:03:01";
+
+    /**
+     * result time
+     */
     private static final String RESULT_TIME = "03:01";
+
+    /**
+     * result time with decimal seconds
+     */
     private static final String RESULT_TIME_DECIMAL = "03:00.5";
 
     private TimeFormatter timeFormatter;

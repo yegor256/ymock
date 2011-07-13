@@ -37,7 +37,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 /**
- * @author Marina kosenko
+ * @todo #25! Provide implementation, write javadoc
+ * @author Marina Kosenko (marina.kosenko@gmail.com)
  */
 public class PasswordFormatterTest {
 

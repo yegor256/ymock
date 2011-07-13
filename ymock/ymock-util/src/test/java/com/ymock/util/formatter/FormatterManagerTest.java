@@ -36,7 +36,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 /**
- * @author Marina kosenko
+ * @author Marina Kosenko (marina.kosenko@gmail.com)
  */
 public class FormatterManagerTest {
 
