@@ -40,8 +40,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 /**
- * @todo #25! Provide implementation, write javadoc
+ * @todo #25! Provide implementation of TimeFormatter, write javadoc
  * @author Marina kosenko
+ * @version $Id$
  */
 @PrepareForTest(System.class)
 public class TimeFormatterTest {

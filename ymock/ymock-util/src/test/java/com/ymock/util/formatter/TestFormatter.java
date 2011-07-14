@@ -31,6 +31,7 @@ package com.ymock.util.formatter;
 
 /**
  * @author Marina Kosenko (marina.kosenko@gmail.com)
+ * @version $Id$
  */
 @FormatGroup("group")
 public class TestFormatter {

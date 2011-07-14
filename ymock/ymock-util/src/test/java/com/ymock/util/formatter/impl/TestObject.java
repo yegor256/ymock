@@ -31,6 +31,7 @@ package com.ymock.util.formatter.impl;
 
 /**
  * @author Marina Kosenko (marina.kosenko@gmail.com)
+ * @version $Id$
  */
 public class TestObject {
     private int intField;

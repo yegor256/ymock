@@ -47,6 +47,7 @@ import static org.hamcrest.Matchers.equalTo;
  * decent way. Investigate existent frameworks.
  *
  * @author Marina Kosenko (marina.kosenko@gmail.com)
+ * @version $Id$
  */
 @PrepareForTest(System.class)
 public class StructureFormatterTest {

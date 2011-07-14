@@ -37,6 +37,7 @@ import static org.hamcrest.Matchers.equalTo;
 
 /**
  * @author Marina Kosenko (marina.kosenko@gmail.com)
+ * @version $Id$
  */
 public class FormatterManagerTest {
 
