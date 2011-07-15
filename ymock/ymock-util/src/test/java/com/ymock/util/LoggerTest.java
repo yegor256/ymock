@@ -33,174 +33,82 @@ import com.ymock.util.formatter.FormatterManager;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Level;
 import org.apache.log4j.spi.LoggingEvent;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.slf4j.LoggerFactory;
+import org.junit.*;
+import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({Logger.class, LoggerFactory.class})
 public final class LoggerTest {
 
-    private static class MockAppender extends AppenderSkeleton {
-        private LoggingEvent event;
-
-        @Override
-        public void append(final LoggingEvent evt) {
-            this.event = evt;
-        }
-
-        @Override
-        public boolean requiresLayout() {
-            return false;
-        }
-
-        @Override
-        public void close() {
-            // intentionally empty
-        }
-
-        @Override
-        public Level getThreshold() {
-            return Level.ALL;
-        }
-    }
-
-    private static final String PACKAGE = "com.ymock.util";
-
-    private static final String MESSAGE = "test message, ignore it";
-
-    private MockAppender appender;
-
-    private Level saved;
-
-    private FormatterManager formatterManager;
-
     @Before
-    public void attachAppender() {
-        this.appender = new MockAppender();
-        org.apache.log4j.Logger.getRootLogger().addAppender(this.appender);
-        this.saved = org.apache.log4j.Logger.getLogger(this.PACKAGE).getLevel();
-        org.apache.log4j.Logger.getLogger(this.PACKAGE).setLevel(Level.TRACE);
-        this.formatterManager = FormatterManager.getInstance();
-    }
-
-    @After
-    public void dettachAppender() {
-        org.apache.log4j.Logger.getRootLogger().removeAppender(this.appender);
-        this.appender = null;
-        org.apache.log4j.Logger.getLogger(this.PACKAGE).setLevel(this.saved);
+    public void mockLoggerFactory() {
+        PowerMockito.mockStatic(LoggerFactory.class);
     }
 
     @Test
-    public void testValidatesCorrectDetectionOfLogger() throws Exception {
-        Logger.debug(this, this.MESSAGE);
-        assertThat(
-            this.getClass().getName(),
-            equalTo(this.appender.event.getLoggerName())
-        );
+    public void testDetectionOfLogger() throws Exception {
+        final org.slf4j.Logger logger = mock(org.slf4j.Logger.class);
+        when(LoggerFactory.getLogger(this.getClass())).thenReturn(logger);
+        Logger.debug(this, "number %d", 1L);
+        verify(logger).debug("number 1");
     }
 
     @Test
-    public void testValidatesCorrectPassingOfMessageToLogger()
-        throws Exception {
-        Logger.debug(this, this.MESSAGE);
-        assertThat(
-            (String) this.appender.event.getMessage(),
-            containsString(this.MESSAGE)
-        );
+    public void testDetectionOfStaticSource() throws Exception {
+        final org.slf4j.Logger logger = mock(org.slf4j.Logger.class);
+        when(LoggerFactory.getLogger(this.getClass())).thenReturn(logger);
+        Logger.info(LoggerTest.class, "sum: %.2f", 1d);
+        verify(logger).info("sum: 1.00");
     }
 
     @Test
-    public void testValidatesCorrectPassingOfMessageToLoggerWithStaticSource()
-        throws Exception {
-        Logger.debug(LoggerTest.class, this.MESSAGE);
-        assertThat(
-            (String) this.appender.event.getMessage(),
-            containsString(this.MESSAGE)
-        );
-    }
-
-    @Test
-    public void testValidatesCorrectLoggingLevel() throws Exception {
-        Logger.debug(this, this.MESSAGE);
-        assertThat(Level.DEBUG, equalTo(this.appender.event.getLevel()));
-        Logger.info(this, this.MESSAGE);
-        assertThat(Level.INFO, equalTo(this.appender.event.getLevel()));
-        Logger.warn(this, this.MESSAGE);
-        assertThat(Level.WARN, equalTo(this.appender.event.getLevel()));
-        Logger.error(this, this.MESSAGE);
-        assertThat(Level.ERROR, equalTo(this.appender.event.getLevel()));
-        Logger.trace(this, this.MESSAGE);
-        assertThat(Level.TRACE, equalTo(this.appender.event.getLevel()));
-    }
-
-    @Test
-    public void testExperimentsWithVarArgs() throws Exception {
-        Logger.debug(this, "Log testing: we found %d file", 1);
-        assertThat(
-            (String) this.appender.event.getMessage(),
-            containsString("1 file")
-        );
-        Logger.debug(
-            this,
-            "Log testing: my name is '%s', I have %d son",
-            "John Doe",
-            1
-        );
-        assertThat(
-            (String) this.appender.event.getMessage(),
-            containsString("1 son")
-        );
-    }
-
-    @Test
-    public void testIsDebugEnabledMethod() throws Exception {
-        final Level level = org.apache.log4j.Logger.getLogger(this.PACKAGE)
-            .getLevel();
-        org.apache.log4j.Logger.getLogger(this.PACKAGE).setLevel(Level.DEBUG);
-        final boolean enabled = Logger.isDebugEnabled(this);
-        org.apache.log4j.Logger.getLogger(this.PACKAGE).setLevel(level);
-        assertThat(enabled, is(true));
+    public void testSettingOfLoggingLevel() throws Exception {
+        final org.slf4j.Logger logger = mock(org.slf4j.Logger.class);
+        when(LoggerFactory.getLogger(this.getClass())).thenReturn(logger);
+        Logger.trace(this, "hello");
+        verify(logger).trace(anyString());
+        Logger.warn(this, "%s + %s", "alex", "mary");
+        verify(logger).warn("alex + mary");
+        Logger.error(this, "%d + %d", 1, 1);
+        verify(logger).error("1 + 1");
     }
 
     @Test
     public void testIsTraceEnabledMethod() throws Exception {
-        final Level level = org.apache.log4j.Logger.getLogger(this.PACKAGE)
-            .getLevel();
-        org.apache.log4j.Logger.getLogger(this.PACKAGE).setLevel(Level.TRACE);
-        final boolean enabled = Logger.isTraceEnabled(this);
-        org.apache.log4j.Logger.getLogger(this.PACKAGE).setLevel(level);
-        assertThat(enabled, is(true));
-    }
-
-    private static class InnerClass {
-        public void log() {
-            this.innerLog();
-        }
-
-        private void innerLog() {
-            Logger.info(this, "Inner log message");
-        }
+        final org.slf4j.Logger logger = mock(org.slf4j.Logger.class);
+        when(LoggerFactory.getLogger(this.getClass())).thenReturn(logger);
+        when(logger.isTraceEnabled()).thenReturn(true);
+        assertThat(Logger.isTraceEnabled(this), is(true));
+        verify(logger).isTraceEnabled();
     }
 
     @Test
-    public void testSendsLogMessageFromNestedClass() throws Exception {
-        new InnerClass().log();
-        assertThat(
-            this.PACKAGE + ".LoggerTest$InnerClass",
-            equalTo(this.appender.event.getLoggerName())
-        );
+    public void testIsDebugEnabledMethod() throws Exception {
+        final org.slf4j.Logger logger = mock(org.slf4j.Logger.class);
+        when(LoggerFactory.getLogger(this.getClass())).thenReturn(logger);
+        when(logger.isDebugEnabled()).thenReturn(false);
+        assertThat(Logger.isDebugEnabled(this), is(false));
+        verify(logger).isDebugEnabled();
     }
 
-    @Test
-    public void testFormat() throws Exception {
-        final String s = this.formatterManager.fmt("group.format", "aaa");
-        assertThat(s, equalTo("aaaformatted"));
-    }
+    // @Test
+    // public void testFormatting() throws Exception {
+    //     final org.slf4j.Logger logger = mock(org.slf4j.Logger.class);
+    //     when(FormatterManager.getInstance()).thenReturn(logger);
+    //     Logger.trace(this, "hello");
+    //     verify(logger).trace(anyString());
+    // }
 
 }
