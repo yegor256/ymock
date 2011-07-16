@@ -30,9 +30,6 @@
 package com.ymock.util;
 
 import com.ymock.util.formatter.FormatterManager;
-import org.apache.log4j.AppenderSkeleton;
-import org.apache.log4j.Level;
-import org.apache.log4j.spi.LoggingEvent;
 import org.slf4j.LoggerFactory;
 import org.junit.*;
 import org.junit.runner.RunWith;
