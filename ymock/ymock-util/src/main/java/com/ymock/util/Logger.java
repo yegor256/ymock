@@ -29,7 +29,6 @@
  */
 package com.ymock.util;
 
-import com.ymock.util.formatter.FormatterManager;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -173,7 +172,7 @@ public final class Logger {
      * @return formatted Arguments string
      */
     public static String fmt(final String key, final Object... args) {
-        return FormatterManager.getInstance().fmt(key, args);
+        return FormatManager.INSTANCE.fmt(key, args);
     }
 
     /**

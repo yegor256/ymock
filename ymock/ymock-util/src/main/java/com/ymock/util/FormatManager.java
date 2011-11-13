@@ -94,21 +94,25 @@ final class FormatManager {
 
     /**
      * Discover all available formatters in classpath,
-     * annotated with {@link FormatGroup} and {@link Format} annotations.
+     * annotated with {@link Formatter} annotations.
+     * @return Discovered map of them
      */
-    private Map<String, FormatterBean> discover() {
+    private Map<String, FormattingBean> discover() {
         final Set<Class<?>> fmts = new Reflections("")
             .getTypesAnnotatedWith(Formatter.class);
         final Map<String, FormattingBean> beans =
             new HashMap<String, FormattingBean>();
         for (Class<?> fmt : fmts) {
             for (Method method : fmt.getMethods()) {
-                if (!method.isAnnotationPresent(Format.class)) {
+                if (!method.isAnnotationPresent(Formatter.class)) {
                     continue;
                 }
                 final Formatter annotation =
                     method.getAnnotation(Formatter.class);
-                beans.put(annotation.value(), this.bean(method));
+                final FormattingBean bean = this.bean(method);
+                if (bean != null) {
+                    beans.put(annotation.value(), bean);
+                }
             }
         }
         return beans;
@@ -140,6 +144,7 @@ final class FormatManager {
                 ex.getMessage()
             );
         }
+        return null;
     }
 
 }

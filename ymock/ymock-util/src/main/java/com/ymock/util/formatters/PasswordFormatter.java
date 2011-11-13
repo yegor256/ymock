@@ -37,6 +37,7 @@ import com.ymock.util.Formatter;
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
+@Formatter
 public class PasswordFormatter {
 
     /**

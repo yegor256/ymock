@@ -38,6 +38,7 @@ import java.util.Collection;
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
+@Formatter
 public class StructureFormatter {
 
     /**
@@ -45,7 +46,7 @@ public class StructureFormatter {
      * @param obj The object to analyze and format
      * @return Its internal structure as a string
      */
-    @Format("struct")
+    @Formatter("struct")
     public final String format(final Object obj) {
         return "?";
     }

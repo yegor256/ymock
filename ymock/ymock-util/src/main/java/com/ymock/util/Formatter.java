@@ -51,7 +51,7 @@ public @interface Formatter {
     /**
      * Format key.
      */
-    String value();
+    String value() default "";
 
 }
 

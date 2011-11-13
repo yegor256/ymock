@@ -37,6 +37,7 @@ import com.ymock.util.Formatter;
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
+@Formatter
 public class SizeFormatter {
 
     /**
@@ -44,7 +45,7 @@ public class SizeFormatter {
      * @param obj The object
      * @return Its size as string
      */
-    @Format("size")
+    @Formatter("size")
     public final String format(final Object obj) {
         return "?";
     }
