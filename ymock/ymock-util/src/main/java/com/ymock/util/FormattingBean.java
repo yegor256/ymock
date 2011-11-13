@@ -66,8 +66,15 @@ final class FormattingBean {
      * @return Formatted value
      */
     public String format(final Object... args) {
+        Object result = "?";
         try {
-            return this.method.invoke(this.object, args).toString();
+            result = this.method.invoke(this.object, args);
+            if (result == null) {
+                result = String.format(
+                    "NULL@%s",
+                    this.method.toGenericString()
+                );
+            }
         } catch (IllegalAccessException ex) {
             Logger.warn(
                 this,
@@ -83,7 +90,7 @@ final class FormattingBean {
                 ex.getMessage()
             );
         }
-        return "?";
+        return result.toString();
     }
 
 }

@@ -46,18 +46,24 @@ public final class FormatManagerTest {
      */
     private FormatManager mgr = FormatManager.INSTANCE;
 
+    /**
+     * Test with sample formatter.
+     */
     @Test
     public final void testSimpleFormatting() throws Exception {
         MatcherAssert.assertThat(
-            this.mrg.fmt("foo.text", "test"),
+            this.mgr.fmt("foo.text", "test"),
             Matchers.equalTo("4")
         );
     }
 
+    /**
+     * Test with non-existing formatter.
+     */
     @Test
     public void testWithNonExistingFormatter() throws Exception {
         MatcherAssert.assertThat(
-            this.mrg.fmt("non-existing-formatter", "test-1", "test-2"),
+            this.mgr.fmt("non-existing-formatter", "test-1", "test-2"),
             Matchers.equalTo("?")
         );
     }
@@ -69,11 +75,10 @@ public final class FormatManagerTest {
          * @param txt Some text
          * @return Formatted value
          */
-        @Format("foo.text")
+        @Formatter("foo.text")
         public String format(final String txt) {
             return String.valueOf(txt.length());
         }
-
     }
 
 }

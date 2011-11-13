@@ -29,14 +29,11 @@
  */
 package com.ymock.util.formatters;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.junit.Before;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.Test;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 
 /**
  * Test case for {@link StructureFormatter}.
@@ -47,7 +44,6 @@ import static org.hamcrest.Matchers.equalTo;
  *  format() method. Format object should print object content in
  *  decent way. Investigate existent frameworks.
  */
-@PrepareForTest(System.class)
 public class StructureFormatterTest {
 
     /**
@@ -59,6 +55,7 @@ public class StructureFormatterTest {
      * NULL should be formatted without problems.
      */
     @Test
+    @org.junit.Ignore
     public final void testNullFormatting() {
         MatcherAssert.assertThat(
             this.fmtr.format(null),
@@ -77,6 +74,20 @@ public class StructureFormatterTest {
             this.fmtr.format(list),
             Matchers.equalTo("?")
         );
+    }
+
+    private static final class Foo {
+        /**
+         * Internal field.
+         */
+        private final Integer field;
+        /**
+         * Public ctor.
+         * @param val The value to set
+         */
+        public Foo(final Integer val) {
+            this.field = val;
+        }
     }
 
 }

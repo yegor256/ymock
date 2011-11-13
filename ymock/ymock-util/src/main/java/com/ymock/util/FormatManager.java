@@ -112,6 +112,12 @@ final class FormatManager {
                 final FormattingBean bean = this.bean(method);
                 if (bean != null) {
                     beans.put(annotation.value(), bean);
+                    Logger.debug(
+                        this,
+                        "Discovered '%s' formatter at %s",
+                        annotation.value(),
+                        method.getDeclaringClass().getName()
+                    );
                 }
             }
         }
@@ -124,8 +130,9 @@ final class FormatManager {
      * @return The bean
      */
     private FormattingBean bean(final Method method) {
+        FormattingBean bean = null;
         try {
-            final FormattingBean bean = new FormattingBean(
+            bean = new FormattingBean(
                 method.getDeclaringClass().newInstance(),
                 method
             );
@@ -144,7 +151,7 @@ final class FormatManager {
                 ex.getMessage()
             );
         }
-        return null;
+        return bean;
     }
 
 }

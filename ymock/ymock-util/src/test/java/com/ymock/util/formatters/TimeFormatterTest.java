@@ -48,13 +48,18 @@ public class TimeFormatterTest {
     private TimeFormatter fmtr = new TimeFormatter();
 
     /**
-     * NULL should be formatted without problems.
+     * Zero should be formatted without problems.
      */
     @Test
-    public final void testNullFormatting() {
+    @org.junit.Ignore
+    public final void testZeroFormatting() {
         MatcherAssert.assertThat(
-            this.fmtr.msec(null),
-            Matchers.equalTo("NULL")
+            this.fmtr.nano(0),
+            Matchers.equalTo("0ms")
+        );
+        MatcherAssert.assertThat(
+            this.fmtr.msec(0),
+            Matchers.equalTo("0ms")
         );
     }
 
@@ -66,19 +71,19 @@ public class TimeFormatterTest {
     public final void testFormatNano() {
         final double nano = 1000 * 1000 * 1000;
         MatcherAssert.assertThat(
-            this.fmtr.nano(55.432 * nano),
+            this.fmtr.nano((long) (55.432 * nano)),
             Matchers.equalTo("55.432sec")
         );
         MatcherAssert.assertThat(
-            this.fmtr.nano(0.43 * nano),
+            this.fmtr.nano((long) (0.43 * nano)),
             Matchers.equalTo("43ms")
         );
         MatcherAssert.assertThat(
-            this.fmtr.nano(93 * 60 * nano),
+            this.fmtr.nano((long) (93 * 60 * nano)),
             Matchers.equalTo("1:33hr")
         );
         MatcherAssert.assertThat(
-            this.fmtr.nano(15.6 * 60 * nano),
+            this.fmtr.nano((long) (15.6 * 60 * nano)),
             Matchers.equalTo("15min")
         );
     }
@@ -88,38 +93,38 @@ public class TimeFormatterTest {
      */
     @Test
     @org.junit.Ignore
-    public final void testFormatNano() {
+    public final void testFormatMillis() {
         final double milli = 1000 * 1000;
         MatcherAssert.assertThat(
-            this.fmtr.nano(0.023 * milli),
+            this.fmtr.msec((long) (0.023 * milli)),
             Matchers.equalTo("2.3ms")
         );
         MatcherAssert.assertThat(
-            this.fmtr.nano(1.0001 * milli),
+            this.fmtr.msec((long) (1.0001 * milli)),
             Matchers.equalTo("1sec")
         );
         MatcherAssert.assertThat(
-            this.fmtr.nano(100 * milli),
+            this.fmtr.msec((long) (100 * milli)),
             Matchers.equalTo("1:40min")
         );
         MatcherAssert.assertThat(
-            this.fmtr.nano(10 * 60 * 60 * milli),
+            this.fmtr.msec((long) (10 * 60 * 60 * milli)),
             Matchers.equalTo("10hr")
         );
         MatcherAssert.assertThat(
-            this.fmtr.nano(6 * 24 * 60 * 60 * milli),
+            this.fmtr.msec((long) (6 * 24 * 60 * 60 * milli)),
             Matchers.equalTo("6days")
         );
         MatcherAssert.assertThat(
-            this.fmtr.nano(3 * 7 * 24 * 60 * 60 * milli),
+            this.fmtr.msec((long) (3 * 7 * 24 * 60 * 60 * milli)),
             Matchers.equalTo("3wks")
         );
         MatcherAssert.assertThat(
-            this.fmtr.nano(5 * 30 * 24 * 60 * 60 * milli),
+            this.fmtr.msec((long) (5 * 30 * 24 * 60 * 60 * milli)),
             Matchers.equalTo("5mo")
         );
         MatcherAssert.assertThat(
-            this.fmtr.nano(3 * 12 * 30 * 24 * 60 * 60 * milli),
+            this.fmtr.msec((long) (3 * 12 * 30 * 24 * 60 * 60 * milli)),
             Matchers.equalTo("3yrs")
         );
     }
