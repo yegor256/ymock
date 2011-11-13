@@ -45,7 +45,7 @@ public class TimeFormatterTest {
     /**
      * Object under test.
      */
-    private TimeFormatter fmtr = new TimeFormatter();
+    private final transient TimeFormatter fmtr = new TimeFormatter();
 
     /**
      * Zero should be formatted without problems.

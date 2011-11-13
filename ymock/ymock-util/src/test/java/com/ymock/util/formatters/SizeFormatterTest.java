@@ -47,7 +47,7 @@ public class SizeFormatterTest {
     /**
      * Object under test.
      */
-    private final SizeFormatter fmtr = new SizeFormatter();
+    private final transient SizeFormatter fmtr = new SizeFormatter();
 
     /**
      * NULL should be formatted without problems.
@@ -98,7 +98,8 @@ public class SizeFormatterTest {
     @org.junit.Ignore
     public final void testAbsentFileSizeFormatting() {
         final File file = Mockito.mock(File.class);
-        Mockito.doThrow(new java.io.IOException("ouch")).when(file).length();
+        Mockito.doThrow(new java.io.FileNotFoundException("ouch"))
+            .when(file).length();
         MatcherAssert.assertThat(
             this.fmtr.format(file),
             Matchers.equalTo("(?:ouch)")

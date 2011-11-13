@@ -30,9 +30,9 @@
 package com.ymock.util;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import org.reflections.Reflections;
 
 /**
@@ -52,7 +52,8 @@ final class FormatManager {
     /**
      * Storage of all the registered formatters.
      */
-    private final Map<String, FormattingBean> formatters = this.discover();
+    private final transient ConcurrentMap<String, FormattingBean> formatters =
+        this.discover();
 
     /**
      * Private constructor.
@@ -72,15 +73,15 @@ final class FormatManager {
      */
     public String fmt(final String key, final Object... args) {
         String result;
-        if (!this.formatters.containsKey(key)) {
+        if (this.formatters.containsKey(key)) {
+            result = this.formatters.get(key).format(args);
+        } else {
             Logger.warn(
                 this,
                 "Formatter is not registered for key: %s",
                 key
             );
             result = "?";
-        } else {
-            result = this.formatters.get(key).format(args);
         }
         return result;
     }
@@ -90,11 +91,11 @@ final class FormatManager {
      * annotated with {@link Formatter} annotations.
      * @return Discovered map of them
      */
-    private Map<String, FormattingBean> discover() {
+    private ConcurrentMap<String, FormattingBean> discover() {
         final Set<Class<?>> fmts = new Reflections("")
             .getTypesAnnotatedWith(Formatter.class);
-        final Map<String, FormattingBean> beans =
-            new HashMap<String, FormattingBean>();
+        final ConcurrentMap<String, FormattingBean> beans =
+            new ConcurrentHashMap<String, FormattingBean>();
         for (Class<?> fmt : fmts) {
             for (Method method : fmt.getMethods()) {
                 if (!method.isAnnotationPresent(Formatter.class)) {

@@ -45,7 +45,7 @@ public class PasswordFormatterTest {
     /**
      * Instance of the class to test.
      */
-    private final PasswordFormatter fmtr = new PasswordFormatter();
+    private final transient PasswordFormatter fmtr = new PasswordFormatter();
 
     /**
      * NULL value should be formatted properly.

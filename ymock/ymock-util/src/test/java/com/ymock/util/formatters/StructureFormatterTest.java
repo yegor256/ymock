@@ -49,7 +49,7 @@ public class StructureFormatterTest {
     /**
      * Object under test.
      */
-    private StructureFormatter fmtr = new StructureFormatter();
+    private final transient StructureFormatter fmtr = new StructureFormatter();
 
     /**
      * NULL should be formatted without problems.
@@ -80,13 +80,20 @@ public class StructureFormatterTest {
         /**
          * Internal field.
          */
-        private final Integer field;
+        private final transient Integer field;
         /**
          * Public ctor.
          * @param val The value to set
          */
         public Foo(final Integer val) {
             this.field = val;
+        }
+        /**
+         * Read field.
+         * @return The value
+         */
+        public Integer getField() {
+            return this.field;
         }
     }
 

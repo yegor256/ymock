@@ -44,7 +44,7 @@ public final class FormatManagerTest {
     /**
      * Object under test.
      */
-    private FormatManager mgr = FormatManager.INSTANCE;
+    private final transient FormatManager mgr = FormatManager.INSTANCE;
 
     /**
      * Test with sample formatter.

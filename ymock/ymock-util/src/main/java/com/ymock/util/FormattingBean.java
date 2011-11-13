@@ -43,12 +43,12 @@ final class FormattingBean {
     /**
      * Holder of the method to call.
      */
-    private Object object;
+    private final transient Object object;
 
     /**
      * The formatter method to call.
      */
-    private Method method;
+    private final transient Method method;
 
     /**
      * Public ctor.

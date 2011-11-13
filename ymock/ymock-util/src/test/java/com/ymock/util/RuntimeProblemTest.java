@@ -52,10 +52,14 @@ public final class RuntimeProblemTest {
     @Test
     public void testValidatesExceptionClass() {
         final Throwable ex = RuntimeProblem.make(this.REASON);
-        MatcherAssert.assertThat(ex,
-            Matchers.instanceOf(RuntimeProblem.class));
-        MatcherAssert.assertThat(ex.getMessage(),
-            Matchers.containsString(this.REASON));
+        MatcherAssert.assertThat(
+            ex,
+            Matchers.instanceOf(RuntimeProblem.class)
+        );
+        MatcherAssert.assertThat(
+            ex.getMessage(),
+            Matchers.containsString(this.REASON)
+        );
     }
 
     /**
@@ -66,10 +70,14 @@ public final class RuntimeProblemTest {
         final Throwable ex = RuntimeProblem.make(
             new IllegalStateException(this.REASON)
         );
-        MatcherAssert.assertThat(ex,
-            Matchers.instanceOf(RuntimeProblem.class));
-        MatcherAssert.assertThat(ex.getMessage(),
-            Matchers.containsString(this.REASON));
+        MatcherAssert.assertThat(
+            ex,
+            Matchers.instanceOf(RuntimeProblem.class)
+        );
+        MatcherAssert.assertThat(
+            ex.getMessage(),
+            Matchers.containsString(this.REASON)
+        );
     }
 
     /**
@@ -81,10 +89,14 @@ public final class RuntimeProblemTest {
             this.REASON,
             new IllegalStateException()
         );
-        MatcherAssert.assertThat(ex,
-            Matchers.instanceOf(RuntimeProblem.class));
-        MatcherAssert.assertThat(ex.getMessage(),
-            Matchers.containsString(this.REASON));
+        MatcherAssert.assertThat(
+            ex,
+            Matchers.instanceOf(RuntimeProblem.class)
+        );
+        MatcherAssert.assertThat(
+            ex.getMessage(),
+            Matchers.containsString(this.REASON)
+        );
     }
 
     /**
@@ -93,10 +105,14 @@ public final class RuntimeProblemTest {
     @Test
     public void testValidatesExceptionClassViaVarargString() {
         final Throwable ex = RuntimeProblem.make("number %d", 3);
-        MatcherAssert.assertThat(ex,
+        MatcherAssert.assertThat(
+            ex,
             Matchers.instanceOf(RuntimeProblem.class)
         );
-        MatcherAssert.assertThat(ex.getMessage(), Matchers.equalTo("number 3"));
+        MatcherAssert.assertThat(
+            ex.getMessage(),
+            Matchers.equalTo("number 3")
+        );
     }
 
     /**
@@ -114,22 +130,22 @@ public final class RuntimeProblemTest {
         MatcherAssert.assertThat(
             RuntimeProblem.make("data %d").getMessage(),
             Matchers.equalTo(
-                "number %d (java.util.MissingFormatArgumentException:"
-                + " Format specifier 'd')"
+                // @checkstyle LineLength (1 line)
+                "number %d (java.util.MissingFormatArgumentException: Format specifier 'd')"
             )
         );
         MatcherAssert.assertThat(
             RuntimeProblem.make("num %d", "test").getMessage(),
             Matchers.equalTo(
-                "num %d (java.util.IllegalFormatConversionException:"
-                + " d != java.lang.String)"
+                // @checkstyle LineLength (1 line)
+                "num %d (java.util.IllegalFormatConversionException: d != java.lang.String)"
             )
         );
         MatcherAssert.assertThat(
             RuntimeProblem.make("number %1z", "text").getMessage(),
             Matchers.equalTo(
-                "number %1z (java.util.UnknownFormatConversionException:"
-                + " Conversion = 'z')"
+                // @checkstyle LineLength (1 line)
+                "number %1z (java.util.UnknownFormatConversionException: Conversion = 'z')"
             )
         );
         final Object obj = Mockito.mock(Object.class);
