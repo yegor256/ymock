@@ -37,7 +37,7 @@
     <parent>
         <groupId>com.ymock</groupId>
         <artifactId>ymock</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version ymock="yes">2.0-SNAPSHOT</version>
     </parent>
     <artifactId>ymock-server</artifactId>
     <packaging>jar</packaging>
@@ -55,39 +55,19 @@
 
     <dependencies>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <!-- all other details are in parent module dependencyManagement section -->
-        </dependency>
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-all</artifactId>
-            <!-- all other details are in parent module dependencyManagement section -->
-        </dependency>
-        <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <!-- all other details are in parent module dependencyManagement section -->
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <!-- all other details are in parent module dependencyManagement section -->
-        </dependency>
-        <dependency>
             <groupId>com.ymock</groupId>
             <artifactId>ymock-commons</artifactId>
-            <version>1.0</version>
+            <version ymock="yes">2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.ymock</groupId>
             <artifactId>ymock-util</artifactId>
-            <version>1.0</version>
+            <version ymock="yes">2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.ymock</groupId>
             <artifactId>ymock-client</artifactId>
-            <version>1.0</version>
+            <version ymock="yes">2.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -133,12 +113,11 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jul-to-slf4j</artifactId>
-            <version>1.6.1</version> <!-- 8 Nov 2010 -->
+            <version since="8 Nov 2010">1.6.1</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <!-- all other details are in parent module dependencyManagement section -->
         </dependency>
         <dependency>
             <!--
@@ -147,8 +126,24 @@
             -->
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
-            <version>1.2.16</version> <!-- 5 Nov 2010 -->
+            <version since="5 Nov 2010">1.2.16</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-all</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
         </dependency>
     </dependencies>
 
@@ -156,7 +151,7 @@
         <plugins>
             <plugin>
                 <artifactId>maven-invoker-plugin</artifactId>
-                <version>1.5</version> <!-- 22 Mar 2011 -->
+                <version since="22 Mar 2011">1.5</version>
                 <configuration>
                     <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
                     <!--

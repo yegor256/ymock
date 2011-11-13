@@ -39,7 +39,7 @@
     <parent>
         <groupId>com.ymock</groupId>
         <artifactId>ymock-mocks</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version ymock="yes">2.0-SNAPSHOT</version>
     </parent>
     <groupId>com.ymock.mock</groupId>
     <artifactId>mock-jdbc</artifactId>
@@ -50,18 +50,15 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <!-- other details in parent pom dependencyManagement section -->
         </dependency>
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-all</artifactId>
-            <!-- other details in parent pom dependencyManagement section -->
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
             <scope>compile</scope>
-            <!-- other details in parent pom dependencyManagement section -->
         </dependency>
     </dependencies>
 
