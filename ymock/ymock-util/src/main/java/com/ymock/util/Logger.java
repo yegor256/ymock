@@ -29,9 +29,6 @@
  */
 package com.ymock.util;
 
-// Third-party logging facility. This is the only
-// place in the project where we include slf4j classes.,
-// in the entire project.
 import com.ymock.util.formatter.FormatterManager;
 import org.slf4j.LoggerFactory;
 
@@ -49,14 +46,12 @@ import org.slf4j.LoggerFactory;
  * <p>Use it like this in any class, and in any package:
  *
  * <pre>
- * {@code
  * package com.ymock.XXX;
  * import com.ymock.util.Logger;
  * public class MyClass {
  *   public void foo(Integer num) {
  *     Logger.info(this, "foo(%d) just called", num);
  *   }
- * }
  * }
  * </pre>
  *
@@ -70,13 +65,11 @@ import org.slf4j.LoggerFactory;
  * logging level is enabled in the project, e.g.:
  *
  * <pre>
- * {@code
  * //...
  * if (Logger.isTraceEnabled(this)) {
  *   Logger.trace(this, "#foo() called");
  * }
  * //...
- * }
  * </pre>
  *
  * @author Yegor Bugayenko (yegor@ymock.com)
@@ -85,8 +78,9 @@ import org.slf4j.LoggerFactory;
 public final class Logger {
 
     /**
-     * Private ctor, to avoid class instantiation. This is
-     * the utility class and you can't instantiate it directly.
+     * Private ctor, to avoid class instantiation.
+     *
+     * <p>This is utility class and you can't instantiate it directly.
      */
     private Logger() {
         // intentionally empty
@@ -168,6 +162,21 @@ public final class Logger {
     }
 
     /**
+     * Formats the passed args according to the formatter defined by
+     * key argument.
+     *
+     * <p>Formatter specified by key argument should be
+     * registered in {@link FormatterManager}.
+     *
+     * @param key Key for the formatter to be used to fmt the arguments
+     * @param args Arguments to be formatted
+     * @return formatted Arguments string
+     */
+    public static String fmt(final String key, final Object... args) {
+        return FormatterManager.getInstance().fmt(key, args);
+    }
+
+    /**
      * Get the instance of the logger for this particular caller.
      * @param source Source of the logging operation
      * @return The instance of {@link Logger} class
@@ -192,18 +201,4 @@ public final class Logger {
         return String.format(msg, args);
     }
 
-    /**
-     * Formats the passed args according to the formatter defined by
-     * key argument.
-     *
-     * <p>Formatter specified by key argument should be
-     * registered in {@link FormatterManager}.
-     *
-     * @param key key for the formatter to be used to fmt the arguments
-     * @param args arguments to be formatted
-     * @return formatted arguments string
-     */
-    public static String fmt(final String key, final Object... args) {
-        return FormatterManager.getInstance().fmt(key, args);
-    }
 }

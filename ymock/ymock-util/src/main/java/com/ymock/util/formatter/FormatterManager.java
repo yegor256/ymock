@@ -30,7 +30,6 @@
 package com.ymock.util.formatter;
 
 import com.ymock.util.Logger;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -38,7 +37,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
 import org.reflections.Reflections;
 import org.reflections.scanners.TypeAnnotationsScanner;
 import org.reflections.util.ClasspathHelper;
@@ -49,54 +47,32 @@ import org.reflections.util.ConfigurationBuilder;
  * Class is a log helper used to fmt logging arguments.
  *
  * @author Marina Kosenko (marina.kosenko@gmail.com)
+ * @version $Id$
  */
 public final class FormatterManager {
 
     /**
-     * Error message creating formatter.
-     */
-    private static final String ERROR_MSG =
-        "Cannot create formatter for class: %s method: %s";
-
-    /**
-     * Error message invoking formatter method.
-     */
-    private static final String ERROR_MSG2 =
-        "Error invoking formatter method for class: %s method: %s";
-
-    /**
      * Singleton instance of the FormatterManager class.
      */
-    private static FormatterManager instance;
+    public static final FormatterManager INSTANCE = new FormatterManager();
 
     /**
      * Storage of all the registered formatters.
      */
-    private Map<String, FormatterBean> formatters;
+    private final Map<String, FormatterBean> formatters = this.discover();
 
     /**
      * Private constructor.
-     *
-     * <p>Initialize the object, registers all available formatters -
-     * annotated with {@link FormatGroup} and {@link Format} annotetions
-     *
-     * @see #registerFormatters()
      */
     private FormatterManager() {
-        this.formatters = new HashMap<String, FormatterBean>();
-        this.registerFormatters();
+        // intentionally empty
     }
 
     /**
-     * Registers all the available formatters, looks up in classpath for all
-     * the classes annotated with {@link FormatGroup} and methods
-     * annotated with {@link Format} annotetions and registers them
-     * to the manager.
-     * @todo #19 The basic list of formatters should be defined and they should
-     *       be implemented on the basis of {@link FormatGroup} and
-     *       {@link Format} interfaces
+     * Discover all available formatters in classpath,
+     * annotated with {@link FormatGroup} and {@link Format} annotations.
      */
-    protected void registerFormatters() {
+    private Map<String, FormatterBean> discover() {
         final Set<URL> urls = ClasspathHelper.getUrlsForPackagePrefix("");
         final Reflections reflections = new Reflections(
             new ConfigurationBuilder()
@@ -117,11 +93,19 @@ public final class FormatterManager {
                         this.formatters.put(annotatedGroup.value()
                             + "." + annotationFormat.value(), formatterBean);
                     } catch (InstantiationException e) {
-                        Logger.warn(this, FormatterManager.ERROR_MSG,
-                            annotatedGroup, m);
+                        Logger.warn(
+                            this,
+                            "Cannot create formatter for class: %s method: %s",
+                            annotatedGroup,
+                            m
+                        );
                     } catch (IllegalAccessException e) {
-                        Logger.warn(this, FormatterManager.ERROR_MSG,
-                            annotatedGroup, m);
+                        Logger.warn(
+                            this,
+                            "Error invoking formatter method for class: %s method: %s",
+                            annotatedGroup,
+                            m
+                        );
                     }
 
                 }
@@ -130,26 +114,13 @@ public final class FormatterManager {
     }
 
     /**
-     * Returns the singleton instance of {@link FormatterManager}.
-     * @return the singleton instance
-     */
-    public static FormatterManager getInstance() {
-        synchronized (FormatterManager.class) {
-            if (FormatterManager.instance == null) {
-                FormatterManager.instance = new FormatterManager();
-            }
-            return FormatterManager.instance;
-        }
-    }
-
-    /**
      * Formats the passed args according to the formatter defined by
      * key argument.
-     * Is used by {@link Logger#fmt(String, Object...)}
      *
      * @param key Key for the formatter to be used to fmt the arguments
      * @param args Arguments to be formatted
      * @return Formatted arguments string
+     * @see Logger#fmt(String,Object[])
      */
     public String fmt(final String key, final Object... args) {
         final FormatterBean formatterBean = this.formatters.get(key);

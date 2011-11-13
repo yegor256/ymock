@@ -36,15 +36,17 @@ import java.lang.annotation.Target;
 
 /**
  * The annotation for all the log parameters formatters.
- * All the classes annotated with this annotation will be automatically
- * loaded and registered by {@link com.ymock.util.formatter.FormatterManager}
+ *
+ * <p>All the classes annotated with this annotation will be automatically
+ * loaded and registered by {@link FormatterManager}
  * class. All it's formattiong methods should be annotated with
  * {@link Format} annotation. They'll be registered in
- * {@link com.ymock.util.formatter.FormatterManager} by key =
+ * {@link FormatterManager} by key =
  * {@link FormatGroup#value()}.
  * {@link Format#value()}
  *
  * @author Marina Kosenko (marina.kosenko@gmail.com)
+ * @version $Id$
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
