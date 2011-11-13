@@ -47,7 +47,7 @@ public final class TimeFormatter {
      */
     @Formatter("time.nano")
     public String nano(final long time) {
-        return "?";
+        return "??";
     }
 
     /**

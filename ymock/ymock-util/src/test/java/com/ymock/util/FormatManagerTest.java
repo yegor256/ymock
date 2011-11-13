@@ -50,7 +50,7 @@ public final class FormatManagerTest {
      * Test with sample formatter.
      */
     @Test
-    public final void testSimpleFormatting() throws Exception {
+    public void testSimpleFormatting() {
         MatcherAssert.assertThat(
             this.mgr.fmt("foo.text", "test"),
             Matchers.equalTo("4")
@@ -61,7 +61,7 @@ public final class FormatManagerTest {
      * Test with non-existing formatter.
      */
     @Test
-    public void testWithNonExistingFormatter() throws Exception {
+    public void testWithNonExistingFormatter() {
         MatcherAssert.assertThat(
             this.mgr.fmt("non-existing-formatter", "test-1", "test-2"),
             Matchers.equalTo("?")

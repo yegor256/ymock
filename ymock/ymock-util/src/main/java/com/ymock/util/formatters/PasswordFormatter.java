@@ -41,12 +41,12 @@ import com.ymock.util.Formatter;
 public final class PasswordFormatter {
 
     /**
-     * Javadoc.
-     * @param password param
-     * @return result
+     * Format some secret information.
+     * @param secret Some secret text to format
+     * @return Formatted result
      */
     @Formatter("secret")
-    public String format(final String password) {
-        return null;
+    public String format(final String secret) {
+        return "?";
     }
 }

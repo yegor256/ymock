@@ -27,68 +27,11 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.util.formatters;
-
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.Test;
 
 /**
- * Test case for {@link PasswordFormatter}.
- * @author Marina Kosenko (marina.kosenko@gmail.com)
+ * Convenient formatters, tests.
+ *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
- * @todo #25! Provide implementation of PasswordFormatter, write javadoc
  */
-public class PasswordFormatterTest {
-
-    /**
-     * Instance of the class to test.
-     */
-    private final PasswordFormatter fmtr = new PasswordFormatter();
-
-    /**
-     * NULL value should be formatted properly.
-     */
-    @Test
-    @org.junit.Ignore
-    public final void testFormatNullValue() {
-        MatcherAssert.assertThat(
-            this.fmtr.format(null),
-            Matchers.equalTo("NULL")
-        );
-    }
-
-    /**
-     * Normal text should be escaped.
-     */
-    @Test
-    @org.junit.Ignore
-    public final void testNormalTextFormatting() {
-        MatcherAssert.assertThat(
-            this.fmtr.format("alpha beta gamma"),
-            Matchers.equalTo("\"a***a\"")
-        );
-        MatcherAssert.assertThat(
-            this.fmtr.format("x"),
-            Matchers.equalTo("\"x***x\"")
-        );
-        MatcherAssert.assertThat(
-            this.fmtr.format("te"),
-            Matchers.equalTo("\"t***e\"")
-        );
-    }
-
-    /**
-     * Empty text should be escaped.
-     */
-    @Test
-    @org.junit.Ignore
-    public final void testEmptyTextFormatting() {
-        MatcherAssert.assertThat(
-            this.fmtr.format(""),
-            Matchers.equalTo("\"\"")
-        );
-    }
-
-}
+package com.ymock.util.formatters;

@@ -30,7 +30,6 @@
 package com.ymock.util.formatters;
 
 import com.ymock.util.Formatter;
-import java.util.Collection;
 
 /**
  * Structure formatting.

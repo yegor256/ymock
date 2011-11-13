@@ -29,30 +29,38 @@
  */
 package com.ymock.util;
 
-import org.slf4j.LoggerFactory;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.mockito.Mockito;
+import org.slf4j.LoggerFactory;
 
 /**
+ * Test case for {@link Logger}.
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Logger.class, LoggerFactory.class})
+@PrepareForTest({ Logger.class, LoggerFactory.class })
 public final class LoggerTest {
 
+    /**
+     * Prepare logger factory.
+     */
     @Before
     public void mockLoggerFactory() {
         PowerMockito.mockStatic(LoggerFactory.class);
     }
 
+    /**
+     * Test it.
+     * @throws Exception If something goes wrong
+     */
     @Test
     public void testDetectionOfLogger() throws Exception {
         final org.slf4j.Logger logger = Mockito.mock(org.slf4j.Logger.class);
@@ -62,6 +70,10 @@ public final class LoggerTest {
         Mockito.verify(logger).debug("number 1");
     }
 
+    /**
+     * Test it.
+     * @throws Exception If something goes wrong
+     */
     @Test
     public void testDetectionOfStaticSource() throws Exception {
         final org.slf4j.Logger logger = Mockito.mock(org.slf4j.Logger.class);
@@ -71,6 +83,10 @@ public final class LoggerTest {
         Mockito.verify(logger).info("sum: 1.00");
     }
 
+    /**
+     * Test it.
+     * @throws Exception If something goes wrong
+     */
     @Test
     public void testSettingOfLoggingLevel() throws Exception {
         final org.slf4j.Logger logger = Mockito.mock(org.slf4j.Logger.class);
@@ -84,6 +100,10 @@ public final class LoggerTest {
         Mockito.verify(logger).error("1 + 1");
     }
 
+    /**
+     * Test it.
+     * @throws Exception If something goes wrong
+     */
     @Test
     public void testIsTraceEnabledMethod() throws Exception {
         final org.slf4j.Logger logger = Mockito.mock(org.slf4j.Logger.class);
@@ -97,6 +117,10 @@ public final class LoggerTest {
         Mockito.verify(logger).isTraceEnabled();
     }
 
+    /**
+     * Test it.
+     * @throws Exception If something goes wrong
+     */
     @Test
     public void testIsDebugEnabledMethod() throws Exception {
         final org.slf4j.Logger logger = Mockito.mock(org.slf4j.Logger.class);

@@ -38,7 +38,7 @@ import java.lang.annotation.Target;
  * The annotation for all the log parameters formatters methods.
  *
  * <p>All the methods annotated with this annotation will automatically
- * become available for {@link Logger#fmt()}.
+ * become available for {@link Logger#fmt(String,Object[])}.
  *
  * @author Marina Kosenko (marina.kosenko@gmail.com)
  * @author Yegor Bugayenko (yegor@ymock.com)

@@ -165,11 +165,11 @@ public final class Logger {
      * key argument.
      *
      * <p>Formatter specified by key argument should be
-     * registered in {@link FormatterManager}.
+     * registered in {@link FormatManager}.
      *
      * @param key Key for the formatter to be used to fmt the arguments
      * @param args Arguments to be formatted
-     * @return formatted Arguments string
+     * @return Formatted arguments string
      */
     public static String fmt(final String key, final Object... args) {
         return FormatManager.INSTANCE.fmt(key, args);

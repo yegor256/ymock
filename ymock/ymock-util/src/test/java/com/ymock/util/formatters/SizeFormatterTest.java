@@ -39,6 +39,7 @@ import org.mockito.Mockito;
  * Test case for {@link SizeFormatter}.
  * @author Marina Kosenko (marina.kosenko@gmail.com)
  * @author Yegor Bugayenko (yegor@ymock.com)
+ * @version $Id$
  * @todo #25! Provide implementation of SizeFormatter, write javadoc
  */
 public class SizeFormatterTest {
@@ -62,6 +63,7 @@ public class SizeFormatterTest {
 
     /**
      * File size should be formatted.
+     * @checkstyle MagicNumber (30 lines)
      */
     @Test
     @org.junit.Ignore
