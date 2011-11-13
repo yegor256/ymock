@@ -27,52 +27,67 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.util.formatter.impl;
+package com.ymock.util.formatters;
 
-import org.junit.Before;
-import org.junit.Ignore;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-
 /**
- * @todo #25! Provide implementation of PasswordFormatter, write javadoc
+ * Test case for {@link PasswordFormatter}.
  * @author Marina Kosenko (marina.kosenko@gmail.com)
+ * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
+ * @todo #25! Provide implementation of PasswordFormatter, write javadoc
  */
 public class PasswordFormatterTest {
 
-    private PasswordFormatter passwordFormatter;
+    /**
+     * Instance of the class to test.
+     */
+    private final PasswordFormatter fmtr = new PasswordFormatter();
 
-    @Before
-    public final void setUp() throws Exception {
-        this.passwordFormatter = new PasswordFormatter();
-    }
-
+    /**
+     * NULL value should be formatted properly.
+     */
     @Test
-    public final void testFormatFake() {
-        this.passwordFormatter.format(null);
+    public final void testFormatNullValue() {
+        MatcherAssert.assertThat(
+            this.fmtr.format(null),
+            Matchers.equalTo("NULL")
+        );
     }
 
+    /**
+     * Normal text should be escaped.
+     */
     @Test
-    @Ignore
-    public final void testFormat() {
-        final String formatted = this.passwordFormatter.format("abcdefghij");
-        assertThat(formatted, equalTo("a*****j"));
+    @org.junit.Ignore
+    public final void testNormalTextFormatting() {
+        MatcherAssert.assertThat(
+            this.fmtr.format("alpha beta gamma"),
+            Matchers.equalTo("\"a***a\"")
+        );
+        MatcherAssert.assertThat(
+            this.fmtr.format("a"),
+            Matchers.equalTo("\"a***a\"")
+        );
+        MatcherAssert.assertThat(
+            this.fmtr.format("ab"),
+            Matchers.equalTo("\"a***b\"")
+        );
     }
 
+    /**
+     * Empty text should be escaped.
+     */
     @Test
-    @Ignore
-    public final void testFormatNull() {
-        final String formatted = this.passwordFormatter.format(null);
-        assertThat(formatted, equalTo("NULL"));
+    @org.junit.Ignore
+    public final void testEmptyTextFormatting() {
+        MatcherAssert.assertThat(
+            this.fmtr.format(""),
+            Matchers.equalTo("\"\"")
+        );
     }
 
-    @Test
-    @Ignore
-    public final void testFormatEmpty() {
-        final String formatted = this.passwordFormatter.format("");
-        assertThat(formatted, equalTo(""));
-    }
 }

@@ -27,79 +27,56 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.util.formatter.impl;
+package com.ymock.util.formatters;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 /**
- * @todo #25! Provide implementation, write javadoc, create test for
- * formatObject method. Format object should print object content in
- * decent way. Investigate existent frameworks.
- *
+ * Test case for {@link StructureFormatter}.
  * @author Marina Kosenko (marina.kosenko@gmail.com)
+ * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
+ * @todo #25! Provide implementation, write javadoc, create test for
+ *  format() method. Format object should print object content in
+ *  decent way. Investigate existent frameworks.
  */
 @PrepareForTest(System.class)
 public class StructureFormatterTest {
 
-    private StructureFormatter structureFormatter;
+    /**
+     * Object under test.
+     */
+    private StructureFormatter fmtr = new StructureFormatter();
 
-    @Before
-    public final void setUp() throws Exception {
-        this.structureFormatter = new StructureFormatter();
+    /**
+     * NULL should be formatted without problems.
+     */
+    @Test
+    public final void testNullFormatting() {
+        MatcherAssert.assertThat(
+            this.fmtr.format(null),
+            Matchers.equalTo("NULL")
+        );
     }
 
+    /**
+     * We get internal structure of an object and serialize it.
+     */
     @Test
-    public final void testFormatFake() {
-        this.structureFormatter.formatCollection(null);
-        this.structureFormatter.formatObject(null);
-    }
-
-    @Test
-    @Ignore
-    public final void testFormatCollectionObjects() {
-        final List objects = Arrays.asList(new TestObject(1),
-            new TestObject(2), new TestObject(5));
-        final String formatted = this.structureFormatter
-            .formatCollection(objects);
-        assertThat(formatted,
-            equalTo("TestObject:1, TestObject:2, TestObject:5"));
-    }
-
-    @Test
-    @Ignore
-    public final void testFormatCollectionInts() {
-        final List objects = Arrays.asList(1, 2, 5);
-        final String formatted = this.structureFormatter
-            .formatCollection(objects);
-        assertThat(formatted,
-            equalTo("1, 2, 5"));
-    }
-
-    @Test
-    @Ignore
-    public final void testFormatCollectionNull() {
-        final String formatted = this.structureFormatter
-            .formatCollection(null);
-        assertThat(formatted, equalTo("NULL"));
-    }
-
-    @Test
-    @Ignore
-    public final void testFormatCollectionEmpty() {
-        final String formatted = this.structureFormatter
-            .formatCollection(new ArrayList());
-        assertThat(formatted, equalTo(""));
+    @org.junit.Ignore
+    public final void testFormatCollection() {
+        final List list = Arrays.asList(new Foo(1), new Foo(2));
+        MatcherAssert.assertThat(
+            this.fmtr.format(list),
+            Matchers.equalTo("?")
+        );
     }
 
 }

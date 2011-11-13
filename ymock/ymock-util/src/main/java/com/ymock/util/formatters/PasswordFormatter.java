@@ -38,7 +38,7 @@ import com.ymock.util.Formatter;
  * @version $Id$
  */
 @Formatter
-public class PasswordFormatter {
+public final class PasswordFormatter {
 
     /**
      * Javadoc.
@@ -46,7 +46,7 @@ public class PasswordFormatter {
      * @return result
      */
     @Formatter("secret")
-    public final String format(final String password) {
+    public String format(final String password) {
         return null;
     }
 }

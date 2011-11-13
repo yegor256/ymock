@@ -38,7 +38,7 @@ import com.ymock.util.Formatter;
  * @version $Id$
  */
 @Formatter
-public class SizeFormatter {
+public final class SizeFormatter {
 
     /**
      * Return size of the object provided.
@@ -46,7 +46,7 @@ public class SizeFormatter {
      * @return Its size as string
      */
     @Formatter("size")
-    public final String format(final Object obj) {
+    public String format(final Object obj) {
         return "?";
     }
 

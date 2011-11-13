@@ -46,7 +46,7 @@ public final class TimeFormatter {
      * @return Textual form of the time
      */
     @Formatter("time.nano")
-    public final String nano(final long time) {
+    public String nano(final long time) {
         return "?";
     }
 
@@ -56,7 +56,7 @@ public final class TimeFormatter {
      * @return Textual form of the time
      */
     @Formatter("time.ms")
-    public final String millis(final long time) {
+    public String msec(final long time) {
         return "?";
     }
 }

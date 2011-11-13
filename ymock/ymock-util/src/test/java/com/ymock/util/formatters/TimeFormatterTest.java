@@ -27,149 +27,101 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.util.formatter.impl;
+package com.ymock.util.formatters;
 
-import org.junit.Before;
-import org.junit.Ignore;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.Test;
-import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 
 /**
- * @todo #25! Provide implementation of TimeFormatter, write javadoc
- * @author Marina kosenko
+ * Test case for {@link TimeFormatter}.
+ * @author Marina Kosenko (marina.kosenko@gmail.com)
+ * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
+ * @todo #25! Provide implementation of TimeFormatter, write javadoc
  */
-@PrepareForTest(System.class)
 public class TimeFormatterTest {
 
     /**
-     * half a second
+     * Object under test.
      */
-    private static final long NANO_HALF_SEC = 500000000L;
+    private TimeFormatter fmtr = new TimeFormatter();
 
     /**
-     * half a second
+     * NULL should be formatted without problems.
      */
-    private static final long MILLI_HALF_SEC = 500L;
-
-    /**
-     * second * 2 + second * 60 * 5
-     */
-    private static final long CURRENT_TIME_NANO = 302000000000L;
-
-    /**
-     * second * 1 + second * 60 * 2
-     */
-    private static final long TEST_TIME_NANO = 121000000000L;
-
-    /**
-     * second * 2 + second * 60 * 5 + second * 60 * 60 * 45
-     */
-    private static final long CURRENT_TIME_DAYS_NANO = 162302000000000L;
-
-    /**
-     * second * 2 + second * 60 * 5
-     */
-    private static final long CURRENT_TIME_MILLI = 302000L;
-
-    /**
-     * second * 1 + second * 60 * 2
-     */
-    private static final long TEST_TIME_MILLI = 121000L;
-
-    /**
-     * second * 2 + second * 60 * 5 + second * 60 * 60 * 45
-     */
-    private static final long CURRENT_TIME_DAYS_MILLI = 162302000L;
-
-    /**
-     * result time with hours
-     */
-    private static final String RESULT_TIME_HOUR = "45:03:01";
-
-    /**
-     * result time
-     */
-    private static final String RESULT_TIME = "03:01";
-
-    /**
-     * result time with decimal seconds
-     */
-    private static final String RESULT_TIME_DECIMAL = "03:00.5";
-
-    private TimeFormatter timeFormatter;
-
-    @Before
-    public final void setUp() throws Exception {
-        this.timeFormatter = new TimeFormatter();
+    @Test
+    public final void testNullFormatting() {
+        MatcherAssert.assertThat(
+            this.fmtr.msec(null),
+            Matchers.equalTo("NULL")
+        );
     }
 
+    /**
+     * Nano-seconds should be convertable to text.
+     */
     @Test
-    public final void testFormatFake() {
-        this.timeFormatter.formatMilli(0L);
-        this.timeFormatter.formatNano(0L);
-    }
-
-    @Test
-    @Ignore
+    @org.junit.Ignore
     public final void testFormatNano() {
-        PowerMockito.mockStatic(System.class);
-        Mockito.when(System.nanoTime()).thenReturn(this.CURRENT_TIME_NANO);
-        final String formatted = this.timeFormatter
-            .formatNano(this.TEST_TIME_NANO);
-        assertThat(formatted, equalTo(this.RESULT_TIME));
+        final double nano = 1000 * 1000 * 1000;
+        MatcherAssert.assertThat(
+            this.fmtr.nano(55.432 * nano),
+            Matchers.equalTo("55.432sec")
+        );
+        MatcherAssert.assertThat(
+            this.fmtr.nano(0.43 * nano),
+            Matchers.equalTo("43ms")
+        );
+        MatcherAssert.assertThat(
+            this.fmtr.nano(93 * 60 * nano),
+            Matchers.equalTo("1:33hr")
+        );
+        MatcherAssert.assertThat(
+            this.fmtr.nano(15.6 * 60 * nano),
+            Matchers.equalTo("15min")
+        );
     }
 
+    /**
+     * Milliseconds should be convertable to text.
+     */
     @Test
-    @Ignore
-    public final void testFormatNanoHours() {
-        Mockito.when(System.nanoTime()).thenReturn(this.CURRENT_TIME_DAYS_NANO);
-        final String formatted = this.timeFormatter
-            .formatNano(this.TEST_TIME_NANO);
-        assertThat(formatted, equalTo(this.RESULT_TIME_HOUR));
-    }
-
-    @Test
-    @Ignore
-    public final void testFormatNanoDecimal() {
-        Mockito.when(System.nanoTime()).thenReturn(this.CURRENT_TIME_NANO);
-        final String formatted = this.timeFormatter
-            .formatNano(this.TEST_TIME_NANO + this.NANO_HALF_SEC);
-        assertThat(formatted, equalTo(this.RESULT_TIME_DECIMAL));
-    }
-
-    @Test
-    @Ignore
-    public final void testFormatMilli() {
-        PowerMockito.mockStatic(System.class);
-        Mockito.when(System.nanoTime()).thenReturn(this.CURRENT_TIME_MILLI);
-        final String formatted = this.timeFormatter
-            .formatMilli(this.TEST_TIME_MILLI);
-        assertThat(formatted, equalTo(this.RESULT_TIME));
-    }
-
-    @Test
-    @Ignore
-    public final void testFormatMilliHours() {
-        Mockito.when(System.nanoTime())
-            .thenReturn(this.CURRENT_TIME_DAYS_MILLI);
-        final String formatted = this.timeFormatter
-            .formatMilli(this.TEST_TIME_MILLI);
-        assertThat(formatted, equalTo(this.RESULT_TIME_HOUR));
-    }
-
-    @Test
-    @Ignore
-    public final void testFormatMilliDecimal() {
-        Mockito.when(System.nanoTime()).thenReturn(this.CURRENT_TIME_MILLI);
-        final String formatted = this.timeFormatter
-            .formatMilli(this.TEST_TIME_MILLI + this.MILLI_HALF_SEC);
-        assertThat(formatted, equalTo(this.RESULT_TIME_DECIMAL));
+    @org.junit.Ignore
+    public final void testFormatNano() {
+        final double milli = 1000 * 1000;
+        MatcherAssert.assertThat(
+            this.fmtr.nano(0.023 * milli),
+            Matchers.equalTo("2.3ms")
+        );
+        MatcherAssert.assertThat(
+            this.fmtr.nano(1.0001 * milli),
+            Matchers.equalTo("1sec")
+        );
+        MatcherAssert.assertThat(
+            this.fmtr.nano(100 * milli),
+            Matchers.equalTo("1:40min")
+        );
+        MatcherAssert.assertThat(
+            this.fmtr.nano(10 * 60 * 60 * milli),
+            Matchers.equalTo("10hr")
+        );
+        MatcherAssert.assertThat(
+            this.fmtr.nano(6 * 24 * 60 * 60 * milli),
+            Matchers.equalTo("6days")
+        );
+        MatcherAssert.assertThat(
+            this.fmtr.nano(3 * 7 * 24 * 60 * 60 * milli),
+            Matchers.equalTo("3wks")
+        );
+        MatcherAssert.assertThat(
+            this.fmtr.nano(5 * 30 * 24 * 60 * 60 * milli),
+            Matchers.equalTo("5mo")
+        );
+        MatcherAssert.assertThat(
+            this.fmtr.nano(3 * 12 * 30 * 24 * 60 * 60 * milli),
+            Matchers.equalTo("3yrs")
+        );
     }
 
 }

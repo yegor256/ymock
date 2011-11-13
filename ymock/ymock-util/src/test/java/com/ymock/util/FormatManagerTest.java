@@ -27,45 +27,53 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.util.formatter;
+package com.ymock.util;
 
-import org.junit.Before;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-
 /**
+ * Test case for {@link FormatManagerTest}.
  * @author Marina Kosenko (marina.kosenko@gmail.com)
+ * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public class FormatterManagerTest {
+public final class FormatManagerTest {
 
-    private static final String STRING_TO_FORMAT = "aaa";
-    private static final String FORMATTED = "formatted";
+    /**
+     * Object under test.
+     */
+    private FormatManager mgr = FormatManager.INSTANCE;
 
-    private FormatterManager formatterManager;
-
-    @Before
-    public final void setUp() throws Exception {
-        this.formatterManager = FormatterManager.getInstance();
+    @Test
+    public final void testSimpleFormatting() throws Exception {
+        MatcherAssert.assertThat(
+            this.mrg.fmt("foo.text", "test"),
+            Matchers.equalTo("4")
+        );
     }
 
     @Test
-    public final void testFormat() throws Exception {
-        final String s = this.formatterManager.fmt("group.format",
-            FormatterManagerTest.STRING_TO_FORMAT);
-        assertThat(s, equalTo(FormatterManagerTest.STRING_TO_FORMAT
-            + FormatterManagerTest.FORMATTED));
-        assertThat(s, equalTo(FormatterManagerTest.STRING_TO_FORMAT
-            + FormatterManagerTest.FORMATTED));
+    public void testWithNonExistingFormatter() throws Exception {
+        MatcherAssert.assertThat(
+            this.mrg.fmt("non-existing-formatter", "test-1", "test-2"),
+            Matchers.equalTo("?")
+        );
     }
 
-    @Test
-    public final void testFormatFormatterDoesntExist() throws Exception {
-        final String s = this.formatterManager.fmt("group.aaa",
-            FormatterManagerTest.STRING_TO_FORMAT);
-        assertThat(s, equalTo(FormatterManagerTest.STRING_TO_FORMAT));
+    @Formatter
+    public static final class FooFormatter {
+        /**
+         * Format simple string.
+         * @param txt Some text
+         * @return Formatted value
+         */
+        @Format("foo.text")
+        public String format(final String txt) {
+            return String.valueOf(txt.length());
+        }
+
     }
 
 }

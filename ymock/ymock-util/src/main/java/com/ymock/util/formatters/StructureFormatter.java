@@ -39,7 +39,7 @@ import java.util.Collection;
  * @version $Id$
  */
 @Formatter
-public class StructureFormatter {
+public final class StructureFormatter {
 
     /**
      * Format internal structure of the object.
@@ -47,7 +47,7 @@ public class StructureFormatter {
      * @return Its internal structure as a string
      */
     @Formatter("struct")
-    public final String format(final Object obj) {
+    public String format(final Object obj) {
         return "?";
     }
 }
