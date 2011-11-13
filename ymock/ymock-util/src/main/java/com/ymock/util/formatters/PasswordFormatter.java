@@ -27,34 +27,25 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.util.formatter;
+package com.ymock.util.formatters;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.ymock.util.Formatter;
 
 /**
- * The annotation for all the log parameters formatters methods.
- *
- * <p>All the methods annotated with this annotation will be automatically
- * loaded and registered by {@link com.ymock.util.formatter.FormatterManager}
- * class. They'll be registered in
- * {@link FormatterManager} by key =
- * {@link FormatGroup#value()}.
- * {@link Format#value()}.
- *
+ * Password formatter.
  * @author Marina Kosenko (marina.kosenko@gmail.com)
+ * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface Format {
+public class PasswordFormatter {
 
     /**
-     * Format key.
+     * Javadoc.
+     * @param password param
+     * @return result
      */
-    String value();
-
+    @Formatter("secret")
+    public final String format(final String password) {
+        return null;
+    }
 }
-

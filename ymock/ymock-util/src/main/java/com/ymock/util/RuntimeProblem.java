@@ -35,7 +35,6 @@ package com.ymock.util;
  * <p>Use it like this in any class, and in any package:
  *
  * <pre>
- * {@code
  * package com.ymock.XXX;
  * import com.ymock.util.RuntimeProblem;
  * public class MyClass {
@@ -46,7 +45,6 @@ package com.ymock.util;
  *   }
  * }
  * [...]
- * }
  * </pre>
  *
  * @author Yegor Bugayenko (yegor@ymock.com)
