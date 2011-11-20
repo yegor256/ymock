@@ -29,41 +29,37 @@
  */
 package com.ymock.util;
 
-import java.util.Formattable;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
- * Test case for {@link DecorsManager}.
+ * Test case for {@link PreFormatter}.
  * @author Marina Kosenko (marina.kosenko@gmail.com)
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class DecorsManagerTest {
-
-    /**
-     * Object under test.
-     */
-    private final transient DecorsManager mgr = DecorsManager.INSTANCE;
+public final class PreFormatterTest {
 
     /**
      * Test with sample formatter.
      */
     @Test
-    public void testRetrievalOfSimpleDecor() {
+    public void testArgumentsDecoration() {
+        final PreFormatter pre =
+            new PreFormatter("%[foo]-5.2f and %1$+6f", 1d, "x");
         MatcherAssert.assertThat(
-            this.mgr.decor("foo", "test"),
-            Matchers.instanceOf(Formattable.class)
+            pre.getFormat(),
+            Matchers.equalTo("%-5.2f and %1$+6f")
         );
-    }
-
-    /**
-     * Test with non-existing formatter.
-     */
-    @Test(expected = com.ymock.util.RuntimeProblem.class)
-    public void testWithNonExistingDecor() {
-        this.mgr.decor("non-existing-formatter", null);
+        MatcherAssert.assertThat(
+            pre.getArguments()[0],
+            Matchers.instanceOf(FooDecor.class)
+        );
+        MatcherAssert.assertThat(
+            pre.getArguments()[1],
+            Matchers.instanceOf(String.class)
+        );
     }
 
 }

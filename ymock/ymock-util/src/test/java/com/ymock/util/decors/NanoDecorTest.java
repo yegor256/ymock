@@ -32,6 +32,7 @@ package com.ymock.util.decors;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Formattable;
+import java.util.FormattableFlags;
 import java.util.Formatter;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -100,21 +101,31 @@ public class NanoDecorTest {
     public static Collection<Object[]> params() {
         return Arrays.asList(
             new Object[][] {
-                { 234, "0.234mcs", 0, 1, 1 },
+                { 234L, "0.234mcs", 0, 1, 1 },
+                { 53111L, "53.11mcs  ", FormattableFlags.LEFT_JUSTIFY, 10, 2 },
+                { 87090432L, "  87ms", 0, 6, 0 },
+                { 6001001001L, "6.0010s", 0, 0, 4 },
+                { 122001001001L, "  2MIN", FormattableFlags.UPPERCASE, 6, 0 },
+                { 3789001001001L, "3789.00100s", 0, 0, 5 },
+                { 3789002002002L, "63.2min", 0, 0, 1 },
+                { 3789003003003L, "1hr", 0, 0, 0 },
+                { 342000004004004L, "95hr", 0, 0, 0 },
             }
         );
     }
 
     /**
      * Zero should be formatted without problems.
+     * @throws Exception If some problem inside
      */
     @Test
     @org.junit.Ignore
-    public final void testDifferentFormats() {
+    public final void testDifferentFormats() throws Exception {
         final Formattable decor = new NanoDecor(this.nano);
-        final Formatter fmt = Mockito.mock(Formatter.class);
+        final Appendable dest = Mockito.mock(Appendable.class);
+        final Formatter fmt = new Formatter(dest);
         decor.formatTo(fmt, this.flags, this.width, this.precision);
-        Mockito.verify(fmt).format(text);
+        Mockito.verify(dest).append(text);
     }
 
 }

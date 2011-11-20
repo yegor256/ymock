@@ -30,6 +30,8 @@
 package com.ymock.util;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -45,21 +47,20 @@ final class PreFormatter {
     /**
      * The formatting string.
      */
-    private final String format;
+    private String format;
 
     /**
      * List of arguments.
      */
-    private final List<Object> arguments;
+    private List<Object> arguments;
 
     /**
      * Public ctor.
      * @param fmt The formatting string
      * @param args The list of arguments
      */
-    public PreFormatter(final String fmt, final Object[] args) {
-        this.format = fmt;
-        this.arguments = new CopyOnWriteArrayList<Object>(args);
+    public PreFormatter(final String fmt, final Object... args) {
+        this.process(fmt, args);
     }
 
     /**
@@ -76,6 +77,47 @@ final class PreFormatter {
      */
     public Object[] getArguments() {
         return this.arguments.toArray(new Object[]{});
+    }
+
+    /**
+     * Process the data provided.
+     * @param fmt The formatting string
+     * @param args The list of arguments
+     */
+    private void process(final String fmt, final Object[] args) {
+        this.arguments = new CopyOnWriteArrayList<Object>();
+        final StringBuffer buf = new StringBuffer();
+        final Pattern pattern = Pattern.compile(
+            "%(?:\\d+\\$)?(\\[([a-z\\-\\.0-9]+)\\])?[\\+\\-]?(?:\\d(?:\\.\\d)?)?[a-zA-Z%]"
+        );
+        final Matcher matcher = pattern.matcher(fmt);
+        int pos = 0;
+        while (matcher.find()) {
+            final String decor = matcher.group(2);
+            if (decor == null) {
+                matcher.appendReplacement(
+                    buf,
+                    Matcher.quoteReplacement(matcher.group())
+                );
+                this.arguments.add(args[pos]);
+            } else {
+                matcher.appendReplacement(
+                    buf,
+                    Matcher.quoteReplacement(
+                        matcher.group().replace(matcher.group(1), "")
+                    )
+                );
+                this.arguments.add(
+                    DecorsManager.INSTANCE.decor(
+                        decor,
+                        args[pos]
+                    )
+                );
+            }
+            pos += 1;
+        }
+        matcher.appendTail(buf);
+        this.format = buf.toString();
     }
 
 }

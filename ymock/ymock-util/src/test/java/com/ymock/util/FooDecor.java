@@ -41,7 +41,7 @@ import org.junit.Test;
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-@Decor("foo.decor")
+@Decor("foo")
 final class FooDecor implements Formattable {
 
     /**
@@ -54,7 +54,7 @@ final class FooDecor implements Formattable {
      * @param txt The text to output
      */
     public FooDecor(final Object txt) {
-        this.text = (String) txt;
+        this.text = txt.toString();
     }
 
     /**
@@ -63,7 +63,14 @@ final class FooDecor implements Formattable {
     @Override
     public void formatTo(final Formatter formatter, final int flags,
         final int width, final int precision) {
-        formatter.format(this.text);
+        formatter.format(
+            String.format(
+                "f=%d, w=%d, p=%d",
+                flags,
+                width,
+                precision
+            )
+        );
     }
 
 }

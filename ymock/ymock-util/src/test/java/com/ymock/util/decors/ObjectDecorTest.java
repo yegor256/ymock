@@ -48,28 +48,32 @@ public class ObjectDecorTest {
 
     /**
      * NULL should be formatted without problems.
+     * @throws Exception If some problem inside
      */
     @Test
     @org.junit.Ignore
-    public final void testNullFormatting() {
+    public final void testNullFormatting() throws Exception {
         final Formattable decor = new ObjectDecor(null);
-        final Formatter fmt = Mockito.mock(Formatter.class);
+        final Appendable dest = Mockito.mock(Appendable.class);
+        final Formatter fmt = new Formatter(dest);
         decor.formatTo(fmt, 0, 1, 1);
-        Mockito.verify(fmt).format("NULL");
+        Mockito.verify(dest).append("NULL");
     }
 
     /**
      * We get internal structure of an object and serialize it.
+     * @throws Exception If some problem inside
      */
     @Test
     @org.junit.Ignore
-    public final void testFormatCollection() {
+    public final void testFormatCollection() throws Exception {
         final Formattable decor = new ObjectDecor(
             Arrays.asList(new Foo(1), new Foo(2))
         );
-        final Formatter fmt = Mockito.mock(Formatter.class);
+        final Appendable dest = Mockito.mock(Appendable.class);
+        final Formatter fmt = new Formatter(dest);
         decor.formatTo(fmt, 0, 1, 1);
-        Mockito.verify(fmt).format("?");
+        Mockito.verify(dest).append("?");
     }
 
     private static final class Foo {
