@@ -47,10 +47,10 @@ public final class PreFormatterTest {
     @Test
     public void testArgumentsDecoration() {
         final PreFormatter pre =
-            new PreFormatter("%[foo]-5.2f and %1$+6f", 1d, "x");
+            new PreFormatter("%[foo]-5.2f and %1$+.6f", 1d, "x");
         MatcherAssert.assertThat(
             pre.getFormat(),
-            Matchers.equalTo("%-5.2f and %1$+6f")
+            Matchers.equalTo("%-5.2f and %1$+.6f")
         );
         MatcherAssert.assertThat(
             pre.getArguments()[0],

@@ -88,7 +88,8 @@ final class PreFormatter {
         this.arguments = new CopyOnWriteArrayList<Object>();
         final StringBuffer buf = new StringBuffer();
         final Pattern pattern = Pattern.compile(
-            "%(?:\\d+\\$)?(\\[([a-z\\-\\.0-9]+)\\])?[\\+\\-]?(?:\\d(?:\\.\\d)?)?[a-zA-Z%]"
+            // @checkstyle LineLength (1 line)
+            "%(?:\\d+\\$)?(\\[([a-z\\-\\.0-9]+)\\])?[\\+\\-]?(?:\\d*(?:\\.\\d+)?)?[a-zA-Z%]"
         );
         final Matcher matcher = pattern.matcher(fmt);
         int pos = 0;
