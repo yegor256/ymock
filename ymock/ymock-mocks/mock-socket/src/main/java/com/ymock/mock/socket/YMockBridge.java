@@ -29,11 +29,8 @@
  */
 package com.ymock.mock.socket;
 
-// common classes
 import com.ymock.client.YMockClient;
 import com.ymock.commons.YMockException;
-
-// JDK
 import java.io.IOException;
 
 /**
@@ -45,12 +42,12 @@ import java.io.IOException;
 final class YMockBridge implements DataBridge {
 
     /**
-     * yMock client.
+     * YMock client's name.
      */
     public static final String NAME = "com.ymock.mock.socket";
 
     /**
-     * yMock client.
+     * YMock client.
      */
     private static final YMockClient CLIENT =
         new YMockClient(YMockBridge.NAME);
@@ -58,7 +55,12 @@ final class YMockBridge implements DataBridge {
     /**
      * The response to return to {@link #receive()}.
      */
-    private String response;
+    private transient String response;
+
+    /**
+     * Response is ready?
+     */
+    private transient boolean ready;
 
     /**
      * {@inheritDoc}
@@ -67,6 +69,7 @@ final class YMockBridge implements DataBridge {
     public void send(final String message) throws IOException {
         try {
             this.response = this.CLIENT.call(message);
+            this.ready = true;
         } catch (YMockException ex) {
             throw new java.io.IOException(ex);
         }
@@ -77,11 +80,11 @@ final class YMockBridge implements DataBridge {
      */
     @Override
     public String receive() {
-        if (this.response == null) {
+        if (!this.ready) {
             throw new IllegalStateException("Nothing to return");
         }
         final String msg = this.response;
-        this.response = null;
+        this.ready = false;
         return msg;
     }
 

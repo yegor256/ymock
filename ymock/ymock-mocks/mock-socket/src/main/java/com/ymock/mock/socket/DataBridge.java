@@ -29,7 +29,6 @@
  */
 package com.ymock.mock.socket;
 
-// JDK
 import java.io.IOException;
 
 /**

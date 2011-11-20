@@ -29,89 +29,133 @@
  */
 package com.ymock.util;
 
-import org.junit.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.*;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
+import org.mockito.Mockito;
 
 /**
+ * Test case for {@link RuntimeProblem}.
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
 public final class RuntimeProblemTest {
 
+    /**
+     * Simple text used in all test methods.
+     */
     private static final String REASON = "some text";
 
+    /**
+     * Test it.
+     */
     @Test
     public void testValidatesExceptionClass() {
         final Throwable ex = RuntimeProblem.make(this.REASON);
-        assertThat(ex, is(instanceOf(RuntimeProblem.class)));
-        assertThat(ex.getMessage(), containsString(this.REASON));
+        MatcherAssert.assertThat(
+            ex,
+            Matchers.instanceOf(RuntimeProblem.class)
+        );
+        MatcherAssert.assertThat(
+            ex.getMessage(),
+            Matchers.containsString(this.REASON)
+        );
     }
 
+    /**
+     * Test it.
+     */
     @Test
     public void testValidatesExceptionClassViaThrowableCause() {
         final Throwable ex = RuntimeProblem.make(
             new IllegalStateException(this.REASON)
         );
-        assertThat(ex, is(instanceOf(RuntimeProblem.class)));
-        assertThat(ex.getMessage(), containsString(this.REASON));
+        MatcherAssert.assertThat(
+            ex,
+            Matchers.instanceOf(RuntimeProblem.class)
+        );
+        MatcherAssert.assertThat(
+            ex.getMessage(),
+            Matchers.containsString(this.REASON)
+        );
     }
 
+    /**
+     * Test it.
+     */
     @Test
     public void testValidatesExceptionClassViaThrowableCauseAndString() {
         final Throwable ex = RuntimeProblem.make(
             this.REASON,
             new IllegalStateException()
         );
-        assertThat(ex, is(instanceOf(RuntimeProblem.class)));
-        assertThat(ex.getMessage(), containsString(this.REASON));
-    }
-
-    @Test
-    public void testValidatesExceptionClassViaVarargString() {
-        final Throwable ex = RuntimeProblem.make("number %d", 3);
-        assertThat(ex, is(instanceOf(RuntimeProblem.class)));
-        assertThat(ex.getMessage(), equalTo("number 3"));
+        MatcherAssert.assertThat(
+            ex,
+            Matchers.instanceOf(RuntimeProblem.class)
+        );
+        MatcherAssert.assertThat(
+            ex.getMessage(),
+            Matchers.containsString(this.REASON)
+        );
     }
 
     /**
-     * @todo #24:1 The test doesn't work because functionality is not
-     *           implemented yet. We should implement proper exception
-     *           catching inside RuntimeProblem class. This test method
-     *           should be enabled
-     *           as soon as the functionality is implemented. It should NOT
-     *           be altered, just enabled (Ignore annotation to be removed).
+     * Test it.
      */
-    @Ignore
+    @Test
+    public void testValidatesExceptionClassViaVarargString() {
+        final Throwable ex = RuntimeProblem.make("number %d", 3);
+        MatcherAssert.assertThat(
+            ex,
+            Matchers.instanceOf(RuntimeProblem.class)
+        );
+        MatcherAssert.assertThat(
+            ex.getMessage(),
+            Matchers.equalTo("number 3")
+        );
+    }
+
+    /**
+     * Trying to create an object with incorrect arguments.
+     * @todo #24:1 The test doesn't work because functionality is not
+     *  implemented yet. We should implement proper exception
+     *  catching inside RuntimeProblem class. This test method
+     *  should be enabled
+     *  as soon as the functionality is implemented. It should NOT
+     *  be altered, just enabled (Ignore annotation to be removed).
+     */
+    @org.junit.Ignore
     @Test
     public void testProblemCreationWithInvalidArguments() {
-        assertThat(
+        MatcherAssert.assertThat(
             RuntimeProblem.make("data %d").getMessage(),
-            equalTo(
-                "number %d (java.util.MissingFormatArgumentException:"
-                + " Format specifier 'd')"
+            Matchers.equalTo(
+                // @checkstyle LineLength (1 line)
+                "number %d (java.util.MissingFormatArgumentException: Format specifier 'd')"
             )
         );
-        assertThat(
+        MatcherAssert.assertThat(
             RuntimeProblem.make("num %d", "test").getMessage(),
-            equalTo(
-                "num %d (java.util.IllegalFormatConversionException:"
-                + " d != java.lang.String)"
+            Matchers.equalTo(
+                // @checkstyle LineLength (1 line)
+                "num %d (java.util.IllegalFormatConversionException: d != java.lang.String)"
             )
         );
-        assertThat(
+        MatcherAssert.assertThat(
             RuntimeProblem.make("number %1z", "text").getMessage(),
-            equalTo(
-                "number %1z (java.util.UnknownFormatConversionException:"
-                + " Conversion = 'z')"
+            Matchers.equalTo(
+                // @checkstyle LineLength (1 line)
+                "number %1z (java.util.UnknownFormatConversionException: Conversion = 'z')"
             )
         );
-        final Object obj = mock(Object.class);
-        doThrow(new IllegalArgumentException("oops..")).when(obj).toString();
-        assertThat(
+        final Object obj = Mockito.mock(Object.class);
+        Mockito.doThrow(new IllegalArgumentException("oops.."))
+            .when(obj).toString();
+        MatcherAssert.assertThat(
             RuntimeProblem.make("text %s", obj).getMessage(),
-            equalTo("number %s (java.lang.IllegalArgumentException: oops..)")
+            Matchers.equalTo(
+                "number %s (java.lang.IllegalArgumentException: oops..)"
+            )
         );
     }
 

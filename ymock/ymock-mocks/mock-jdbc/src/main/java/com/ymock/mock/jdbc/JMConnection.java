@@ -29,7 +29,6 @@
  */
 package com.ymock.mock.jdbc;
 
-// JDBC API 3.0
 import java.sql.Array;
 import java.sql.Blob;
 import java.sql.CallableStatement;
@@ -43,13 +42,9 @@ import java.sql.SQLXML;
 import java.sql.Savepoint;
 import java.sql.Statement;
 import java.sql.Struct;
-
-// supplementary classes
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-
-// mocking library from org.mockito:mockito-all
 import org.mockito.Mockito;
 
 /**
@@ -59,7 +54,7 @@ import org.mockito.Mockito;
  * @version $Id$
  * @see <a href="http://download.oracle.com/javase/6/docs/api/java/sql/Connection.html">java.sql.Connection</a>
  */
-@SuppressWarnings("PMD.TooManyMethods")
+@SuppressWarnings({ "PMD.TooManyMethods", "PMD.ExcessivePublicCount" })
 final class JMConnection implements Connection {
 
     /**
@@ -106,8 +101,7 @@ final class JMConnection implements Connection {
      * {@inheritDoc}
      */
     @Override
-    public Array createArrayOf(final String typeName,
-        final Object[] elements) {
+    public Array createArrayOf(final String type, final Object[] elements) {
         return Mockito.mock(Array.class);
     }
 
@@ -172,7 +166,7 @@ final class JMConnection implements Connection {
      * {@inheritDoc}
      */
     @Override
-    public Struct createStruct(final String typeName,
+    public Struct createStruct(final String type,
         final Object[] attributes) {
         return Mockito.mock(Struct.class);
     }
@@ -393,7 +387,7 @@ final class JMConnection implements Connection {
      * {@inheritDoc}
      */
     @Override
-    public void setAutoCommit(final boolean autoCommit) {
+    public void setAutoCommit(final boolean auto) {
         // intentionally empty
     }
 
@@ -433,7 +427,7 @@ final class JMConnection implements Connection {
      * {@inheritDoc}
      */
     @Override
-    public void setReadOnly(final boolean readOnly) {
+    public void setReadOnly(final boolean ronly) {
         // intentionally empty
     }
 

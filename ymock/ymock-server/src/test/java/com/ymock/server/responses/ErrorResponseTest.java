@@ -31,16 +31,21 @@ package com.ymock.server.responses;
 
 import com.ymock.commons.YMockException;
 import com.ymock.server.Response;
-import org.junit.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
 
 /**
+ * Test case for {@link ErrorResponse}.
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
 public final class ErrorResponseTest {
 
+    /**
+     * Test it.
+     * @throws Exception If something wrong inside
+     */
     @Test
     public void testCoreMethods() throws Exception {
         final String text = "some text";
@@ -48,7 +53,7 @@ public final class ErrorResponseTest {
         try {
             response.process("something");
         } catch (YMockException ex) {
-            assertThat(ex.getMessage(), is(equalTo(text)));
+            MatcherAssert.assertThat(ex.getMessage(), Matchers.equalTo(text));
         }
     }
 

@@ -29,10 +29,7 @@
  */
 package com.ymock.server.matchers;
 
-// matcher
 import com.ymock.server.Matcher;
-
-// regex
 import java.util.regex.Pattern;
 
 /**
@@ -46,7 +43,7 @@ public final class RegexMatcher implements Matcher {
     /**
      * The pattern to match against.
      */
-    private final Pattern pattern;
+    private final transient Pattern pattern;
 
     /**
      * Public ctor.

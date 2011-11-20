@@ -29,7 +29,6 @@
  */
 package com.ymock.commons;
 
-// logging
 import com.ymock.util.Logger;
 
 /**
@@ -49,11 +48,11 @@ public final class PortDetector {
      * What HTTP port shall we use?
      * @return The port number
      * @todo #2 This is just a stub for now. The method should get
-     *       get the port number from one of these sources (in order
-     *       of importance):
-     *       - java system property "ymock.port"
-     *       - environment variable YMOCK_PORT
-     *       - default value
+     *  get the port number from one of these sources (in order
+     *  of importance):
+     *  - java system property "ymock.port"
+     *  - environment variable YMOCK_PORT
+     *  - default value
      */
     public Integer port() {
         final Integer port = this.DEFAULT;

@@ -29,7 +29,6 @@
  */
 package com.ymock.mock.socket;
 
-// JDK
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -48,21 +47,21 @@ final class SMInputStream extends InputStream {
      * The data bridge.
      * @see #read()
      */
-    private final DataBridge bridge;
+    private final transient DataBridge bridge;
 
     /**
      * The message to return.
      * @see #read()
      */
     @SuppressWarnings("PMD.AvoidStringBufferField")
-    private final StringBuffer message = new StringBuffer();
+    private final transient StringBuffer message = new StringBuffer();
 
     /**
      * End of file was JUST returned, and we should return "-1" this
      * amount of times, in response to {@link #read()}.
      * @see #read()
      */
-    private int eof;
+    private transient int eof;
 
     /**
      * Public ctor.
@@ -77,11 +76,12 @@ final class SMInputStream extends InputStream {
     /**
      * {@inheritDoc}
      * @todo #7 This implementation is very rough and not elegant.
-     *       In the future would be nice to refactor the method.
+     *  In the future would be nice to refactor the method.
      * @checkstyle ReturnCount (20 lines)
      * @checkstyle NestedIfDepth (20 lines)
      */
     @Override
+    @SuppressWarnings("PMD.OnlyOneReturn")
     public int read() throws IOException {
         if (this.message.length() == 0) {
             if (this.eof == 0) {

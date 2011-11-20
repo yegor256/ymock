@@ -29,25 +29,14 @@
  */
 package com.ymock.server;
 
-// Grizzly Web Server
 import com.sun.grizzly.http.embed.GrizzlyWebServer;
 import com.sun.grizzly.http.servlet.ServletAdapter;
-
-// Jersey JAX-RS implementation
 import com.sun.jersey.spi.container.servlet.ServletContainer;
-
-// commons from com.ymock:ymock-commons
 import com.ymock.commons.PortDetector;
 import com.ymock.commons.YMockException;
-
-// utils from com.ymock:ymock-util
 import com.ymock.util.Logger;
-
-// logging
 import java.util.logging.Handler;
 import java.util.logging.LogManager;
-
-// slf4j
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
 /**
@@ -71,7 +60,7 @@ final class RestfulServer implements CallsProvider {
     /**
      * Catcher registered.
      */
-    private Catcher catcher;
+    private transient Catcher catcher;
 
     /**
      * Public ctor, for a RESTful instantiation.
@@ -94,6 +83,7 @@ final class RestfulServer implements CallsProvider {
      * @return The response
      * @see RestfulMock#call(String)
      * @throws YMockException If something is wrong there
+     * @checkstyle RedundantThrows (2 lines)
      */
     public Response call(final String request) throws YMockException {
         return this.catcher.call(request);
@@ -112,17 +102,16 @@ final class RestfulServer implements CallsProvider {
      * Start HTTP server.
      * @see #RestfulServer()
      * @todo #1 Would be nice to add exception mapping here, in order
-     *       to properly wrap exception messages sent to clients
+     *  to properly wrap exception messages sent to clients
      */
     private void start() {
         final java.util.logging.Logger root =
             LogManager.getLogManager().getLogger("");
         final Handler[] handlers = root.getHandlers();
-        for (int i = 0; i < handlers.length; i += 1) {
-            root.removeHandler(handlers[i]);
+        for (int pos = 0; pos < handlers.length; pos += 1) {
+            root.removeHandler(handlers[pos]);
         }
         SLF4JBridgeHandler.install();
-
         final GrizzlyWebServer gws = new GrizzlyWebServer(this.port(), ".");
         final ServletAdapter adapter = new ServletAdapter();
         adapter.addInitParameter(

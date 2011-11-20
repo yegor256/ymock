@@ -32,42 +32,31 @@
  * @version $Id$
  -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.ymock</groupId>
         <artifactId>ymock</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version ymock="yes">2.0-SNAPSHOT</version>
     </parent>
     <artifactId>ymock-util</artifactId>
     <packaging>jar</packaging>
     <name>ymock-util</name>
 
-    <repositories>
-        <repository>
-            <id>reflections-repo</id>
-            <name>Reflections Maven2 Repository</name>
-            <url>http://reflections.googlecode.com/svn/repo</url>
-        </repository>
-    </repositories>
-
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <!-- all other details are in parent module dependencyManagement section -->
         </dependency>
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-all</artifactId>
-            <!-- all other details are in parent module dependencyManagement section -->
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
-            <!-- all other details are in parent module dependencyManagement section -->
         </dependency>
         <dependency>
             <groupId>org.powermock</groupId>
@@ -89,24 +78,21 @@
             -->
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.6.1</version>
-            <!-- 8 Nov 2010 -->
+            <version since="8 Nov 2010">1.6.1</version>
         </dependency>
         <dependency>
-            <!-- all other details are in parent module dependencyManagement section -->
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <!-- all other details are in parent module dependencyManagement section -->
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
         </dependency>
         <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
-            <version>0.9.5-RC2</version>
+            <version since="20 Nov 2011">0.9.5</version>
             <exclusions>
                 <exclusion>
                     <groupId>ch.qos.logback</groupId>

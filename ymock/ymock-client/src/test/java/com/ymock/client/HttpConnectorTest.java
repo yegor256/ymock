@@ -38,17 +38,22 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.conn.ClientConnectionManager;
-import org.junit.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.*;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
+import org.mockito.Mockito;
 
 /**
+ * Test case for {@link HttpConnector}.
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
 public final class HttpConnectorTest {
 
+    /**
+     * Simple call to server.
+     * @throws Exception If some problem inside
+     */
     @Test
     public void testSimpleCallToServer() throws Exception {
         final String message = "some text";
@@ -56,9 +61,13 @@ public final class HttpConnectorTest {
             this.client(message, HttpStatus.SC_OK)
         );
         final String response = connector.call("something...");
-        assertThat(response, equalTo(message));
+        MatcherAssert.assertThat(response, Matchers.equalTo(message));
     }
 
+    /**
+     * Simple call with error response.
+     * @throws Exception If some problem inside
+     */
     @Test(expected = YMockException.class)
     public void testCallWithErrorResponse() throws Exception {
         final Connector connector = new HttpConnector(
@@ -67,23 +76,35 @@ public final class HttpConnectorTest {
         connector.call("some request, ignored");
     }
 
+    /**
+     * Simple call with exception.
+     * @throws Exception If some problem inside
+     */
     @Test(expected = YMockException.class)
     public void testCallWithIOException() throws Exception {
-        final HttpClient client = mock(HttpClient.class);
-        final ClientConnectionManager mgr = mock(ClientConnectionManager.class);
-        doReturn(mgr).when(client).getConnectionManager();
-        doThrow(new java.io.IOException("test")).when(client).execute(
-            (HttpUriRequest) anyObject()
-        );
+        final HttpClient client = Mockito.mock(HttpClient.class);
+        final ClientConnectionManager mgr =
+            Mockito.mock(ClientConnectionManager.class);
+        Mockito.doReturn(mgr).when(client).getConnectionManager();
+        Mockito.doThrow(new java.io.IOException("test")).when(client)
+            .execute(Mockito.any(HttpUriRequest.class));
         new HttpConnector(client).call("simple text");
     }
 
+    /**
+     * Simple call with real socket.
+     * @throws Exception If some problem inside
+     */
     @Test(expected = YMockException.class)
     public void testCallWithRealSocket() throws Exception {
         final Connector connector = new HttpConnector();
         connector.call("doesn't matter what");
     }
 
+    /**
+     * Test two consequetive calls.
+     * @throws Exception If some problem inside
+     */
     @Test
     public void testTwoConsequetiveCalls() throws Exception {
         final Connector connector = new HttpConnector();
@@ -91,29 +112,44 @@ public final class HttpConnectorTest {
             connector.call("first request");
         } catch (YMockException ex) {
             // swallow it
-            assertThat(ex, is(instanceOf(YMockException.class)));
+            MatcherAssert.assertThat(
+                ex,
+                Matchers.instanceOf(YMockException.class)
+            );
         }
         try {
             connector.call("second request");
         } catch (YMockException ex) {
             // swallow it
-            assertThat(ex, is(instanceOf(YMockException.class)));
+            MatcherAssert.assertThat(
+                ex,
+                Matchers.instanceOf(YMockException.class)
+            );
         }
     }
 
+    /**
+     * Create client.
+     * @param msg The message to return
+     * @param code The code
+     * @return The client
+     * @throws Exception If some problem inside
+     */
     private HttpClient client(final String msg, final Integer code)
         throws Exception {
-        final HttpClient client = mock(HttpClient.class);
-        final ClientConnectionManager mgr = mock(ClientConnectionManager.class);
-        doReturn(mgr).when(client).getConnectionManager();
-        final HttpResponse response = mock(HttpResponse.class);
-        doReturn(response).when(client).execute((HttpUriRequest) anyObject());
-        final HttpEntity entity = mock(HttpEntity.class);
-        doReturn(entity).when(response).getEntity();
-        doReturn(IOUtils.toInputStream(msg)).when(entity).getContent();
-        final StatusLine line = mock(StatusLine.class);
-        doReturn(line).when(response).getStatusLine();
-        doReturn(code).when(line).getStatusCode();
+        final HttpClient client = Mockito.mock(HttpClient.class);
+        final ClientConnectionManager mgr =
+            Mockito.mock(ClientConnectionManager.class);
+        Mockito.doReturn(mgr).when(client).getConnectionManager();
+        final HttpResponse response = Mockito.mock(HttpResponse.class);
+        Mockito.doReturn(response).when(client)
+            .execute(Mockito.any(HttpUriRequest.class));
+        final HttpEntity entity = Mockito.mock(HttpEntity.class);
+        Mockito.doReturn(entity).when(response).getEntity();
+        Mockito.doReturn(IOUtils.toInputStream(msg)).when(entity).getContent();
+        final StatusLine line = Mockito.mock(StatusLine.class);
+        Mockito.doReturn(line).when(response).getStatusLine();
+        Mockito.doReturn(code).when(line).getStatusCode();
         return client;
     }
 

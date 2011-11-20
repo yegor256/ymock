@@ -29,7 +29,6 @@
  */
 package com.ymock.mock.socket;
 
-// JDK
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -47,14 +46,14 @@ final class SMOutputStream extends OutputStream {
     /**
      * The bridge.
      */
-    private final DataBridge bridge;
+    private final transient DataBridge bridge;
 
     /**
      * Recent HTTP message.
      * @see #write(int)
      */
     @SuppressWarnings("PMD.AvoidStringBufferField")
-    private final StringBuffer message = new StringBuffer();
+    private final transient StringBuffer message = new StringBuffer();
 
     /**
      * Public ctor.

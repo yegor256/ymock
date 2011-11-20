@@ -35,18 +35,16 @@ package com.ymock.util;
  * <p>Use it like this in any class, and in any package:
  *
  * <pre>
- * {@code
  * package com.ymock.XXX;
  * import com.ymock.util.RuntimeProblem;
  * public class MyClass {
- *   public void foo() {
- *     if (something is wrong) {
- *       throw RuntimeProblem.make("some problem");
+ *   public void foo(Integer num) {
+ *     if (num > 2) {
+ *       throw RuntimeProblem.make("%d is bigger than 2", num);
  *     }
  *   }
  * }
  * [...]
- * }
  * </pre>
  *
  * @author Yegor Bugayenko (yegor@ymock.com)
@@ -96,7 +94,7 @@ public final class RuntimeProblem extends RuntimeException {
      */
     public static RuntimeProblem make(final String message,
         final Object... args) {
-        return new RuntimeProblem(String.format(message, args));
+        return new RuntimeProblem(Logger.format(message, args));
     }
 
     /**
@@ -117,7 +115,7 @@ public final class RuntimeProblem extends RuntimeException {
      */
     public static RuntimeProblem make(final Throwable cause,
         final String message, final Object... args) {
-        return new RuntimeProblem(String.format(message, args), cause);
+        return new RuntimeProblem(Logger.format(message, args), cause);
     }
 
 }

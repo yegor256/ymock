@@ -29,7 +29,6 @@
  */
 package com.ymock.client;
 
-// commons
 import com.ymock.commons.YMockException;
 
 /**
@@ -45,7 +44,8 @@ public interface Connector {
      * @param request The request string
      * @return The response
      * @throws YMockException If something was wrong with the server
-     *         and the operation failed.
+     *  and the operation failed.
+     * @checkstyle RedundantThrows (2 lines)
      */
     String call(final String request) throws YMockException;
 

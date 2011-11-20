@@ -37,7 +37,7 @@
     <parent>
         <groupId>com.ymock</groupId>
         <artifactId>ymock</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version ymock="yes">2.0-SNAPSHOT</version>
     </parent>
     <artifactId>ymock-mocks</artifactId>
     <packaging>pom</packaging>

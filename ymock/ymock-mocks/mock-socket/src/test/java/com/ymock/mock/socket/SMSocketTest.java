@@ -31,27 +31,41 @@ package com.ymock.mock.socket;
 
 import java.net.Socket;
 import org.apache.commons.io.IOUtils;
-import org.junit.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
 
 /**
+ * Test case for {@link SMSocket}.
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
 public final class SMSocketTest {
 
+    /**
+     * Request.
+     */
     private static final String REQUEST = "some data";
 
+    /**
+     * Response.
+     */
     private static final String RESPONSE = "completed";
 
+    /**
+     * Test it.
+     * @throws Exception If something wrong inside
+     */
     @Test
     public void testSimulatesHttpSession() throws Exception {
         final Socket socket = new SMSocket(
             new DataBridge() {
                 @Override
                 public void send(final String message) {
-                    assertThat(message, equalTo(SMSocketTest.REQUEST));
+                    MatcherAssert.assertThat(
+                        message,
+                        Matchers.equalTo(SMSocketTest.REQUEST)
+                    );
                 }
                 @Override
                 public String receive() {
@@ -65,7 +79,7 @@ public final class SMSocketTest {
             + this.REQUEST;
         final String response = IOUtils.toString(socket.getInputStream());
         IOUtils.write(message, socket.getOutputStream());
-        assertThat(response, equalTo(this.RESPONSE));
+        MatcherAssert.assertThat(response, Matchers.equalTo(this.RESPONSE));
     }
 
 }

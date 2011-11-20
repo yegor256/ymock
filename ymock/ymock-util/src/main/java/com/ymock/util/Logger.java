@@ -29,54 +29,53 @@
  */
 package com.ymock.util;
 
-// Third-party logging facility. This is the only
-// place in the project where we include slf4j classes.,
-// in the entire project.
-import com.ymock.util.formatter.FormatterManager;
 import org.slf4j.LoggerFactory;
 
 /**
  * Universal logger, and adapter between API
  * and a third-party logging facility.
  *
- * <p>This class is used
- * in almost every other class in the product. Instead of relying
- * on some logging engine we build our own, which currely
- * uses SLF4J. This approach gives us perfect decoupling of business
- * logic and logging utitility. All methods in the class are called
- * statically, without the necessity to instantiate a class.
+ * <p>Instead of relying
+ * on some logging engine you can use this class, which transforms all
+ * messages to SLF4J. This approach gives you a perfect decoupling of business
+ * logic and logging mechanism. All methods in the class are called
+ * statically, without the necessity to instantiate the class.
  *
  * <p>Use it like this in any class, and in any package:
  *
  * <pre>
- * {@code
- * package com.ymock.XXX;
+ * package com.example.XXX;
  * import com.ymock.util.Logger;
  * public class MyClass {
  *   public void foo(Integer num) {
  *     Logger.info(this, "foo(%d) just called", num);
  *   }
  * }
+ * </pre>
+ *
+ * <p>Or statically (pay attention to <tt>MyClass.class</tt>):
+ *
+ * <pre>
+ * public class MyClass {
+ *   public static void foo(Integer num) {
+ *     Logger.info(MyClass.class, "foo(%d) just called", num);
+ *   }
  * }
  * </pre>
  *
  * <p>Exact binding between SLF4J and logging facility has to be
- * specified in <tt>pom.xml</tt> of certain project. An example
- * is available in this module. It uses LOG4J and configures
- * it with <tt>log4j.properties</tt>.
+ * specified in <tt>pom.xml</tt> of your project.
  *
  * <p>For performance reasons in most cases before sending a
- * TRACE or DEBUG log message you should check whether this
+ * <tt>TRACE</tt> or <tt>DEBUG</tt> log message you should check whether this
  * logging level is enabled in the project, e.g.:
  *
  * <pre>
- * {@code
  * //...
  * if (Logger.isTraceEnabled(this)) {
  *   Logger.trace(this, "#foo() called");
  * }
  * //...
- * }
  * </pre>
  *
  * @author Yegor Bugayenko (yegor@ymock.com)
@@ -85,11 +84,29 @@ import org.slf4j.LoggerFactory;
 public final class Logger {
 
     /**
-     * Private ctor, to avoid class instantiation. This is
-     * the utility class and you can't instantiate it directly.
+     * Private ctor, to avoid class instantiation.
+     *
+     * <p>This is utility class and you can't instantiate it directly.
      */
     private Logger() {
         // intentionally empty
+    }
+
+    /**
+     * Format one string.
+     * @param fmt The format
+     * @param args List of arbitrary arguments
+     * @return Formatted string
+     */
+    public static String format(final String fmt, final Object... args) {
+        String result;
+        if (args.length == 0) {
+            result = fmt;
+        } else {
+            final PreFormatter pre = new PreFormatter(fmt, args);
+            result = String.format(pre.getFormat(), pre.getArguments());
+        }
+        return result;
     }
 
     /**
@@ -100,7 +117,7 @@ public final class Logger {
      */
     public static void trace(final Object source,
         final String msg, final Object... args) {
-        Logger.logger(source).trace(Logger.compose(msg, args));
+        Logger.logger(source).trace(Logger.format(msg, args));
     }
 
     /**
@@ -111,7 +128,7 @@ public final class Logger {
      */
     public static void debug(final Object source,
         final String msg, final Object... args) {
-        Logger.logger(source).debug(Logger.compose(msg, args));
+        Logger.logger(source).debug(Logger.format(msg, args));
     }
 
     /**
@@ -122,7 +139,7 @@ public final class Logger {
      */
     public static void info(final Object source,
         final String msg, final Object... args) {
-        Logger.logger(source).info(Logger.compose(msg, args));
+        Logger.logger(source).info(Logger.format(msg, args));
     }
 
     /**
@@ -133,7 +150,7 @@ public final class Logger {
      */
     public static void warn(final Object source,
         final String msg, final Object... args) {
-        Logger.logger(source).warn(Logger.compose(msg, args));
+        Logger.logger(source).warn(Logger.format(msg, args));
     }
 
     /**
@@ -144,7 +161,7 @@ public final class Logger {
      */
     public static void error(final Object source,
         final String msg, final Object... args) {
-        Logger.logger(source).error(Logger.compose(msg, args));
+        Logger.logger(source).error(Logger.format(msg, args));
     }
 
     /**
@@ -182,28 +199,4 @@ public final class Logger {
         return logger;
     }
 
-    /**
-     * Compose a message using varargs.
-     * @param msg The message
-     * @param args List of args
-     * @return The message composed
-     */
-    private static String compose(final String msg, final Object[] args) {
-        return String.format(msg, args);
-    }
-
-    /**
-     * Formats the passed args according to the formatter defined by
-     * key argument.
-     *
-     * <p>Formatter specified by key argument should be
-     * registered in {@link FormatterManager}.
-     *
-     * @param key key for the formatter to be used to fmt the arguments
-     * @param args arguments to be formatted
-     * @return formatted arguments string
-     */
-    public static String fmt(final String key, final Object... args) {
-        return FormatterManager.getInstance().fmt(key, args);
-    }
 }

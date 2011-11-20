@@ -31,25 +31,36 @@ package com.ymock.mock.socket;
 
 import java.io.OutputStream;
 import org.apache.commons.io.IOUtils;
-import org.junit.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
 
 /**
+ * Test case for {@link SMOutputStream}.
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
 public final class SMOutputStreamTest {
 
+    /**
+     * Request.
+     */
     private static final String REQUEST = "text\ntest\r\ntest3";
 
+    /**
+     * Test it.
+     * @throws Exception If something wrong inside
+     */
     @Test
     public void testSimulatesStreamWriting() throws Exception {
         final OutputStream stream = new SMOutputStream(
             new DataBridge() {
                 @Override
                 public void send(final String message) {
-                    assertThat(message, equalTo(SMOutputStreamTest.REQUEST));
+                    MatcherAssert.assertThat(
+                        message,
+                        Matchers.equalTo(SMOutputStreamTest.REQUEST)
+                    );
                 }
                 @Override
                 public String receive() {

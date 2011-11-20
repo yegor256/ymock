@@ -29,12 +29,9 @@
  */
 package com.ymock.mock.jdbc;
 
-// JDBC API 3.0
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverPropertyInfo;
-
-// supplementary classes
 import java.util.Properties;
 
 /**

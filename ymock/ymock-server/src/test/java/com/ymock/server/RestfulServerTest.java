@@ -39,25 +39,27 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.junit.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
 
 /**
+ * Test case for {@link RestfulServlet}.
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
 public final class RestfulServerTest {
 
+    /**
+     * Test it.
+     * @throws Exception If something wrong inside
+     */
     @Test
     public void testServerInstantiation() throws Exception {
-        // start server
         final CallsProvider provider = RestfulServer.INSTANCE;
         final String request = "requested message";
         final String message = "some text";
         provider.register(new PositiveCatcher(request, message));
-
-        // connect to it via HTTP and retrieve response
         final HttpClient client = new DefaultHttpClient();
         final HttpPost post = new HttpPost(this.url());
         post.setEntity(new StringEntity(request));
@@ -65,28 +67,47 @@ public final class RestfulServerTest {
         String body;
         try {
             body = client.execute(post, handler);
-        } catch (java.io.IOException ex) {
-            throw ex;
         } finally {
             client.getConnectionManager().shutdown();
         }
-        assertThat(body, equalTo(message));
+        MatcherAssert.assertThat(body, Matchers.equalTo(message));
     }
 
+    /**
+     * Positive catcher.
+     */
     private static class PositiveCatcher implements Catcher {
-        private final String expected;
-        private final String message;
+        /**
+         * Expected request.
+         */
+        private final transient String expected;
+        /**
+         * Message to return.
+         */
+        private final transient String message;
+        /**
+         * Public ctor.
+         * @param rqt The expected request
+         * @param msg The message to return
+         */
         public PositiveCatcher(final String rqt, final String msg) {
             this.expected = rqt;
             this.message = msg;
         }
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public Response call(final String request) {
-            assertThat(request, equalTo(this.expected));
+            MatcherAssert.assertThat(request, Matchers.equalTo(this.expected));
             return new TextResponse(this.message);
         }
     }
 
+    /**
+     * Test it.
+     * @throws Exception If something wrong inside
+     */
     @Test
     public void testServerWithNegativeResponse() throws Exception {
         final String message = "some error message";
@@ -98,32 +119,49 @@ public final class RestfulServerTest {
         String body;
         try {
             body = client.execute(httppost, handler);
-        } catch (java.io.IOException ex) {
-            throw ex;
         } finally {
             client.getConnectionManager().shutdown();
         }
-        assertThat(body, equalTo(message));
+        MatcherAssert.assertThat(body, Matchers.equalTo(message));
     }
 
+    /**
+     * Negative catcher.
+     */
     private static class NegativeCatcher implements Catcher {
-        private final String message;
+        /**
+         * Message.
+         */
+        private final transient String message;
+        /**
+         * Public ctor.
+         * @param msg The message
+         */
         public NegativeCatcher(final String msg) {
             this.message = msg;
         }
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public Response call(final String request) {
             return new ErrorResponse(this.message);
         }
     }
 
+    /**
+     * Negative response handler.
+     */
     private static class NegativeResponseHandler
         implements ResponseHandler<String> {
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public String handleResponse(final HttpResponse response) {
-            assertThat(
+            MatcherAssert.assertThat(
                 response.getStatusLine().getStatusCode(),
-                equalTo(
+                Matchers.equalTo(
                     javax.ws.rs.core.Response.Status.BAD_REQUEST
                     .getStatusCode()
                 )
@@ -136,10 +174,15 @@ public final class RestfulServerTest {
         }
     }
 
+    /**
+     * Create URL.
+     * @return The URL
+     */
     private String url() {
-        return "http://localhost:"
-            + RestfulServer.INSTANCE.port()
-            + "/ymock/mock";
+        return String.format(
+            "http://localhost:%d/ymock/mock",
+            RestfulServer.INSTANCE.port()
+        );
     }
 
 }

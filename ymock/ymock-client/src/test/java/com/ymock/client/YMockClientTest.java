@@ -29,28 +29,31 @@
  */
 package com.ymock.client;
 
-import org.junit.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.*;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
+import org.mockito.Mockito;
 
 /**
+ * Test case for {@link YMockClient}.
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
 public final class YMockClientTest {
 
-    private static final String ID = "test";
-
+    /**
+     * Simple call via mock.
+     * @throws Exception If some problem inside
+     */
     @Test
     public void testSimpleCallToServerViaMock() throws Exception {
         final String request = "abc";
         final String response = "works fine";
-        final Connector connector = mock(Connector.class);
-        doReturn(response).when(connector).call(request);
-        final YMockClient client = new YMockClient(this.ID, connector);
+        final Connector connector = Mockito.mock(Connector.class);
+        Mockito.doReturn(response).when(connector).call(request);
+        final YMockClient client = new YMockClient("test", connector);
         final String returned = client.call(request);
-        assertThat(returned, is(equalTo(response)));
+        MatcherAssert.assertThat(returned, Matchers.equalTo(response));
     }
 
 }

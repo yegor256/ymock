@@ -39,7 +39,7 @@
     <parent>
         <groupId>com.ymock</groupId>
         <artifactId>ymock-mocks</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version ymock="yes">2.0-SNAPSHOT</version>
     </parent>
     <groupId>com.ymock.mock</groupId>
     <artifactId>mock-socket</artifactId>
@@ -48,40 +48,36 @@
 
     <dependencies>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <!-- other details in parent pom dependencyManagement section -->
-        </dependency>
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-all</artifactId>
-            <!-- other details in parent pom dependencyManagement section -->
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <!-- all other details are in parent module dependencyManagement section -->
-        </dependency>
-        <dependency>
             <groupId>com.ymock</groupId>
             <artifactId>ymock-client</artifactId>
-            <version>1.0</version>
+            <version ymock="yes">2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.ymock</groupId>
             <artifactId>ymock-commons</artifactId>
-            <version>1.0</version>
+            <version ymock="yes">2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.ymock</groupId>
             <artifactId>ymock-server</artifactId>
-            <version>1.0</version>
+            <version ymock="yes">2.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <!-- all other details are in parent module dependencyManagement section -->
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-all</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
         </dependency>
     </dependencies>
 

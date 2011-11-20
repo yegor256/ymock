@@ -31,47 +31,81 @@ package com.ymock.mock.socket;
 
 import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
-import org.junit.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
 
 /**
+ * Test case for {@link SMInputStream}.
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
 public final class SMInputStreamTest {
 
+    /**
+     * Test it.
+     * @throws Exception If something wrong inside
+     */
     @Test
     public void testSimulatesStreamReading() throws Exception {
         this.read("simple text\r\nagain\n\nmore");
     }
 
+    /**
+     * Test it.
+     * @throws Exception If something wrong inside
+     */
     @Test
     public void testReadingOfEmptyString() throws Exception {
         this.read("");
     }
 
+    /**
+     * Read text.
+     * @param text The text
+     * @throws Exception If something wrong inside
+     */
     private void read(final String text) throws Exception {
         final InputStream stream = new SMInputStream(new SimpleBridge(text));
-        assertThat(IOUtils.toString(stream), equalTo(text));
-        // let's try again, should work
-        assertThat(IOUtils.toString(stream), equalTo(text));
+        MatcherAssert.assertThat(
+            IOUtils.toString(stream),
+            Matchers.equalTo(text)
+        );
+        MatcherAssert.assertThat(
+            IOUtils.toString(stream),
+            Matchers.equalTo(text)
+        );
     }
 
+    /**
+     * Simple bridge.
+     */
     private static class SimpleBridge implements DataBridge {
-        private final String message;
+        /**
+         * Message.
+         */
+        private final transient String message;
+        /**
+         * Public ctor.
+         * @param msg The message
+         */
         public SimpleBridge(final String msg) {
             this.message = msg;
         }
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void send(final String msg) {
             // ignore it
         }
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public String receive() {
             return this.message;
         }
     }
-
 
 }
