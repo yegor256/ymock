@@ -29,11 +29,13 @@
  */
 package com.ymock.util.decors;
 
-import java.io.File;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.Test;
-import org.mockito.Mockito;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Formattable;
+import java.util.FormattableFlags;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 /**
  * Test case for {@link SizeDecor}.
@@ -42,14 +44,51 @@ import org.mockito.Mockito;
  * @version $Id$
  * @todo #25! Provide implementation of SizeFormatter, write javadoc
  */
-public class SizeDecorTest {
+@RunWith(Parameterized.class)
+public final class SizeDecorTest extends AbstractDecorTest {
 
     /**
-     * NULL should be formatted without problems.
+     * Public ctor.
+     * @param size The size
+     * @param text Expected text
+     * @param flags Flags
+     * @param width Width
+     * @param precision Precission
      */
-    @Test
-    @org.junit.Ignore
-    public final void testNullFormatting() {
+    public SizeDecorTest(final Long size, final String text,
+        final int flags, final int width, final int precision) {
+        super(size, text, flags, width, precision);
+    }
+
+    /**
+     * Params for this parametrized test.
+     * @return Array of arrays of params for ctor
+     */
+    @Parameters
+    public static Collection<Object[]> params() {
+        return Arrays.asList(
+            new Object[][] {
+                { null, "NULL", 0, 0, 0 },
+                { 1L, "1b", 0, 0, 0 },
+                { 123L, "  123b", 0, 6, 0 },
+                { 1024L, "1Kb", 0, 0, 3 },
+                { 5120L, "5Kb", 0, 0, 0 },
+                { 12345L, "12.056Kb", 0, 0, 3 },
+                { 12345L, "12.1Kb  ", FormattableFlags.LEFT_JUSTIFY, 8, 1 },
+                { 98765432L, "94.190MB", FormattableFlags.UPPERCASE, 0, 3 },
+                { 98765432L, "94.190Mb", 0, 0, 3 },
+                { 90L * 1024 * 1024 * 1024, "90Gb", 0, 0, 0 },
+                { 13L * 1024 * 1024 * 1024 * 1024, "13Tb", 0, 0, 0 },
+            }
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Formattable decor() {
+        return new SizeDecor((Long) this.object());
     }
 
 }

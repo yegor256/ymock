@@ -45,13 +45,13 @@ public final class SizeDecor implements Formattable {
     /**
      * The size to work with.
      */
-    private final long size;
+    private final Long size;
 
     /**
      * Public ctor.
      * @param sze The size
      */
-    public SizeDecor(final long sze) {
+    public SizeDecor(final Long sze) {
         this.size = sze;
     }
 

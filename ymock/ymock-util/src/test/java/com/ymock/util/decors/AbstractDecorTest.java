@@ -33,54 +33,90 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Formattable;
 import java.util.FormattableFlags;
+import java.util.Formatter;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
+import org.mockito.Mockito;
 
 /**
- * Test case for {@link SecretDecor}.
+ * Abstract test case for all decors in the package.
  * @author Marina Kosenko (marina.kosenko@gmail.com)
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-@RunWith(Parameterized.class)
-public final class SecretDecorTest extends AbstractDecorTest {
+public abstract class AbstractDecorTest {
+
+    /**
+     * The value to test against.
+     */
+    private final Object object;
+
+    /**
+     * The text to expect as an output.
+     */
+    private final String text;
+
+    /**
+     * Formatting flas.
+     */
+    private final int flags;
+
+    /**
+     * Formatting width.
+     */
+    private final int width;
+
+    /**
+     * Formatting precision.
+     */
+    private final int precision;
 
     /**
      * Public ctor.
-     * @param secret The secret
-     * @param text Expected text
-     * @param flags Flags
-     * @param width Width
-     * @param precision Precission
+     * @param obj The object
+     * @param txt Expected text
+     * @param flgs Flags
+     * @param wdt Width
+     * @param prcs Precission
      */
-    public SecretDecorTest(final String secret, final String text,
-        final int flags, final int width, final int precision) {
-        super(secret, text, flags, width, precision);
+    public AbstractDecorTest(final Object obj, final String txt,
+        final int flgs, final int wdt, final int prcs) {
+        this.object = obj;
+        this.text = txt;
+        this.flags = flgs;
+        this.width = wdt;
+        this.precision = prcs;
     }
 
     /**
-     * Params for this parametrized test.
-     * @return Array of arrays of params for ctor
+     * Zero should be formatted without problems.
+     * @throws Exception If some problem inside
      */
-    @Parameters
-    public static Collection<Object[]> params() {
-        return Arrays.asList(
-            new Object[][] {
-                { "testing", "t***g", 0, 0, 0 },
-                { "ouch", "o***h  ", FormattableFlags.LEFT_JUSTIFY, 7, 5 },
-                { "x", " X***X", FormattableFlags.UPPERCASE, 6, 0 },
-                { null, "NULL", FormattableFlags.UPPERCASE, 6, 0 },
-            }
-        );
+    @Test
+    @org.junit.Ignore
+    public void testDifferentFormats() throws Exception {
+        final Formattable decor = this.decor();
+        final Appendable dest = Mockito.mock(Appendable.class);
+        final Formatter fmt = new Formatter(dest);
+        decor.formatTo(fmt, this.flags, this.width, this.precision);
+        Mockito.verify(dest).append(this.text);
     }
 
     /**
-     * {@inheritDoc}
+     * Get decor with the object.
      */
-    @Override
-    protected Formattable decor() {
-        return new SecretDecor((String) this.object());
+    protected abstract Formattable decor();
+
+    /**
+     * Get object under test.
+     * @return The object
+     */
+    protected final Object object() {
+        return this.object();
     }
 
 }

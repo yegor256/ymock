@@ -30,13 +30,12 @@
 package com.ymock.util.decors;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Formattable;
-import java.util.Formatter;
-import java.util.List;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.Test;
-import org.mockito.Mockito;
+import java.util.FormattableFlags;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 /**
  * Test case for {@link ObjectDecor}.
@@ -44,57 +43,42 @@ import org.mockito.Mockito;
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public class ObjectDecorTest {
+@RunWith(Parameterized.class)
+public final class ObjectDecorTest extends AbstractDecorTest {
 
     /**
-     * NULL should be formatted without problems.
-     * @throws Exception If some problem inside
+     * Public ctor.
+     * @param object The object
+     * @param text Expected text
+     * @param flags Flags
+     * @param width Width
+     * @param precision Precission
      */
-    @Test
-    @org.junit.Ignore
-    public final void testNullFormatting() throws Exception {
-        final Formattable decor = new ObjectDecor(null);
-        final Appendable dest = Mockito.mock(Appendable.class);
-        final Formatter fmt = new Formatter(dest);
-        decor.formatTo(fmt, 0, 1, 1);
-        Mockito.verify(dest).append("NULL");
+    public ObjectDecorTest(final Object object, final String text,
+        final int flags, final int width, final int precision) {
+        super(object, text, flags, width, precision);
     }
 
     /**
-     * We get internal structure of an object and serialize it.
-     * @throws Exception If some problem inside
+     * Params for this parametrized test.
+     * @return Array of arrays of params for ctor
      */
-    @Test
-    @org.junit.Ignore
-    public final void testFormatCollection() throws Exception {
-        final Formattable decor = new ObjectDecor(
-            Arrays.asList(new Foo(1), new Foo(2))
+    @Parameters
+    public static Collection<Object[]> params() {
+        return Arrays.asList(
+            new Object[][] {
+                { null, "NULL", 0, 0, 0 },
+                { new SecretDecor("x"), "{secret: \"x\"}", 0, 0, 0 }
+            }
         );
-        final Appendable dest = Mockito.mock(Appendable.class);
-        final Formatter fmt = new Formatter(dest);
-        decor.formatTo(fmt, 0, 1, 1);
-        Mockito.verify(dest).append("?");
     }
 
-    private static final class Foo {
-        /**
-         * Internal field.
-         */
-        private final transient Integer field;
-        /**
-         * Public ctor.
-         * @param val The value to set
-         */
-        public Foo(final Integer val) {
-            this.field = val;
-        }
-        /**
-         * Read field.
-         * @return The value
-         */
-        public Integer getField() {
-            return this.field;
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Formattable decor() {
+        return new ObjectDecor(this.object());
     }
 
 }
