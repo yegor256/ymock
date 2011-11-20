@@ -46,12 +46,12 @@ How to use yMock in a Java project?
 <dependency>
   <groupId>com.ymock</groupId>
   <artifactId>ymock-client</artifactId>
-  <version>1.0</version>
+  <version>${releasedVersion}</version>
 </dependency>
 <dependency>
   <groupId>com.ymock</groupId>
   <artifactId>ymock-server</artifactId>
-  <version>1.0</version>
+  <version>${releasedVersion}</version>
 </dependency>
 +--
 

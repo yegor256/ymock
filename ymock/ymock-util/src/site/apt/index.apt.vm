@@ -74,7 +74,7 @@ Convenient Utilities
 <dependency>
   <groupId>com.ymock</groupId>
   <artifactId>ymock-util</artifactId>
-  <version>1.0</version>
+  <version>${releasedVersion}</version>
 </dependency>
 +--
 

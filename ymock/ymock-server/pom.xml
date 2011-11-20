@@ -150,16 +150,36 @@
     <build>
         <plugins>
             <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version since="26 Oct 2011">1.6</version>
+                <executions>
+                    <execution>
+                        <phase>pre-integration-test</phase>
+                        <configuration>
+                            <target>
+                                <copy verbose="true"
+                                    file="${basedir}/../pom.xml"
+                                    tofile="${project.build.directory}/local-repo/com/ymock/ymock/${project.version}/ymock-${project.version}.pom"/>
+                                <copy verbose="true"
+                                    file="${com.ymock:ymock-client:jar}"
+                                    tofile="${project.build.directory}/local-repo/com/ymock/ymock-client/${project.version}/ymock-client-${project.version}.jar"/>
+                                <copy verbose="true"
+                                    file="${com.ymock:ymock-util:jar}"
+                                    tofile="${project.build.directory}/local-repo/com/ymock/ymock-util/${project.version}/ymock-util-${project.version}.jar"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <artifactId>maven-invoker-plugin</artifactId>
                 <version since="22 Mar 2011">1.5</version>
                 <configuration>
                     <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
-                    <!--
-                    This line should be disabled in order to make this plugin
-                    working in Maven 3.
-                    @see http://jira.codehaus.org/browse/MINVOKER-107
                     <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
-                    -->
                     <noLog>true</noLog>
                     <pomIncludes>
                         <pomInclude>*/pom.xml</pomInclude>
