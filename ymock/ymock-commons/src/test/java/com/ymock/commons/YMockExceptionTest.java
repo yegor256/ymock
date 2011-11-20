@@ -29,26 +29,31 @@
  */
 package com.ymock.commons;
 
-import org.junit.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
 
 /**
+ * Test case for {@link YMockException}.
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
 public final class YMockExceptionTest {
 
+    /**
+     * Class instantiation.
+     * @throws Exception If something goes wrong
+     */
     @Test
     public void testClassInstantiation() throws Exception {
         final String msg = "some text";
-        assertThat(
+        MatcherAssert.assertThat(
             new YMockException(msg).getMessage(),
-            containsString(msg)
+            Matchers.containsString(msg)
         );
-        assertThat(
+        MatcherAssert.assertThat(
             new YMockException(new IllegalArgumentException(msg)).getMessage(),
-            containsString(msg)
+            Matchers.containsString(msg)
         );
     }
 

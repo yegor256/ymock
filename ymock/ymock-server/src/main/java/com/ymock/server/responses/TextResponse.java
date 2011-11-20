@@ -29,7 +29,6 @@
  */
 package com.ymock.server.responses;
 
-// the API
 import com.ymock.server.Response;
 
 /**

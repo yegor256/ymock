@@ -29,20 +29,25 @@
  */
 package com.ymock.commons;
 
-import org.junit.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
 
 /**
+ * Test case for {@link PortDetector}.
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
 public final class PortDetectorTest {
 
+    /**
+     * Detect port number.
+     * @throws Exception If something goes wrong
+     */
     @Test
     public void testDetectsPortNumber() throws Exception {
         final Integer port = new PortDetector().port();
-        assertThat(port, is(greaterThan(0)));
+        MatcherAssert.assertThat(port, Matchers.greaterThan(0));
     }
 
 }

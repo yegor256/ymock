@@ -29,10 +29,7 @@
  */
 package com.ymock.server.matchers;
 
-// matcher
 import com.ymock.server.Matcher;
-
-// regex
 import java.util.regex.Pattern;
 
 /**

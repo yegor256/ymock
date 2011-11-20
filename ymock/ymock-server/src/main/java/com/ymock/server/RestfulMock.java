@@ -29,23 +29,14 @@
  */
 package com.ymock.server;
 
-// commons from com.ymock:ymock-commons
 import com.ymock.commons.YMockException;
-
-// utils from com.ymock:ymock-util
 import com.ymock.util.Logger;
-
-// IO
 import java.io.InputStream;
-
-// for JAX-RS
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-
-// IO
 import org.apache.commons.io.IOUtils;
 
 /**
@@ -54,8 +45,8 @@ import org.apache.commons.io.IOUtils;
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  * @todo #1 At the moment this NAME param is just ignored. Which is not
- *       correct. We should pass it to RestfulServer and it will use it
- *       for filtering of matchers.
+ *  correct. We should pass it to RestfulServer and it will use it
+ *  for filtering of matchers.
  */
 @Path("/{name}")
 public final class RestfulMock {

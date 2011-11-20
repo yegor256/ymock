@@ -29,15 +29,10 @@
  */
 package com.ymock.client;
 
-// commons
 import com.ymock.commons.PortDetector;
 import com.ymock.commons.YMockException;
 import com.ymock.util.Logger;
-
-// IO utils from commons-io:commons-io
 import org.apache.commons.io.IOUtils;
-
-// apache httpcomponents:httpclient
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
@@ -56,7 +51,7 @@ public final class HttpConnector implements Connector {
     /**
      * HTTP client.
      */
-    private HttpClient client = new DefaultHttpClient();
+    private transient HttpClient client = new DefaultHttpClient();
 
     /**
      * Public ctor.
@@ -75,6 +70,7 @@ public final class HttpConnector implements Connector {
 
     /**
      * {@inheritDoc}
+     * @checkstyle RedundantThrows (3 lines)
      */
     @Override
     public String call(final String request) throws YMockException {
@@ -107,9 +103,10 @@ public final class HttpConnector implements Connector {
      * @return The URL
      */
     private String url() {
-        return "http://localhost:"
-            + new PortDetector().port()
-            + "/ymock/mock";
+        return String.format(
+            "http://localhost:%d/ymock/mock",
+            new PortDetector().port()
+        );
     }
 
 }

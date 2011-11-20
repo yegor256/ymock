@@ -29,7 +29,6 @@
  */
 package com.ymock.server.responses;
 
-// the API
 import com.ymock.commons.YMockException;
 import com.ymock.server.Response;
 
@@ -57,6 +56,7 @@ public final class ErrorResponse implements Response {
 
     /**
      * {@inheritDoc}
+     * @checkstyle RedundantThrows (3 lines)
      */
     @Override
     public String process(final String input) throws YMockException {

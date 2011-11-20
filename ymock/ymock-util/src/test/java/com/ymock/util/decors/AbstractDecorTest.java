@@ -43,29 +43,29 @@ import org.mockito.Mockito;
 public abstract class AbstractDecorTest {
 
     /**
-     * The value to test against.
+     * Object/system under test.
      */
-    private final Object object;
+    private final transient Object sut;
 
     /**
      * The text to expect as an output.
      */
-    private final String text;
+    private final transient String text;
 
     /**
      * Formatting flas.
      */
-    private final int flags;
+    private final transient int flags;
 
     /**
      * Formatting width.
      */
-    private final int width;
+    private final transient int width;
 
     /**
      * Formatting precision.
      */
-    private final int precision;
+    private final transient int precision;
 
     /**
      * Public ctor.
@@ -78,7 +78,7 @@ public abstract class AbstractDecorTest {
      */
     public AbstractDecorTest(final Object obj, final String txt,
         final int flgs, final int wdt, final int prcs) {
-        this.object = obj;
+        this.sut = obj;
         this.text = txt;
         this.flags = flgs;
         this.width = wdt;
@@ -109,7 +109,7 @@ public abstract class AbstractDecorTest {
      * @return The object
      */
     protected final Object object() {
-        return this.object();
+        return this.sut;
     }
 
 }

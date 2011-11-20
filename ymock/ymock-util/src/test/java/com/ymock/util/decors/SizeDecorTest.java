@@ -43,6 +43,7 @@ import org.junit.runners.Parameterized.Parameters;
  * @version $Id$
  */
 @RunWith(Parameterized.class)
+@SuppressWarnings("PMD.TestClassWithoutTestCases")
 public final class SizeDecorTest extends AbstractDecorTest {
 
     /**

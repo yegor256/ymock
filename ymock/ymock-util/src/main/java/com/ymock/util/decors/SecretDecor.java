@@ -45,7 +45,7 @@ public final class SecretDecor implements Formattable {
     /**
      * The secret to work with.
      */
-    private final String secret;
+    private final transient String secret;
 
     /**
      * Public ctor.
@@ -62,7 +62,7 @@ public final class SecretDecor implements Formattable {
     @Override
     public void formatTo(final Formatter formatter, final int flags,
         final int width, final int precision) {
-        formatter.format("not implemented yet");
+        formatter.format(this.secret);
     }
 
 }

@@ -44,7 +44,7 @@ final class FooDecor implements Formattable {
     /**
      * The text.
      */
-    private final String text;
+    private final transient String text;
 
     /**
      * Public ctor.
@@ -63,7 +63,8 @@ final class FooDecor implements Formattable {
         final int width, final int precision) {
         formatter.format(
             String.format(
-                "f=%d, w=%d, p=%d",
+                "%s [f=%d, w=%d, p=%d]",
+                this.text,
                 flags,
                 width,
                 precision

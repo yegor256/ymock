@@ -45,7 +45,7 @@ public final class SizeDecor implements Formattable {
     /**
      * The size to work with.
      */
-    private final Long size;
+    private final transient Long size;
 
     /**
      * Public ctor.
@@ -62,7 +62,7 @@ public final class SizeDecor implements Formattable {
     @Override
     public void formatTo(final Formatter formatter, final int flags,
         final int width, final int precision) {
-        formatter.format("not implemented yet");
+        formatter.format(this.size.toString());
     }
 
 }

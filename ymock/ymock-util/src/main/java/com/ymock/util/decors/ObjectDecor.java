@@ -45,7 +45,7 @@ public final class ObjectDecor implements Formattable {
     /**
      * The object to work with.
      */
-    private final Object object;
+    private final transient Object object;
 
     /**
      * Public ctor.
@@ -62,7 +62,7 @@ public final class ObjectDecor implements Formattable {
     @Override
     public void formatTo(final Formatter formatter, final int flags,
         final int width, final int precision) {
-        formatter.format("not implemented yet");
+        formatter.format(this.object.getClass().getName());
     }
 
 }

@@ -27,32 +27,11 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.server.responses;
-
-import com.ymock.server.Response;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.Test;
 
 /**
- * Test case for {@link TextResponse}.
+ * Responses, tests.
+ *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class TextResponseTest {
-
-    /**
-     * Test it.
-     * @throws Exception If something wrong inside
-     */
-    @Test
-    public void testCoreMethods() throws Exception {
-        final String text = "some text";
-        final Response response = new TextResponse(text);
-        MatcherAssert.assertThat(
-            response.process("some input"),
-            Matchers.equalTo(text)
-        );
-    }
-
-}
+package com.ymock.server.responses;

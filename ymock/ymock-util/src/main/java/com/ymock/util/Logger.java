@@ -99,11 +99,14 @@ public final class Logger {
      * @return Formatted string
      */
     public static String format(final String fmt, final Object... args) {
+        String result;
         if (args.length == 0) {
-            return fmt;
+            result = fmt;
+        } else {
+            final PreFormatter pre = new PreFormatter(fmt, args);
+            result = String.format(pre.getFormat(), pre.getArguments());
         }
-        final PreFormatter pre = new PreFormatter(fmt, args);
-        return String.format(pre.getFormat(), pre.getArguments());
+        return result;
     }
 
     /**

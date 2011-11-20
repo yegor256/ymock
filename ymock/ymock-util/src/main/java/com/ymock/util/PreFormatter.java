@@ -47,12 +47,12 @@ final class PreFormatter {
     /**
      * The formatting string.
      */
-    private String format;
+    private transient String format;
 
     /**
      * List of arguments.
      */
-    private List<Object> arguments;
+    private transient List<Object> arguments;
 
     /**
      * Public ctor.

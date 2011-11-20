@@ -29,7 +29,6 @@
  */
 package com.ymock.client;
 
-// commons
 import com.ymock.commons.YMockException;
 
 /**
@@ -43,7 +42,7 @@ public final class YMockClient {
     /**
      * The connector to use.
      */
-    private Connector connector;
+    private transient Connector connector;
 
     /**
      * Public ctor.
@@ -58,10 +57,12 @@ public final class YMockClient {
      * @param name The unique name of the client
      * @param conn The connector to use
      * @todo #1 The name is just ingored now, an it's not correct. We should
-     *       use it in order to build the URL of the server. The server will
-     *       filter out requests not related to the specified name.
+     *  use it in order to build the URL of the server. The server will
+     *  filter out requests not related to the specified name.
      */
     public YMockClient(final String name, final Connector conn) {
+        assert name != null;
+        assert conn != null;
         this.connector = conn;
     }
 
@@ -70,7 +71,8 @@ public final class YMockClient {
      * @param request The request string
      * @return The response
      * @throws YMockException If something was wrong with the server
-     *         and the operation failed.
+     *  and the operation failed.
+     * @checkstyle RedundantThrows (2 lines)
      */
     public String call(final String request) throws YMockException {
         return this.connector.call(request);

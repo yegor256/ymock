@@ -29,21 +29,14 @@
  */
 package com.ymock.server;
 
-// supplementary concrete classes
 import com.ymock.server.matchers.RegexMatcher;
 import com.ymock.server.responses.ErrorResponse;
 import com.ymock.server.responses.TextResponse;
-
-// logging
 import com.ymock.util.Logger;
-
-// maps
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-
-// sting manipulations, from commons-lang:commons-lang
 import org.apache.commons.lang.StringUtils;
 
 /**

@@ -45,13 +45,13 @@ public final class NanoDecor implements Formattable {
     /**
      * The period to work with, in nanoseconds.
      */
-    private final long nano;
+    private final transient Long nano;
 
     /**
      * Public ctor.
      * @param nan The interval in nanoseconds
      */
-    public NanoDecor(final long nan) {
+    public NanoDecor(final Long nan) {
         this.nano = nan;
     }
 
@@ -62,7 +62,7 @@ public final class NanoDecor implements Formattable {
     @Override
     public void formatTo(final Formatter formatter, final int flags,
         final int width, final int precision) {
-        formatter.format("not implemented yet");
+        formatter.format(this.nano.toString());
     }
 
 }

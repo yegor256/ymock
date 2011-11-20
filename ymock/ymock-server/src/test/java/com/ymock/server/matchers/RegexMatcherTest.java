@@ -30,22 +30,27 @@
 package com.ymock.server.matchers;
 
 import com.ymock.server.Matcher;
-import org.junit.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
 
 /**
+ * Test case for {@link RegexMatcher}.
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
 public final class RegexMatcherTest {
 
+    /**
+     * Test it.
+     * @throws Exception If something wrong inside
+     */
     @Test
     public void testMatchingMechanism() throws Exception {
         final Matcher matcher = new RegexMatcher(".*t");
-        assertThat(matcher.matches("test"), is(true));
-        assertThat(matcher.matches("temp"), is(false));
-        assertThat(matcher.matches(""), is(false));
+        MatcherAssert.assertThat(matcher.matches("test"), Matchers.is(true));
+        MatcherAssert.assertThat(matcher.matches("temp"), Matchers.is(false));
+        MatcherAssert.assertThat(matcher.matches(""), Matchers.is(false));
     }
 
 }
