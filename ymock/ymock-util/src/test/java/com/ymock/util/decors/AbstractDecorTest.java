@@ -97,7 +97,6 @@ public abstract class AbstractDecorTest {
      * @throws Exception If some problem inside
      */
     @Test
-    @org.junit.Ignore
     public void testDifferentFormats() throws Exception {
         final Formattable decor = this.decor();
         final Appendable dest = Mockito.mock(Appendable.class);
