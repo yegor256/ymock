@@ -27,69 +27,11 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.mock.jdbc;
-
-import java.sql.Connection;
-import java.sql.Driver;
-import java.sql.DriverPropertyInfo;
-import java.util.Properties;
 
 /**
- * Jdbc Mock Driver.
+ * JDBC MOCK library, tests.
  *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
- * @see <a href="http://download.oracle.com/javase/6/docs/api/java/sql/Driver.html">java.sql.Driver</a>
  */
-public final class JMDriver implements Driver {
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean acceptsURL(final String url) {
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Connection connect(final String url, final Properties info) {
-        return new JMConnection();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getMajorVersion() {
-        return 1;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getMinorVersion() {
-        return 0;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public DriverPropertyInfo[] getPropertyInfo(final String url,
-        final Properties info) {
-        return new DriverPropertyInfo[] {};
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean jdbcCompliant() {
-        return true;
-    }
-
-}
+package com.ymock.mock.jdbc;

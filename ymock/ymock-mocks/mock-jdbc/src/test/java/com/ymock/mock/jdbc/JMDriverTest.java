@@ -31,27 +31,41 @@ package com.ymock.mock.jdbc;
 
 import java.sql.Driver;
 import java.util.Properties;
-import org.junit.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
 
 /**
+ * Test case for {@link JMDriver}.
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
 public final class JMDriverTest {
 
+    /**
+     * Test it.
+     * @throws Exception If some problem inside
+     */
     @Test
     public void testSampleOperations() throws Exception {
         final Driver driver = new JMDriver();
-        assertThat(driver.acceptsURL("url:something"), is(true));
-        assertThat(
-            driver.connect("url:some-url", new Properties()),
-            is(not(nullValue()))
+        MatcherAssert.assertThat(
+            driver.acceptsURL("url:something"),
+            Matchers.is(true)
         );
-        assertThat(driver.getMajorVersion(), is(not(nullValue())));
-        assertThat(driver.getMinorVersion(), is(not(nullValue())));
-        assertThat(driver.jdbcCompliant(), is(true));
+        MatcherAssert.assertThat(
+            driver.connect("url:some-url", new Properties()),
+            Matchers.notNullValue()
+        );
+        MatcherAssert.assertThat(
+            driver.getMajorVersion(),
+            Matchers.notNullValue()
+        );
+        MatcherAssert.assertThat(
+            driver.getMinorVersion(),
+            Matchers.notNullValue()
+        );
+        MatcherAssert.assertThat(driver.jdbcCompliant(), Matchers.is(true));
     }
 
 }
