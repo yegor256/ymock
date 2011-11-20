@@ -29,9 +29,9 @@
  */
 
 /**
- * Convenient formatters, tests.
+ * Built-in decors, tests.
  *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-package com.ymock.util.formatters;
+package com.ymock.util.decors;

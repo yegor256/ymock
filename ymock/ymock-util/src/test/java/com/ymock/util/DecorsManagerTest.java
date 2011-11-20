@@ -27,83 +27,43 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.util.formatters;
+package com.ymock.util;
 
-import java.io.File;
+import java.util.Formattable;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 /**
- * Test case for {@link SizeFormatter}.
+ * Test case for {@link DecorsManagerTest}.
  * @author Marina Kosenko (marina.kosenko@gmail.com)
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
- * @todo #25! Provide implementation of SizeFormatter, write javadoc
  */
-public class SizeFormatterTest {
+public final class DecorsManagerTest {
 
     /**
      * Object under test.
      */
-    private final transient SizeFormatter fmtr = new SizeFormatter();
+    private final transient DecorsManager mgr = DecorsManager.INSTANCE;
 
     /**
-     * NULL should be formatted without problems.
+     * Test with sample formatter.
      */
     @Test
-    @org.junit.Ignore
-    public final void testNullFormatting() {
+    public void testRetrievalOfSimpleDecor() {
         MatcherAssert.assertThat(
-            this.fmtr.format(null),
-            Matchers.equalTo("NULL")
+            this.mgr.decor("foo.decor", "test"),
+            Matchers.instanceOf(Formattable.class)
         );
     }
 
     /**
-     * File size should be formatted.
-     * @checkstyle MagicNumber (30 lines)
+     * Test with non-existing formatter.
      */
-    @Test
-    @org.junit.Ignore
-    public final void testFileSizeFormatting() {
-        final File file = Mockito.mock(File.class);
-        Mockito.doReturn(5).when(file).length();
-        MatcherAssert.assertThat(
-            this.fmtr.format(file),
-            Matchers.equalTo("5bytes")
-        );
-        Mockito.doReturn(5.02 * 1024).when(file).length();
-        MatcherAssert.assertThat(
-            this.fmtr.format(file),
-            Matchers.equalTo("5Kb")
-        );
-        Mockito.doReturn(5.2 * 1024 * 1024).when(file).length();
-        MatcherAssert.assertThat(
-            this.fmtr.format(file),
-            Matchers.equalTo("5.2Mb")
-        );
-        Mockito.doReturn(1334.65 * 1024 * 1024 * 1024).when(file).length();
-        MatcherAssert.assertThat(
-            this.fmtr.format(file),
-            Matchers.equalTo("1334.7Gb")
-        );
-    }
-
-    /**
-     * File size should be formatted.
-     */
-    @Test
-    @org.junit.Ignore
-    public final void testAbsentFileSizeFormatting() {
-        final File file = Mockito.mock(File.class);
-        Mockito.doThrow(new java.io.FileNotFoundException("ouch"))
-            .when(file).length();
-        MatcherAssert.assertThat(
-            this.fmtr.format(file),
-            Matchers.equalTo("(?:ouch)")
-        );
+    @Test(expected = com.ymock.util.RuntimeProblem.class)
+    public void testWithNonExistingDecor() {
+        this.mgr.decor("non-existing-formatter", null);
     }
 
 }

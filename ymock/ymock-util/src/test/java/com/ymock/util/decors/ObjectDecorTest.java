@@ -27,12 +27,70 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package com.ymock.util.decors;
+
+import java.util.Arrays;
+import java.util.Formattable;
+import java.util.Formatter;
+import java.util.List;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
+import org.mockito.Mockito;
 
 /**
- * Built-in decors.
- *
+ * Test case for {@link ObjectDecor}.
  * @author Marina Kosenko (marina.kosenko@gmail.com)
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-package com.ymock.util.decors;
+public class ObjectDecorTest {
+
+    /**
+     * NULL should be formatted without problems.
+     */
+    @Test
+    @org.junit.Ignore
+    public final void testNullFormatting() {
+        final Formattable decor = new ObjectDecor(null);
+        final Formatter fmt = Mockito.mock(Formatter.class);
+        decor.formatTo(fmt, 0, 1, 1);
+        Mockito.verify(fmt).format("NULL");
+    }
+
+    /**
+     * We get internal structure of an object and serialize it.
+     */
+    @Test
+    @org.junit.Ignore
+    public final void testFormatCollection() {
+        final Formattable decor = new ObjectDecor(
+            Arrays.asList(new Foo(1), new Foo(2))
+        );
+        final Formatter fmt = Mockito.mock(Formatter.class);
+        decor.formatTo(fmt, 0, 1, 1);
+        Mockito.verify(fmt).format("?");
+    }
+
+    private static final class Foo {
+        /**
+         * Internal field.
+         */
+        private final transient Integer field;
+        /**
+         * Public ctor.
+         * @param val The value to set
+         */
+        public Foo(final Integer val) {
+            this.field = val;
+        }
+        /**
+         * Read field.
+         * @return The value
+         */
+        public Integer getField() {
+            return this.field;
+        }
+    }
+
+}

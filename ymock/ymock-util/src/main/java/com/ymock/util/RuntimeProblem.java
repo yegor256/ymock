@@ -94,7 +94,7 @@ public final class RuntimeProblem extends RuntimeException {
      */
     public static RuntimeProblem make(final String message,
         final Object... args) {
-        return new RuntimeProblem(String.format(message, args));
+        return new RuntimeProblem(Logger.format(message, args));
     }
 
     /**
@@ -115,7 +115,7 @@ public final class RuntimeProblem extends RuntimeException {
      */
     public static RuntimeProblem make(final Throwable cause,
         final String message, final Object... args) {
-        return new RuntimeProblem(String.format(message, args), cause);
+        return new RuntimeProblem(Logger.format(message, args), cause);
     }
 
 }

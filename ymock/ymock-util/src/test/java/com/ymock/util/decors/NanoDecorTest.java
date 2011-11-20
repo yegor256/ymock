@@ -27,68 +27,94 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.util.formatters;
+package com.ymock.util.decors;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Formattable;
+import java.util.Formatter;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
+import org.mockito.Mockito;
 
 /**
- * Test case for {@link PasswordFormatter}.
+ * Test case for {@link NanoDecor}.
  * @author Marina Kosenko (marina.kosenko@gmail.com)
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
- * @todo #25! Provide implementation of PasswordFormatter, write javadoc
  */
-public class PasswordFormatterTest {
+@RunWith(Parameterized.class)
+public class NanoDecorTest {
 
     /**
-     * Instance of the class to test.
+     * The value to test against.
      */
-    private final transient PasswordFormatter fmtr = new PasswordFormatter();
+    private final long nano;
 
     /**
-     * NULL value should be formatted properly.
+     * The text to expect as an output.
      */
-    @Test
-    @org.junit.Ignore
-    public final void testFormatNullValue() {
-        MatcherAssert.assertThat(
-            this.fmtr.format(null),
-            Matchers.equalTo("NULL")
+    private final String text;
+
+    /**
+     * Formatting flas.
+     */
+    private final int flags;
+
+    /**
+     * Formatting width.
+     */
+    private final int width;
+
+    /**
+     * Formatting precision.
+     */
+    private final int precision;
+
+    /**
+     * Public ctor.
+     * @param nan The amount of nanoseconds
+     * @param txt Expected text
+     * @param flgs Flags
+     * @param wdt Width
+     * @param prcs Precission
+     */
+    public NanoDecorTest(final long nan, final String txt,
+        final int flgs, final int wdt, final int prcs) {
+        this.nano = nan;
+        this.text = txt;
+        this.flags = flgs;
+        this.width = wdt;
+        this.precision = prcs;
+    }
+
+    /**
+     * Params for this parametrized test.
+     * @return Array of arrays of params for ctor
+     */
+    @Parameters
+    public static Collection<Object[]> params() {
+        return Arrays.asList(
+            new Object[][] {
+                { 234, "0.234mcs", 0, 1, 1 },
+            }
         );
     }
 
     /**
-     * Normal text should be escaped.
+     * Zero should be formatted without problems.
      */
     @Test
     @org.junit.Ignore
-    public final void testNormalTextFormatting() {
-        MatcherAssert.assertThat(
-            this.fmtr.format("alpha beta gamma"),
-            Matchers.equalTo("\"a***a\"")
-        );
-        MatcherAssert.assertThat(
-            this.fmtr.format("x"),
-            Matchers.equalTo("\"x***x\"")
-        );
-        MatcherAssert.assertThat(
-            this.fmtr.format("te"),
-            Matchers.equalTo("\"t***e\"")
-        );
-    }
-
-    /**
-     * Empty text should be escaped.
-     */
-    @Test
-    @org.junit.Ignore
-    public final void testEmptyTextFormatting() {
-        MatcherAssert.assertThat(
-            this.fmtr.format(""),
-            Matchers.equalTo("\"\"")
-        );
+    public final void testDifferentFormats() {
+        final Formattable decor = new NanoDecor(this.nano);
+        final Formatter fmt = Mockito.mock(Formatter.class);
+        decor.formatTo(fmt, this.flags, this.width, this.precision);
+        Mockito.verify(fmt).format(text);
     }
 
 }

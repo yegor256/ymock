@@ -93,6 +93,20 @@ public final class Logger {
     }
 
     /**
+     * Format one string.
+     * @param fmt The format
+     * @param args List of arbitrary arguments
+     * @return Formatted string
+     */
+    public static String format(final String fmt, final Object... args) {
+        if (args.length == 0) {
+            return fmt;
+        }
+        final PreFormatter pre = new PreFormatter(fmt, args);
+        return String.format(pre.getFormat(), pre.getArguments());
+    }
+
+    /**
      * Protocol one message, with <tt>TRACE</tt> priority level.
      * @param source The source of the logging operation
      * @param msg The text message to be logged, with meta-tags
@@ -100,7 +114,7 @@ public final class Logger {
      */
     public static void trace(final Object source,
         final String msg, final Object... args) {
-        Logger.logger(source).trace(Logger.compose(msg, args));
+        Logger.logger(source).trace(Logger.format(msg, args));
     }
 
     /**
@@ -111,7 +125,7 @@ public final class Logger {
      */
     public static void debug(final Object source,
         final String msg, final Object... args) {
-        Logger.logger(source).debug(Logger.compose(msg, args));
+        Logger.logger(source).debug(Logger.format(msg, args));
     }
 
     /**
@@ -122,7 +136,7 @@ public final class Logger {
      */
     public static void info(final Object source,
         final String msg, final Object... args) {
-        Logger.logger(source).info(Logger.compose(msg, args));
+        Logger.logger(source).info(Logger.format(msg, args));
     }
 
     /**
@@ -133,7 +147,7 @@ public final class Logger {
      */
     public static void warn(final Object source,
         final String msg, final Object... args) {
-        Logger.logger(source).warn(Logger.compose(msg, args));
+        Logger.logger(source).warn(Logger.format(msg, args));
     }
 
     /**
@@ -144,7 +158,7 @@ public final class Logger {
      */
     public static void error(final Object source,
         final String msg, final Object... args) {
-        Logger.logger(source).error(Logger.compose(msg, args));
+        Logger.logger(source).error(Logger.format(msg, args));
     }
 
     /**
@@ -180,16 +194,6 @@ public final class Logger {
             logger = LoggerFactory.getLogger(source.getClass());
         }
         return logger;
-    }
-
-    /**
-     * Compose a message using varargs.
-     * @param msg The message
-     * @param args List of args
-     * @return The message composed
-     */
-    private static String compose(final String msg, final Object[] args) {
-        return String.format(msg, args);
     }
 
 }

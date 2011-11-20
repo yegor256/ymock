@@ -27,12 +27,29 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package com.ymock.util.decors;
+
+import java.io.File;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
+import org.mockito.Mockito;
 
 /**
- * Built-in decors.
- *
+ * Test case for {@link SizeDecor}.
  * @author Marina Kosenko (marina.kosenko@gmail.com)
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
+ * @todo #25! Provide implementation of SizeFormatter, write javadoc
  */
-package com.ymock.util.decors;
+public class SizeDecorTest {
+
+    /**
+     * NULL should be formatted without problems.
+     */
+    @Test
+    @org.junit.Ignore
+    public final void testNullFormatting() {
+    }
+
+}

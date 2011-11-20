@@ -27,26 +27,41 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.util.formatters;
+package com.ymock.util.decors;
 
-import com.ymock.util.Formatter;
+import com.ymock.util.Decor;
+import java.util.Formattable;
+import java.util.Formatter;
 
 /**
- * Password formatter.
+ * Decorate time interval in nanoseconds.
  * @author Marina Kosenko (marina.kosenko@gmail.com)
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-@Formatter
-public final class PasswordFormatter {
+@Decor("nano")
+public final class NanoDecor implements Formattable {
 
     /**
-     * Format some secret information.
-     * @param secret Some secret text to format
-     * @return Formatted result
+     * The period to work with, in nanoseconds.
      */
-    @Formatter("secret")
-    public String format(final String secret) {
-        return "?";
+    private final long nano;
+
+    /**
+     * Public ctor.
+     * @param nan The interval in nanoseconds
+     */
+    public NanoDecor(final long nan) {
+        this.nano = nan;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void formatTo(final Formatter formatter, final int flags,
+        final int width, final int precision) {
+        formatter.format("not implemented yet");
+    }
+
 }

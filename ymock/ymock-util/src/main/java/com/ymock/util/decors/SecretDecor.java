@@ -27,27 +27,41 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.util.formatters;
+package com.ymock.util.decors;
 
-import com.ymock.util.Formatter;
+import com.ymock.util.Decor;
+import java.util.Formattable;
+import java.util.Formatter;
 
 /**
- * Size formatter.
+ * Decorator of a secret text.
  * @author Marina Kosenko (marina.kosenko@gmail.com)
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-@Formatter
-public final class SizeFormatter {
+@Decor("secret")
+public final class SecretDecor implements Formattable {
 
     /**
-     * Return size of the object provided.
-     * @param obj The object
-     * @return Its size as string
+     * The secret to work with.
      */
-    @Formatter("size")
-    public String format(final Object obj) {
-        return "?";
+    private final String secret;
+
+    /**
+     * Public ctor.
+     * @param scrt The secret
+     */
+    public SecretDecor(final String scrt) {
+        this.secret = scrt;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void formatTo(final Formatter formatter, final int flags,
+        final int width, final int precision) {
+        formatter.format("not implemented yet");
     }
 
 }

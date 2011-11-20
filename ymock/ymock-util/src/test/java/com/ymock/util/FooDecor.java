@@ -27,36 +27,43 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.util.formatters;
+package com.ymock.util;
 
-import com.ymock.util.Formatter;
+import java.util.Formattable;
+import java.util.Formatter;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
 
 /**
- * Time formatting.
+ * Primitive decor, for testing only.
  * @author Marina Kosenko (marina.kosenko@gmail.com)
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-@Formatter
-public final class TimeFormatter {
+@Decor("foo.decor")
+final class FooDecor implements Formattable {
 
     /**
-     * Format nano time.
-     * @param time The value of time
-     * @return Textual form of the time
+     * The text.
      */
-    @Formatter("time.nano")
-    public String nano(final long time) {
-        return "??";
+    private final String text;
+
+    /**
+     * Public ctor.
+     * @param txt The text to output
+     */
+    public FooDecor(final Object txt) {
+        this.text = (String) txt;
     }
 
     /**
-     * Format milliseconds.
-     * @param time The value of time
-     * @return Textual form of the time
+     * {@inheritDoc}
      */
-    @Formatter("time.ms")
-    public String msec(final long time) {
-        return "?";
+    @Override
+    public void formatTo(final Formatter formatter, final int flags,
+        final int width, final int precision) {
+        formatter.format(this.text);
     }
+
 }

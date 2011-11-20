@@ -27,74 +27,41 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.util.formatters;
+package com.ymock.util.decors;
 
-import java.util.Arrays;
-import java.util.List;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.Test;
+import com.ymock.util.Decor;
+import java.util.Formattable;
+import java.util.Formatter;
 
 /**
- * Test case for {@link StructureFormatter}.
+ * Format internal structure of an object.
  * @author Marina Kosenko (marina.kosenko@gmail.com)
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
- * @todo #25! Provide implementation, write javadoc, create test for
- *  format() method. Format object should print object content in
- *  decent way. Investigate existent frameworks.
  */
-public class StructureFormatterTest {
+@Decor("object")
+public final class ObjectDecor implements Formattable {
 
     /**
-     * Object under test.
+     * The object to work with.
      */
-    private final transient StructureFormatter fmtr = new StructureFormatter();
+    private final Object object;
 
     /**
-     * NULL should be formatted without problems.
+     * Public ctor.
+     * @param obj The object to format
      */
-    @Test
-    @org.junit.Ignore
-    public final void testNullFormatting() {
-        MatcherAssert.assertThat(
-            this.fmtr.format(null),
-            Matchers.equalTo("NULL")
-        );
+    public ObjectDecor(final Object obj) {
+        this.object = obj;
     }
 
     /**
-     * We get internal structure of an object and serialize it.
+     * {@inheritDoc}
      */
-    @Test
-    @org.junit.Ignore
-    public final void testFormatCollection() {
-        final List list = Arrays.asList(new Foo(1), new Foo(2));
-        MatcherAssert.assertThat(
-            this.fmtr.format(list),
-            Matchers.equalTo("?")
-        );
-    }
-
-    private static final class Foo {
-        /**
-         * Internal field.
-         */
-        private final transient Integer field;
-        /**
-         * Public ctor.
-         * @param val The value to set
-         */
-        public Foo(final Integer val) {
-            this.field = val;
-        }
-        /**
-         * Read field.
-         * @return The value
-         */
-        public Integer getField() {
-            return this.field;
-        }
+    @Override
+    public void formatTo(final Formatter formatter, final int flags,
+        final int width, final int precision) {
+        formatter.format("not implemented yet");
     }
 
 }

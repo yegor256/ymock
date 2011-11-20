@@ -27,58 +27,26 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.util;
+package com.ymock.util.decors;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
- * Test case for {@link FormatManagerTest}.
+ * Test case for {@link SecretDecor}.
  * @author Marina Kosenko (marina.kosenko@gmail.com)
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class FormatManagerTest {
+public class SecretDecorTest {
 
     /**
-     * Object under test.
-     */
-    private final transient FormatManager mgr = FormatManager.INSTANCE;
-
-    /**
-     * Test with sample formatter.
+     * NULL value should be formatted properly.
      */
     @Test
-    public void testSimpleFormatting() {
-        MatcherAssert.assertThat(
-            this.mgr.fmt("foo.text", "test"),
-            Matchers.equalTo("4")
-        );
-    }
-
-    /**
-     * Test with non-existing formatter.
-     */
-    @Test
-    public void testWithNonExistingFormatter() {
-        MatcherAssert.assertThat(
-            this.mgr.fmt("non-existing-formatter", "test-1", "test-2"),
-            Matchers.equalTo("?")
-        );
-    }
-
-    @Formatter
-    public static final class FooFormatter {
-        /**
-         * Format simple string.
-         * @param txt Some text
-         * @return Formatted value
-         */
-        @Formatter("foo.text")
-        public String format(final String txt) {
-            return String.valueOf(txt.length());
-        }
+    @org.junit.Ignore
+    public final void testFormatNullValue() {
     }
 
 }

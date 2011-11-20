@@ -27,26 +27,55 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.util.formatters;
+package com.ymock.util;
 
-import com.ymock.util.Formatter;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * Structure formatting.
+ * Processor of formatting string and arguments, before sending it to
+ * {@link String#format(String,Object[])}.
+ *
  * @author Marina Kosenko (marina.kosenko@gmail.com)
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-@Formatter
-public final class StructureFormatter {
+final class PreFormatter {
 
     /**
-     * Format internal structure of the object.
-     * @param obj The object to analyze and format
-     * @return Its internal structure as a string
+     * The formatting string.
      */
-    @Formatter("struct")
-    public String format(final Object obj) {
-        return "?";
+    private final String format;
+
+    /**
+     * List of arguments.
+     */
+    private final List<Object> arguments;
+
+    /**
+     * Public ctor.
+     * @param fmt The formatting string
+     * @param args The list of arguments
+     */
+    public PreFormatter(final String fmt, final Object[] args) {
+        this.format = fmt;
+        this.arguments = new CopyOnWriteArrayList<Object>(args);
     }
+
+    /**
+     * Get new formatting string.
+     * @return The formatting text
+     */
+    public String getFormat() {
+        return this.format;
+    }
+
+    /**
+     * Get new list of arguments.
+     * @return The list of arguments
+     */
+    public Object[] getArguments() {
+        return this.arguments.toArray(new Object[]{});
+    }
+
 }

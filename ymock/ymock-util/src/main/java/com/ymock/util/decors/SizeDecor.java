@@ -27,12 +27,41 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package com.ymock.util.decors;
+
+import com.ymock.util.Decor;
+import java.util.Formattable;
+import java.util.Formatter;
 
 /**
- * Built-in decors.
- *
+ * Size decorator.
  * @author Marina Kosenko (marina.kosenko@gmail.com)
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-package com.ymock.util.decors;
+@Decor("size")
+public final class SizeDecor implements Formattable {
+
+    /**
+     * The size to work with.
+     */
+    private final long size;
+
+    /**
+     * Public ctor.
+     * @param sze The size
+     */
+    public SizeDecor(final long sze) {
+        this.size = sze;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void formatTo(final Formatter formatter, final int flags,
+        final int width, final int precision) {
+        formatter.format("not implemented yet");
+    }
+
+}
