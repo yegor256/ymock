@@ -30,10 +30,6 @@
 package com.ymock.server;
 
 import com.ymock.client.Connector;
-import com.ymock.client.YMockClient;
-import com.ymock.commons.YMockException;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
@@ -44,19 +40,14 @@ import org.junit.Test;
 public final class YMockServerTest {
 
     /**
-     * ID.
-     */
-    private static final String ID = "test";
-
-    /**
      * Request.
      */
-    private static final String REQUEST = "really works?";
+    public static final String REQUEST = "really works?";
 
     /**
      * Response.
      */
-    private static final String RESPONSE = "works fine!";
+    public static final String RESPONSE = "works fine!";
 
     /**
      * Entire cycle.
@@ -64,12 +55,11 @@ public final class YMockServerTest {
      */
     @Test
     public void testEntireCycleThroughMocks() throws Exception {
-        final SimpleProvider provider = new YMockServerTest.SimpleProvider();
-        final Connector connector =
-            new YMockServerTest.SimpleConnector(provider);
-        final YMockServer server = new YMockServer(this.ID, provider);
+        final SimpleProvider provider = new SimpleProvider();
+        final Connector connector = new SimpleConnector(provider);
+        final YMockServer server = new YMockServer(SimpleClient.ID, provider);
         server.when(String.format("\\Q%s\\E", this.REQUEST), this.RESPONSE);
-        new YMockServerTest.SimpleClient(connector).run();
+        new SimpleClient(connector).run();
     }
 
     /**
@@ -79,10 +69,9 @@ public final class YMockServerTest {
     @Test
     public void testEntireCycleWithCustomMatchersAndResponses()
         throws Exception {
-        final SimpleProvider provider = new YMockServerTest.SimpleProvider();
-        final Connector connector =
-            new YMockServerTest.SimpleConnector(provider);
-        final YMockServer server = new YMockServer(this.ID, provider);
+        final SimpleProvider provider = new SimpleProvider();
+        final Connector connector = new SimpleConnector(provider);
+        final YMockServer server = new YMockServer(SimpleClient.ID, provider);
         server.when(
             new SimpleMatcher(this.REQUEST, false),
             new SimpleResponse(this.RESPONSE)
@@ -91,7 +80,7 @@ public final class YMockServerTest {
             new SimpleMatcher(this.REQUEST, true),
             new SimpleResponse(this.RESPONSE)
         );
-        new YMockServerTest.SimpleClient(connector).run();
+        new SimpleClient(connector).run();
     }
 
     /**
@@ -101,10 +90,9 @@ public final class YMockServerTest {
     @Test(expected = IllegalStateException.class)
     public void testEntireCycleWithDuplicateMatching()
         throws Exception {
-        final SimpleProvider provider = new YMockServerTest.SimpleProvider();
-        final Connector connector =
-            new YMockServerTest.SimpleConnector(provider);
-        final YMockServer server = new YMockServer(this.ID, provider);
+        final SimpleProvider provider = new SimpleProvider();
+        final Connector connector = new SimpleConnector(provider);
+        final YMockServer server = new YMockServer(SimpleClient.ID, provider);
         server.when(
             new SimpleMatcher(this.REQUEST, true),
             new SimpleResponse(this.RESPONSE)
@@ -113,7 +101,7 @@ public final class YMockServerTest {
             new SimpleMatcher(this.REQUEST, true),
             new SimpleResponse(this.RESPONSE)
         );
-        new YMockServerTest.SimpleClient(connector).run();
+        new SimpleClient(connector).run();
     }
 
     /**
@@ -123,154 +111,10 @@ public final class YMockServerTest {
     @Test(expected = IllegalStateException.class)
     public void testEntireCycleThroughMocksWithErrorInResponse()
         throws Exception {
-        final SimpleProvider provider = new YMockServerTest.SimpleProvider();
-        final Connector connector =
-            new YMockServerTest.SimpleConnector(provider);
-        new YMockServerTest.SimpleClient(connector).run();
-    }
-
-    /**
-     * Simple client.
-     */
-    private static class SimpleClient {
-        /**
-         * Client.
-         */
-        private transient YMockClient client;
-        /**
-         * Public ctor.
-         */
-        public SimpleClient() {
-            this.client = new YMockClient(YMockServerTest.ID);
-        }
-        /**
-         * Public ctor.
-         * @param connector The connector to use
-         */
-        public SimpleClient(final Connector connector) {
-            this.client = new YMockClient(YMockServerTest.ID, connector);
-        }
-        /**
-         * Run.
-         */
-        public void run() {
-            String response;
-            try {
-                response = this.client.call(YMockServerTest.REQUEST);
-            } catch (YMockException ex) {
-                throw new IllegalStateException(ex);
-            }
-            MatcherAssert.assertThat(
-                response,
-                Matchers.equalTo(YMockServerTest.RESPONSE)
-            );
-        }
-    }
-
-    /**
-     * Simple connector.
-     */
-    private static class SimpleConnector implements Connector {
-        /**
-         * Provider.
-         */
-        private transient SimpleProvider provider;
-        /**
-         * Public ctor.
-         * @param prv The provider
-         */
-        public SimpleConnector(final SimpleProvider prv) {
-            this.provider = prv;
-        }
-        /**
-         * {@inheritDoc}
-         * @checkstyle RedundantThrows (3 lines)
-         */
-        @Override
-        public String call(final String request) throws YMockException {
-            return this.provider.call(request);
-        }
-    }
-
-    /**
-     * Simple provider.
-     */
-    private static class SimpleProvider implements CallsProvider {
-        /**
-         * Catcher.
-         */
-        private transient Catcher catcher;
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void register(final Catcher ctr) {
-            this.catcher = ctr;
-        }
-        /**
-         * Call.
-         * @param request The request
-         * @return The response
-         * @throws YMockException If something goes wrong
-         * @checkstyle RedundantThrows (3 lines)
-         */
-        public String call(final String request) throws YMockException {
-            return this.catcher.call(request).process(request);
-        }
-    }
-
-    /**
-     * Simple matcher.
-     */
-    private static class SimpleMatcher implements Matcher {
-        /**
-         * Text.
-         */
-        private transient String text;
-        /**
-         * Match.
-         */
-        private transient boolean match;
-        /**
-         * Public ctor.
-         * @param txt The text
-         * @param mtch Matcher
-         */
-        public SimpleMatcher(final String txt, final boolean mtch) {
-            this.text = txt;
-            this.match = mtch;
-        }
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public boolean matches(final String request) {
-            return this.match && request.equals(this.text);
-        }
-    }
-
-    /**
-     * Simple response.
-     */
-    private static class SimpleResponse implements Response {
-        /**
-         * The text.
-         */
-        private transient String text;
-        /**
-         * Public ctor.
-         * @param txt The text
-         */
-        public SimpleResponse(final String txt) {
-            this.text = txt;
-        }
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String process(final String request) {
-            return this.text;
-        }
+        final SimpleProvider provider = new SimpleProvider();
+        final Connector connector = new SimpleConnector(provider);
+        new YMockServer(SimpleClient.ID, provider);
+        new SimpleClient(connector).run();
     }
 
     /**
@@ -280,9 +124,9 @@ public final class YMockServerTest {
     @org.junit.Ignore
     @Test
     public void testEntireCycleThroughLiveHttp() throws Exception {
-        final YMockServer server = new YMockServer(this.ID);
+        final YMockServer server = new YMockServer(SimpleClient.ID);
         server.when(this.REQUEST, this.RESPONSE);
-        new YMockServerTest.SimpleClient().run();
+        new SimpleClient().run();
     }
 
 }

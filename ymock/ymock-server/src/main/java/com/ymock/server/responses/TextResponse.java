@@ -42,7 +42,7 @@ public final class TextResponse implements Response {
     /**
      * The text.
      */
-    private final String text;
+    private final transient String text;
 
     /**
      * Public ctor.

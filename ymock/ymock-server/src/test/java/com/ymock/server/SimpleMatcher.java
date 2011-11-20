@@ -27,30 +27,33 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.server.matchers;
-
-import com.ymock.server.Matcher;
-import java.util.regex.Pattern;
+package com.ymock.server;
 
 /**
- * Regex matcher.
- *
+ * Simple matcher.
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class RegexMatcher implements Matcher {
+final class SimpleMatcher implements Matcher {
 
     /**
-     * The pattern to match against.
+     * Text.
      */
-    private final transient Pattern pattern;
+    private final transient String text;
+
+    /**
+     * Match.
+     */
+    private final transient boolean match;
 
     /**
      * Public ctor.
-     * @param regex Regular expression
+     * @param txt The text
+     * @param mtch Matcher
      */
-    public RegexMatcher(final String regex) {
-        this.pattern = Pattern.compile(regex);
+    public SimpleMatcher(final String txt, final boolean mtch) {
+        this.text = txt;
+        this.match = mtch;
     }
 
     /**
@@ -58,7 +61,7 @@ public final class RegexMatcher implements Matcher {
      */
     @Override
     public boolean matches(final String request) {
-        return this.pattern.matcher(request).matches();
+        return this.match && request.equals(this.text);
     }
 
 }

@@ -27,38 +27,38 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.server.matchers;
+package com.ymock.server;
 
-import com.ymock.server.Matcher;
-import java.util.regex.Pattern;
+import com.ymock.client.Connector;
+import com.ymock.commons.YMockException;
 
 /**
- * Regex matcher.
- *
+ * Simple connector.
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class RegexMatcher implements Matcher {
+final class SimpleConnector implements Connector {
 
     /**
-     * The pattern to match against.
+     * Provider.
      */
-    private final transient Pattern pattern;
+    private final transient SimpleProvider provider;
 
     /**
      * Public ctor.
-     * @param regex Regular expression
+     * @param prv The provider
      */
-    public RegexMatcher(final String regex) {
-        this.pattern = Pattern.compile(regex);
+    public SimpleConnector(final SimpleProvider prv) {
+        this.provider = prv;
     }
 
     /**
      * {@inheritDoc}
+     * @checkstyle RedundantThrows (3 lines)
      */
     @Override
-    public boolean matches(final String request) {
-        return this.pattern.matcher(request).matches();
+    public String call(final String request) throws YMockException {
+        return this.provider.call(request);
     }
 
 }

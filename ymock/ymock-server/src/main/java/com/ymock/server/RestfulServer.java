@@ -60,7 +60,7 @@ final class RestfulServer implements CallsProvider {
     /**
      * Catcher registered.
      */
-    private Catcher catcher;
+    private transient Catcher catcher;
 
     /**
      * Public ctor, for a RESTful instantiation.

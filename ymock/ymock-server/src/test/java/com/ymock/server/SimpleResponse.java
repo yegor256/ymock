@@ -27,38 +27,34 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.server.matchers;
-
-import com.ymock.server.Matcher;
-import java.util.regex.Pattern;
+package com.ymock.server;
 
 /**
- * Regex matcher.
- *
+ * Simple response.
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class RegexMatcher implements Matcher {
+final class SimpleResponse implements Response {
 
     /**
-     * The pattern to match against.
+     * The text.
      */
-    private final transient Pattern pattern;
+    private final transient String text;
 
     /**
      * Public ctor.
-     * @param regex Regular expression
+     * @param txt The text
      */
-    public RegexMatcher(final String regex) {
-        this.pattern = Pattern.compile(regex);
+    public SimpleResponse(final String txt) {
+        this.text = txt;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean matches(final String request) {
-        return this.pattern.matcher(request).matches();
+    public String process(final String request) {
+        return this.text;
     }
 
 }

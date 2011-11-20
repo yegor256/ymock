@@ -35,8 +35,8 @@ import com.ymock.server.responses.TextResponse;
 import com.ymock.util.Logger;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -50,8 +50,8 @@ public final class YMockServer implements Catcher {
     /**
      * Associative array of matchers.
      */
-    private final Map<Matcher, Response> matchers =
-        new HashMap<Matcher, Response>();
+    private final transient ConcurrentMap<Matcher, Response> matchers =
+        new ConcurrentHashMap<Matcher, Response>();
 
     /**
      * Public ctor.
@@ -83,16 +83,10 @@ public final class YMockServer implements Catcher {
     public Response call(final String request) {
         Response response = null;
         final Collection<String> errors = new ArrayList<String>();
-        for (Map.Entry<Matcher, Response> entry : this.matchers.entrySet()) {
+        for (ConcurrentMap.Entry<Matcher, Response> entry
+            : this.matchers.entrySet()) {
             if (entry.getKey().matches(request)) {
-                if (response != null) {
-                    errors.add(
-                        String.format(
-                            "Duplicate matching by '%s'",
-                            entry.getKey().getClass().getName()
-                        )
-                    );
-                } else {
+                if (response == null) {
                     response = entry.getValue();
                     Logger.debug(
                         this,
@@ -100,25 +94,33 @@ public final class YMockServer implements Catcher {
                         request.length(),
                         entry.getKey().getClass().getName()
                     );
+                } else {
+                    errors.add(
+                        String.format(
+                            "Duplicate matching by '%s'",
+                            entry.getKey().getClass().getName()
+                        )
+                    );
                 }
             }
         }
         if (response == null) {
             errors.add("No matchers found");
         }
-        if (!errors.isEmpty()) {
-            return new ErrorResponse(
+        if (errors.isEmpty()) {
+            Logger.debug(
+                this,
+                "#call('%d bytes'): response %s found (among %d)",
+                request.length(),
+                response.getClass().getName(),
+                this.matchers.size()
+            );
+        } else {
+            response = new ErrorResponse(
                 "Problems discovered: [%s]",
                 StringUtils.join(errors, ", ")
             );
         }
-        Logger.debug(
-            this,
-            "#call('%d bytes'): response %s found (among %d)",
-            request.length(),
-            response.getClass().getName(),
-            this.matchers.size()
-        );
         return response;
     }
 

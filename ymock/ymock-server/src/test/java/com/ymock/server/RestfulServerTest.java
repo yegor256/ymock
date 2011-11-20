@@ -67,8 +67,6 @@ public final class RestfulServerTest {
         String body;
         try {
             body = client.execute(post, handler);
-        } catch (java.io.IOException ex) {
-            throw ex;
         } finally {
             client.getConnectionManager().shutdown();
         }
@@ -82,11 +80,11 @@ public final class RestfulServerTest {
         /**
          * Expected request.
          */
-        private final String expected;
+        private final transient String expected;
         /**
          * Message to return.
          */
-        private final String message;
+        private final transient String message;
         /**
          * Public ctor.
          * @param rqt The expected request
@@ -121,8 +119,6 @@ public final class RestfulServerTest {
         String body;
         try {
             body = client.execute(httppost, handler);
-        } catch (java.io.IOException ex) {
-            throw ex;
         } finally {
             client.getConnectionManager().shutdown();
         }
@@ -136,7 +132,7 @@ public final class RestfulServerTest {
         /**
          * Message.
          */
-        private final String message;
+        private final transient String message;
         /**
          * Public ctor.
          * @param msg The message

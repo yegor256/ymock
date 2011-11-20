@@ -43,7 +43,7 @@ public final class ErrorResponse implements Response {
     /**
      * The error message.
      */
-    private final String message;
+    private final transient String message;
 
     /**
      * Public ctor.
