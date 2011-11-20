@@ -29,68 +29,30 @@
  */
 package com.ymock.util;
 
-import java.lang.reflect.Method;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Formatting proxy.
+ * Annotates discoverable formatters, which implement
+ * {@link java.util.Formattable} interface.
+ *
+ * <p>All classes annotated with this annotation will automatically
+ * become available for {@link Formatter}.
  *
  * @author Marina Kosenko (marina.kosenko@gmail.com)
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-final class FormattingBean {
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ ElementType.TYPE })
+public @interface Decor {
 
     /**
-     * Holder of the method to call.
+     * Unique name of this decor.
      */
-    private final transient Object object;
-
-    /**
-     * The formatter method to call.
-     */
-    private final transient Method method;
-
-    /**
-     * Public ctor.
-     * @param obj Object
-     * @param mtd The method
-     */
-    FormattingBean(final Object obj, final Method mtd) {
-        this.object = obj;
-        this.method = mtd;
-    }
-
-    /**
-     * Format.
-     * @param args Arguments
-     * @return Formatted value
-     */
-    public String format(final Object... args) {
-        Object result = "?";
-        try {
-            result = this.method.invoke(this.object, args);
-            if (result == null) {
-                result = String.format(
-                    "NULL@%s",
-                    this.method.toGenericString()
-                );
-            }
-        } catch (IllegalAccessException ex) {
-            Logger.warn(
-                this,
-                "Can't access method '%s': %s",
-                this.method.toGenericString(),
-                ex.getMessage()
-            );
-        } catch (java.lang.reflect.InvocationTargetException ex) {
-            Logger.warn(
-                this,
-                "Can't invoke method '%s': %s",
-                this.method.toGenericString(),
-                ex.getMessage()
-            );
-        }
-        return result.toString();
-    }
+    String value() default "";
 
 }
+

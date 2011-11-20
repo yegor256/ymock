@@ -35,17 +35,16 @@ import org.slf4j.LoggerFactory;
  * Universal logger, and adapter between API
  * and a third-party logging facility.
  *
- * <p>This class is used
- * in almost every other class in the product. Instead of relying
- * on some logging engine we build our own, which currely
- * uses SLF4J. This approach gives us perfect decoupling of business
- * logic and logging utitility. All methods in the class are called
- * statically, without the necessity to instantiate a class.
+ * <p>Instead of relying
+ * on some logging engine you can use this class, which transforms all
+ * messages to SLF4J. This approach gives you a perfect decoupling of business
+ * logic and logging mechanism. All methods in the class are called
+ * statically, without the necessity to instantiate the class.
  *
  * <p>Use it like this in any class, and in any package:
  *
  * <pre>
- * package com.ymock.XXX;
+ * package com.example.XXX;
  * import com.ymock.util.Logger;
  * public class MyClass {
  *   public void foo(Integer num) {
@@ -54,13 +53,21 @@ import org.slf4j.LoggerFactory;
  * }
  * </pre>
  *
+ * <p>Or statically (pay attention to <tt>MyClass.class</tt>):
+ *
+ * <pre>
+ * public class MyClass {
+ *   public static void foo(Integer num) {
+ *     Logger.info(MyClass.class, "foo(%d) just called", num);
+ *   }
+ * }
+ * </pre>
+ *
  * <p>Exact binding between SLF4J and logging facility has to be
- * specified in <tt>pom.xml</tt> of certain project. An example
- * is available in this module. It uses LOG4J and configures
- * it with <tt>log4j.properties</tt>.
+ * specified in <tt>pom.xml</tt> of your project.
  *
  * <p>For performance reasons in most cases before sending a
- * TRACE or DEBUG log message you should check whether this
+ * <tt>TRACE</tt> or <tt>DEBUG</tt> log message you should check whether this
  * logging level is enabled in the project, e.g.:
  *
  * <pre>
@@ -158,21 +165,6 @@ public final class Logger {
      */
     public static boolean isDebugEnabled(final Object source) {
         return Logger.logger(source).isDebugEnabled();
-    }
-
-    /**
-     * Formats the passed args according to the formatter defined by
-     * key argument.
-     *
-     * <p>Formatter specified by key argument should be
-     * registered in {@link FormatManager}.
-     *
-     * @param key Key for the formatter to be used to fmt the arguments
-     * @param args Arguments to be formatted
-     * @return Formatted arguments string
-     */
-    public static String fmt(final String key, final Object... args) {
-        return FormatManager.INSTANCE.fmt(key, args);
     }
 
     /**

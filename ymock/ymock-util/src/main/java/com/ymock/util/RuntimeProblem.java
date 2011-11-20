@@ -38,9 +38,9 @@ package com.ymock.util;
  * package com.ymock.XXX;
  * import com.ymock.util.RuntimeProblem;
  * public class MyClass {
- *   public void foo() {
- *     if (something is wrong) {
- *       throw RuntimeProblem.make("some problem");
+ *   public void foo(Integer num) {
+ *     if (num > 2) {
+ *       throw RuntimeProblem.make("%d is bigger than 2", num);
  *     }
  *   }
  * }
