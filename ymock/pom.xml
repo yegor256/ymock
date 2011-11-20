@@ -231,7 +231,7 @@
                     <plugin>
                         <groupId>com.qulice</groupId>
                         <artifactId>qulice-maven-plugin</artifactId>
-                        <version since="13 Nov 2011">0.1.7</version>
+                        <version since="21 Nov 2011">0.1.7</version>
                         <executions>
                             <execution>
                                 <goals>
