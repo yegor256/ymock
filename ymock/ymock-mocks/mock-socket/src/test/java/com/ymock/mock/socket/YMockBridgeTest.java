@@ -33,29 +33,47 @@ import com.ymock.commons.YMockException;
 import com.ymock.server.Response;
 import com.ymock.server.YMockServer;
 import com.ymock.server.matchers.RegexMatcher;
-import org.junit.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
 
 /**
+ * Test case for {@link YMockBridge}.
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
 public final class YMockBridgeTest {
 
+    /**
+     * Request.
+     */
     private static final String REQUEST = "some data";
 
+    /**
+     * Response.
+     */
     private static final String RESPONSE = "completed";
 
+    /**
+     * Test it.
+     * @throws Exception If something wrong inside
+     */
     @Test
     public void testSimulatesYMockClientServerInteraction() throws Exception {
         final YMockServer server = new YMockServer(YMockBridge.NAME);
         server.when(this.quote(this.REQUEST), this.RESPONSE);
         final DataBridge bridge = new YMockBridge();
         bridge.send(this.REQUEST);
-        assertThat(bridge.receive(), equalTo(this.RESPONSE));
+        MatcherAssert.assertThat(
+            bridge.receive(),
+            Matchers.equalTo(this.RESPONSE)
+        );
     }
 
+    /**
+     * Test it.
+     * @throws Exception If something wrong inside
+     */
     @Test(expected = IllegalStateException.class)
     public void testSimulatesDuplicateCallToReceive() throws Exception {
         final YMockServer server = new YMockServer(YMockBridge.NAME);
@@ -64,12 +82,17 @@ public final class YMockBridgeTest {
         bridge.receive();
     }
 
+    /**
+     * Test it.
+     * @throws Exception If something wrong inside
+     */
     @Test(expected = java.io.IOException.class)
     public void testCallsToError() throws Exception {
         final YMockServer server = new YMockServer(YMockBridge.NAME);
         server.when(
             new RegexMatcher(this.quote(this.REQUEST)),
             new Response() {
+                // @checkstyle RedundantThrows (3 lines)
                 @Override
                 public String process(final String request)
                     throws YMockException {
@@ -81,8 +104,13 @@ public final class YMockBridgeTest {
         bridge.send(this.REQUEST);
     }
 
+    /**
+     * Quote it.
+     * @param regex The regular expression
+     * @return Quoted
+     */
     private String quote(final String regex) {
-        return "\\Q" + regex + "\\E";
+        return String.format("\\Q%s\\E", regex);
     }
 
 }

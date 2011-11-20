@@ -29,7 +29,7 @@
  */
 
 /**
- * java.net.Socket mock library.
+ * Socket mock library.
  *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$

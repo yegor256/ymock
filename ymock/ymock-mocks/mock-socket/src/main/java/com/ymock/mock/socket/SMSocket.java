@@ -29,7 +29,6 @@
  */
 package com.ymock.mock.socket;
 
-// JDK classes
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
@@ -40,21 +39,21 @@ import java.net.Socket;
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  * @todo #7 There should be some mechanism implemented in order to
- *       watch a real connection and protocol what's going on with
- *       it. Also extra logging should be added to this component. Now
- *       it is very silent.
+ *  watch a real connection and protocol what's going on with
+ *  it. Also extra logging should be added to this component. Now
+ *  it is very silent.
  */
 public final class SMSocket extends Socket {
 
     /**
      * Output stream.
      */
-    private final OutputStream outputStream;
+    private final transient OutputStream outputStream;
 
     /**
      * Input stream.
      */
-    private final InputStream inputStream;
+    private final transient InputStream inputStream;
 
     /**
      * Public ctor.

@@ -27,59 +27,11 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.mock.socket;
-
-import java.net.Socket;
-import org.apache.commons.io.IOUtils;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.Test;
 
 /**
- * Test case for {@link SMSocket}.
+ * Socket mock library, tests.
+ *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class SMSocketTest {
-
-    /**
-     * Request.
-     */
-    private static final String REQUEST = "some data";
-
-    /**
-     * Response.
-     */
-    private static final String RESPONSE = "completed";
-
-    /**
-     * Test it.
-     * @throws Exception If something wrong inside
-     */
-    @Test
-    public void testSimulatesHttpSession() throws Exception {
-        final Socket socket = new SMSocket(
-            new DataBridge() {
-                @Override
-                public void send(final String message) {
-                    MatcherAssert.assertThat(
-                        message,
-                        Matchers.equalTo(SMSocketTest.REQUEST)
-                    );
-                }
-                @Override
-                public String receive() {
-                    return SMSocketTest.RESPONSE;
-                }
-            }
-        );
-        final String message = "POST /index HTTP/1.0\r\n"
-            + "Content-Length: " + this.REQUEST.length() + "\r\n"
-            + "Content-Type: application/x-www-form-urlencoded\r\n\r\n"
-            + this.REQUEST;
-        final String response = IOUtils.toString(socket.getInputStream());
-        IOUtils.write(message, socket.getOutputStream());
-        MatcherAssert.assertThat(response, Matchers.equalTo(this.RESPONSE));
-    }
-
-}
+package com.ymock.mock.socket;
