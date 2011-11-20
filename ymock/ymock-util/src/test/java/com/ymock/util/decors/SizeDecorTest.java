@@ -32,7 +32,6 @@ package com.ymock.util.decors;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Formattable;
-import java.util.FormattableFlags;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
@@ -53,6 +52,7 @@ public final class SizeDecorTest extends AbstractDecorTest {
      * @param flags Flags
      * @param width Width
      * @param precision Precission
+     * @checkstyle ParameterNumber (3 lines)
      */
     public SizeDecorTest(final Long size, final String text,
         final int flags, final int width, final int precision) {

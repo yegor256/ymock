@@ -51,10 +51,10 @@ final class DecorsManager {
 
     /**
      * Storage of all found decors.
+     * @checkstyle LineLength (2 lines)
      */
-    private final transient
-        ConcurrentMap<String, Class<? extends Formattable>> decors =
-            new ConcurrentHashMap<String, Class<? extends Formattable>>();
+    private final transient ConcurrentMap<String, Class<? extends Formattable>> decors =
+        new ConcurrentHashMap<String, Class<? extends Formattable>>();
 
     /**
      * Private constructor.

@@ -30,9 +30,9 @@
 package com.ymock.util;
 
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Processor of formatting string and arguments, before sending it to

@@ -32,7 +32,6 @@ package com.ymock.util.decors;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Formattable;
-import java.util.FormattableFlags;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
@@ -53,6 +52,7 @@ public final class NanoDecorTest extends AbstractDecorTest {
      * @param flags Flags
      * @param width Width
      * @param precision Precission
+     * @checkstyle ParameterNumber (3 lines)
      */
     public NanoDecorTest(final Long nano, final String text,
         final int flags, final int width, final int precision) {
@@ -70,6 +70,7 @@ public final class NanoDecorTest extends AbstractDecorTest {
     public static Collection<Object[]> params() {
         return Arrays.asList(
             new Object[][] {
+                // @checkstyle LineLength (20 lines)
                 // { null, "NULL", 0, 0, 0 },
                 // { 13L, "0ms", 0, 0, 0 },
                 // { 21L, "0ms", 0, 0, 1 },

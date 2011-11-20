@@ -29,17 +29,9 @@
  */
 package com.ymock.util.decors;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Formattable;
-import java.util.FormattableFlags;
 import java.util.Formatter;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
 import org.mockito.Mockito;
 
 /**
@@ -82,6 +74,7 @@ public abstract class AbstractDecorTest {
      * @param flgs Flags
      * @param wdt Width
      * @param prcs Precission
+     * @checkstyle ParameterNumber (3 lines)
      */
     public AbstractDecorTest(final Object obj, final String txt,
         final int flgs, final int wdt, final int prcs) {
@@ -97,7 +90,7 @@ public abstract class AbstractDecorTest {
      * @throws Exception If some problem inside
      */
     @Test
-    public void testDifferentFormats() throws Exception {
+    public final void testDifferentFormats() throws Exception {
         final Formattable decor = this.decor();
         final Appendable dest = Mockito.mock(Appendable.class);
         final Formatter fmt = new Formatter(dest);
@@ -107,6 +100,7 @@ public abstract class AbstractDecorTest {
 
     /**
      * Get decor with the object.
+     * @return The decor to test
      */
     protected abstract Formattable decor();
 

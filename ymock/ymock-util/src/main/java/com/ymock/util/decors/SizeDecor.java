@@ -57,6 +57,7 @@ public final class SizeDecor implements Formattable {
 
     /**
      * {@inheritDoc}
+     * @checkstyle ParameterNumber (4 lines)
      */
     @Override
     public void formatTo(final Formatter formatter, final int flags,

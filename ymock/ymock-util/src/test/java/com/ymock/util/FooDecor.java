@@ -31,9 +31,6 @@ package com.ymock.util;
 
 import java.util.Formattable;
 import java.util.Formatter;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.Test;
 
 /**
  * Primitive decor, for testing only.
@@ -59,6 +56,7 @@ final class FooDecor implements Formattable {
 
     /**
      * {@inheritDoc}
+     * @checkstyle ParameterNumber (4 lines)
      */
     @Override
     public void formatTo(final Formatter formatter, final int flags,

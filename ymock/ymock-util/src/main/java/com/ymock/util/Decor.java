@@ -38,15 +38,12 @@ import java.lang.annotation.Target;
  * Annotates discoverable formatters, which implement
  * {@link java.util.Formattable} interface.
  *
- * <p>All classes annotated with this annotation will automatically
- * become available for {@link Formatter}.
- *
  * @author Marina Kosenko (marina.kosenko@gmail.com)
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.TYPE })
+@Target(ElementType.TYPE)
 public @interface Decor {
 
     /**
