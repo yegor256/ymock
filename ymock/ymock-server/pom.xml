@@ -31,7 +31,9 @@
  *
  * @version $Id$
  -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <parent>
@@ -163,6 +165,9 @@
                                 <copy verbose="true"
                                     file="${com.ymock:ymock-client:jar}"
                                     tofile="${project.build.directory}/local-repo/com/ymock/ymock-client/${project.version}/ymock-client-${project.version}.jar"/>
+                                <copy verbose="true"
+                                    file="${com.ymock:ymock-commons:jar}"
+                                    tofile="${project.build.directory}/local-repo/com/ymock/ymock-commons/${project.version}/ymock-commons-${project.version}.jar"/>
                                 <copy verbose="true"
                                     file="${com.ymock:ymock-util:jar}"
                                     tofile="${project.build.directory}/local-repo/com/ymock/ymock-util/${project.version}/ymock-util-${project.version}.jar"/>
