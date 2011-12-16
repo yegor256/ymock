@@ -29,43 +29,32 @@
  */
 package com.ymock.util;
 
-import java.util.Formattable;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.Test;
-
 /**
- * Test case for {@link DecorsManager}.
- * @author Marina Kosenko (marina.kosenko@gmail.com)
+ * Exception if some problem with decor.
+ *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class DecorsManagerTest {
+final class DecorException extends Exception {
 
     /**
-     * Object under test.
+     * Public ctor.
+     * @param cause Cause of it
+     * @param format The message
+     * @param args Optional arguments
      */
-    private final transient DecorsManager mgr = new DecorsManager();
-
-    /**
-     * DecorsManager can discover decors in classpaths.
-     * @throws Exception If some problem
-     */
-    @Test
-    public void discoversSimpleDecorInClasspath() throws Exception {
-        MatcherAssert.assertThat(
-            this.mgr.decor("foo", "test"),
-            Matchers.instanceOf(Formattable.class)
-        );
+    public DecorException(final Throwable cause, final String format,
+        final Object... args) {
+        super(String.format(format, args), cause);
     }
 
     /**
-     * DecorsManager can throw exception if a decor is missed.
-     * @throws Exception If some problem
+     * Public ctor.
+     * @param format The message
+     * @param args Optional arguments
      */
-    @Test(expected = DecorException.class)
-    public void throwsExceptionForAbsentDecor() throws Exception {
-        this.mgr.decor("non-existing-formatter", null);
+    public DecorException(final String format,  final Object... args) {
+        super(String.format(format, args));
     }
 
 }

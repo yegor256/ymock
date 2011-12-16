@@ -50,11 +50,19 @@ import org.slf4j.LoggerFactory;
 public final class LoggerTest {
 
     /**
-     * Prepare logger factory.
+     * The this.logger of SLF4J.
+     */
+    private transient org.slf4j.Logger logger;
+
+    /**
+     * Prepare this.logger factory.
      */
     @Before
     public void mockLoggerFactory() {
         PowerMockito.mockStatic(LoggerFactory.class);
+        this.logger = Mockito.mock(org.slf4j.Logger.class);
+        Mockito.when(LoggerFactory.getLogger(Mockito.any(Class.class)))
+            .thenReturn(this.logger);
     }
 
     /**
@@ -63,11 +71,8 @@ public final class LoggerTest {
      */
     @Test
     public void testDetectionOfLogger() throws Exception {
-        final org.slf4j.Logger logger = Mockito.mock(org.slf4j.Logger.class);
-        Mockito.when(LoggerFactory.getLogger(this.getClass()))
-            .thenReturn(logger);
         Logger.debug(this, "number %d", 1L);
-        Mockito.verify(logger).debug("number 1");
+        Mockito.verify(this.logger).debug("number 1");
     }
 
     /**
@@ -76,11 +81,8 @@ public final class LoggerTest {
      */
     @Test
     public void testDetectionOfStaticSource() throws Exception {
-        final org.slf4j.Logger logger = Mockito.mock(org.slf4j.Logger.class);
-        Mockito.when(LoggerFactory.getLogger(this.getClass()))
-            .thenReturn(logger);
         Logger.info(LoggerTest.class, "sum: %.2f", 1d);
-        Mockito.verify(logger).info("sum: 1.00");
+        Mockito.verify(this.logger).info("sum: 1.00");
     }
 
     /**
@@ -89,15 +91,12 @@ public final class LoggerTest {
      */
     @Test
     public void testSettingOfLoggingLevel() throws Exception {
-        final org.slf4j.Logger logger = Mockito.mock(org.slf4j.Logger.class);
-        Mockito.when(LoggerFactory.getLogger(this.getClass()))
-            .thenReturn(logger);
         Logger.trace(this, "hello");
-        Mockito.verify(logger).trace(Mockito.anyString());
+        Mockito.verify(this.logger).trace(Mockito.anyString());
         Logger.warn(this, "%s + %s", "alex", "mary");
-        Mockito.verify(logger).warn("alex + mary");
+        Mockito.verify(this.logger).warn("alex + mary");
         Logger.error(this, "%d + %d", 1, 1);
-        Mockito.verify(logger).error("1 + 1");
+        Mockito.verify(this.logger).error("1 + 1");
     }
 
     /**
@@ -106,15 +105,12 @@ public final class LoggerTest {
      */
     @Test
     public void testIsTraceEnabledMethod() throws Exception {
-        final org.slf4j.Logger logger = Mockito.mock(org.slf4j.Logger.class);
-        Mockito.when(LoggerFactory.getLogger(this.getClass()))
-            .thenReturn(logger);
-        Mockito.when(logger.isTraceEnabled()).thenReturn(true);
+        Mockito.when(this.logger.isTraceEnabled()).thenReturn(true);
         MatcherAssert.assertThat(
             Logger.isTraceEnabled(this),
             Matchers.is(true)
         );
-        Mockito.verify(logger).isTraceEnabled();
+        Mockito.verify(this.logger).isTraceEnabled();
     }
 
     /**
@@ -123,15 +119,12 @@ public final class LoggerTest {
      */
     @Test
     public void testIsDebugEnabledMethod() throws Exception {
-        final org.slf4j.Logger logger = Mockito.mock(org.slf4j.Logger.class);
-        Mockito.when(LoggerFactory.getLogger(this.getClass()))
-            .thenReturn(logger);
-        Mockito.when(logger.isDebugEnabled()).thenReturn(false);
+        Mockito.when(this.logger.isDebugEnabled()).thenReturn(false);
         MatcherAssert.assertThat(
             Logger.isDebugEnabled(this),
             Matchers.is(false)
         );
-        Mockito.verify(logger).isDebugEnabled();
+        Mockito.verify(this.logger).isDebugEnabled();
     }
 
 }

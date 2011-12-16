@@ -64,8 +64,11 @@ public final class DocumentDecor implements Formattable {
      * Public ctor.
      * @param doc The document
      */
-    public DocumentDecor(final Document doc) {
-        this.document = doc;
+    public DocumentDecor(final Object doc) {
+        if (doc != null && !(doc instanceof Document)) {
+            throw new IllegalStateException("org.w3c.dom.Document is required");
+        }
+        this.document = (Document) doc;
     }
 
     /**
@@ -76,17 +79,21 @@ public final class DocumentDecor implements Formattable {
     public void formatTo(final Formatter formatter, final int flags,
         final int width, final int precision) {
         final StringWriter writer = new StringWriter();
-        try {
-            final Transformer trans = this.FACTORY.newTransformer();
-            trans.setOutputProperty(OutputKeys.INDENT, "yes");
-            trans.transform(
-                new DOMSource(this.document),
-                new StreamResult(writer)
-            );
-        } catch (javax.xml.transform.TransformerConfigurationException ex) {
-            throw new IllegalStateException(ex);
-        } catch (javax.xml.transform.TransformerException ex) {
-            throw new IllegalStateException(ex);
+        if (this.document == null) {
+            writer.write("NULL");
+        } else {
+            try {
+                final Transformer trans = this.FACTORY.newTransformer();
+                trans.setOutputProperty(OutputKeys.INDENT, "yes");
+                trans.transform(
+                    new DOMSource(this.document),
+                    new StreamResult(writer)
+                );
+            } catch (javax.xml.transform.TransformerConfigurationException ex) {
+                throw new IllegalStateException(ex);
+            } catch (javax.xml.transform.TransformerException ex) {
+                throw new IllegalStateException(ex);
+            }
         }
         formatter.format("%s", writer.toString());
     }

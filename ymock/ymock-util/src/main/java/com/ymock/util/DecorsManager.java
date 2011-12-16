@@ -29,13 +29,19 @@
  */
 package com.ymock.util;
 
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Formattable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import org.apache.commons.lang.StringUtils;
 import org.reflections.Reflections;
+import org.reflections.scanners.TypeAnnotationsScanner;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
+import org.slf4j.LoggerFactory;
 
 /**
  * Manager of all {@link Decor} annotated classes found in classpath.
@@ -57,6 +63,7 @@ final class DecorsManager {
      * Protected ctor, for this package only.
      */
     protected DecorsManager() {
+        final long start = System.currentTimeMillis();
         for (Class<?> type : DecorsManager.discover()) {
             String name = ((Decor) type.getAnnotation(Decor.class)).value();
             if (!name.matches("[a-zA-Z0-9\\-\\.]*")) {
@@ -66,10 +73,18 @@ final class DecorsManager {
                 );
             }
             if (name.isEmpty()) {
-                name = type.getClass().getName();
+                name = type.getName();
             }
             this.decors.put(name, (Class<Formattable>) type);
         }
+        LoggerFactory.getLogger(DecorsManager.class).info(
+            String.format(
+                "%d decor(s) discovered in classpath in %dms: %s",
+                this.decors.size(),
+                System.currentTimeMillis() - start,
+                StringUtils.join(this.decors.keySet(), ", ")
+            )
+        );
     }
 
     /**
@@ -77,32 +92,34 @@ final class DecorsManager {
      * @param key Key for the formatter to be used to fmt the arguments
      * @param arg The arbument to supply
      * @return The decor
+     * @throws DecorException If some problem
      */
-    public Formattable decor(final String key, final Object arg) {
+    public Formattable decor(final String key, final Object arg)
+        throws DecorException {
         final Class<? extends Formattable> type = this.find(key, arg);
         Formattable decor;
         try {
             decor = type.getConstructor(Object.class).newInstance(arg);
         } catch (NoSuchMethodException ex) {
-            throw RuntimeProblem.make(
+            throw new DecorException(
                 ex,
                 "One-argument constructor is absent in %s",
                 type.getName()
             );
         } catch (InstantiationException ex) {
-            throw RuntimeProblem.make(
+            throw new DecorException(
                 ex,
                 "Can't instantiate %s",
                 type.getName()
             );
         } catch (IllegalAccessException ex) {
-            throw RuntimeProblem.make(
+            throw new DecorException(
                 ex,
                 "Can't access one-arg constructor in %s",
                 type.getName()
             );
         } catch (java.lang.reflect.InvocationTargetException ex) {
-            throw RuntimeProblem.make(
+            throw new DecorException(
                 ex,
                 "Can't invoke one-arg constructor in %s",
                 type.getName()
@@ -116,9 +133,10 @@ final class DecorsManager {
      * @param key Key for the formatter to be used to fmt the arguments
      * @param arg The arbument to supply
      * @return The type of decor found
+     * @throws DecorException If some problem
      */
     private Class<? extends Formattable> find(final String key,
-        final Object arg) {
+        final Object arg) throws DecorException {
         Class<? extends Formattable> type = null;
         if (key.isEmpty()) {
             boolean found = false;
@@ -132,14 +150,14 @@ final class DecorsManager {
                 }
             }
             if (!found) {
-                throw RuntimeProblem.make(
+                throw new DecorException(
                     "No decors for type '%s' found",
                     arg.getClass().getName()
                 );
             }
         } else {
             if (!this.decors.containsKey(key)) {
-                throw RuntimeProblem.make("Decor '%s' not found", key);
+                throw new DecorException("Decor '%s' not found", key);
             }
             type = this.decors.get(key);
         }
@@ -155,11 +173,34 @@ final class DecorsManager {
         { "PMD.AvoidCatchingGenericException", "PMD.AvoidCatchingNPE" }
     )
     private static Set<Class<?>> discover() {
+        final Set<URL> found = new HashSet<URL>();
+        found.addAll(
+            ClasspathHelper.forClassLoader(ClasspathHelper.classLoaders())
+        );
+        found.addAll(ClasspathHelper.forJavaClassPath());
+        found.addAll(ClasspathHelper.forManifest());
+        final Set<URL> urls = new HashSet<URL>();
+        for (URL url : found) {
+            if (url.toString().matches(".*\\.(zip|jnilib)$")) {
+                continue;
+            }
+            urls.add(url);
+        }
         Set<Class<?>> types;
         try {
-            types = new Reflections("").getTypesAnnotatedWith(Decor.class);
+            types = new Reflections(
+                new ConfigurationBuilder()
+                    .setUrls(urls)
+                    .setScanners(new TypeAnnotationsScanner())
+            ).getTypesAnnotatedWith(Decor.class);
         } catch (NullPointerException ex) {
             types = new HashSet<Class<?>>();
+            LoggerFactory.getLogger(DecorsManager.class).error(
+                String.format(
+                    "NPE during classpath discovery: %s",
+                    ex.getMessage()
+                )
+            );
         }
         return types;
     }

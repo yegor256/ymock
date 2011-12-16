@@ -27,45 +27,55 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.util;
+package com.ymock.util.decors;
 
+import com.ymock.util.Decor;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Formattable;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.Test;
+import java.util.Formatter;
 
 /**
- * Test case for {@link DecorsManager}.
- * @author Marina Kosenko (marina.kosenko@gmail.com)
+ * Decorates an exception.
+ *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class DecorsManagerTest {
+@Decor(value = "exception", types = Throwable.class)
+public final class ExceptionDecor implements Formattable {
 
     /**
-     * Object under test.
+     * The exception.
      */
-    private final transient DecorsManager mgr = new DecorsManager();
+    private final transient Throwable throwable;
 
     /**
-     * DecorsManager can discover decors in classpaths.
-     * @throws Exception If some problem
+     * Public ctor.
+     * @param thr The exception
      */
-    @Test
-    public void discoversSimpleDecorInClasspath() throws Exception {
-        MatcherAssert.assertThat(
-            this.mgr.decor("foo", "test"),
-            Matchers.instanceOf(Formattable.class)
-        );
+    public ExceptionDecor(final Object thr) {
+        if (thr != null && !(thr instanceof Throwable)) {
+            throw new IllegalStateException("java.lang.Throwable is required");
+        }
+        this.throwable = (Throwable) thr;
     }
 
     /**
-     * DecorsManager can throw exception if a decor is missed.
-     * @throws Exception If some problem
+     * {@inheritDoc}
+     * @checkstyle ParameterNumber (4 lines)
      */
-    @Test(expected = DecorException.class)
-    public void throwsExceptionForAbsentDecor() throws Exception {
-        this.mgr.decor("non-existing-formatter", null);
+    @Override
+    public void formatTo(final Formatter formatter, final int flags,
+        final int width, final int precision) {
+        String text;
+        if (this.throwable == null) {
+            text = "NULL";
+        } else {
+            final StringWriter writer = new StringWriter();
+            this.throwable.printStackTrace(new PrintWriter(writer));
+            text = writer.toString();
+        }
+        formatter.format("%s", text);
     }
 
 }

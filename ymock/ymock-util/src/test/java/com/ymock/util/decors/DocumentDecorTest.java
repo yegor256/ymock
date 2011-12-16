@@ -38,7 +38,6 @@ import org.w3c.dom.Document;
 
 /**
  * Test case for {@link DocumentDecor}.
- * @author Marina Kosenko (marina.kosenko@gmail.com)
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
@@ -61,6 +60,19 @@ public final class DocumentDecorTest {
             // @checkstyle LineLength (1 line)
             "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<root/>\n"
         );
+    }
+
+    /**
+     * DocumentDecor can handle NULL properly.
+     * @throws Exception If some problem
+     */
+    @Test
+    public void convertsNullToText() throws Exception {
+        final Formattable decor = new DocumentDecor(null);
+        final Appendable dest = Mockito.mock(Appendable.class);
+        final Formatter fmt = new Formatter(dest);
+        decor.formatTo(fmt, 0, 0, 0);
+        Mockito.verify(dest).append("NULL");
     }
 
 }

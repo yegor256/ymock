@@ -27,45 +27,45 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.util;
+package com.ymock.util.decors;
 
+import java.io.IOException;
 import java.util.Formattable;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
+import java.util.Formatter;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 /**
- * Test case for {@link DecorsManager}.
- * @author Marina Kosenko (marina.kosenko@gmail.com)
+ * Test case for {@link ExceptionDecor}.
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class DecorsManagerTest {
+public final class ExceptionDecorTest {
 
     /**
-     * Object under test.
-     */
-    private final transient DecorsManager mgr = new DecorsManager();
-
-    /**
-     * DecorsManager can discover decors in classpaths.
+     * ExceptionDecor can transform exception to text.
      * @throws Exception If some problem
      */
     @Test
-    public void discoversSimpleDecorInClasspath() throws Exception {
-        MatcherAssert.assertThat(
-            this.mgr.decor("foo", "test"),
-            Matchers.instanceOf(Formattable.class)
-        );
+    public void convertsExceptionToText() throws Exception {
+        final Formattable decor = new ExceptionDecor(new IOException("ouch!"));
+        final Appendable dest = Mockito.mock(Appendable.class);
+        final Formatter fmt = new Formatter(dest);
+        decor.formatTo(fmt, 0, 0, 0);
+        Mockito.verify(dest).append(Mockito.contains("ouch"));
     }
 
     /**
-     * DecorsManager can throw exception if a decor is missed.
+     * ExceptionDecor can handle NULL properly.
      * @throws Exception If some problem
      */
-    @Test(expected = DecorException.class)
-    public void throwsExceptionForAbsentDecor() throws Exception {
-        this.mgr.decor("non-existing-formatter", null);
+    @Test
+    public void convertsNullToText() throws Exception {
+        final Formattable decor = new ExceptionDecor(null);
+        final Appendable dest = Mockito.mock(Appendable.class);
+        final Formatter fmt = new Formatter(dest);
+        decor.formatTo(fmt, 0, 0, 0);
+        Mockito.verify(dest).append("NULL");
     }
 
 }
