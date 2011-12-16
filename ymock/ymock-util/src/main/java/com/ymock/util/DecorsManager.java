@@ -29,6 +29,7 @@
  */
 package com.ymock.util;
 
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Formattable;
 import java.util.HashSet;
@@ -78,7 +79,7 @@ final class DecorsManager {
         }
         LoggerFactory.getLogger(DecorsManager.class).info(
             String.format(
-                "%d decors discovered in classpath in %dms: %s",
+                "%d decor(s) discovered in classpath in %dms: %s",
                 this.decors.size(),
                 System.currentTimeMillis() - start,
                 StringUtils.join(this.decors.keySet(), ", ")
@@ -169,11 +170,21 @@ final class DecorsManager {
         { "PMD.AvoidCatchingGenericException", "PMD.AvoidCatchingNPE" }
     )
     private static Set<Class<?>> discover() {
+        final Set<URL> found = new HashSet<URL>();
+        found.addAll(
+            ClasspathHelper.forClassLoader(ClasspathHelper.classLoaders())
+        );
+        found.addAll(ClasspathHelper.forJavaClassPath());
+        found.addAll(ClasspathHelper.forManifest());
+        final Set<URL> urls = new HashSet<URL>();
+        for (URL url : found) {
+            urls.add(url);
+        }
         Set<Class<?>> types;
         try {
             types = new Reflections(
                 new ConfigurationBuilder()
-                    .setUrls(ClasspathHelper.forJavaClassPath())
+                    .setUrls(urls)
                     .setScanners(new TypeAnnotationsScanner())
             ).getTypesAnnotatedWith(Decor.class);
         } catch (NullPointerException ex) {
