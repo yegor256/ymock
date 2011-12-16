@@ -29,7 +29,6 @@
  */
 package com.ymock.util.decors;
 
-import com.ymock.util.Decor;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Formattable;
@@ -41,7 +40,6 @@ import java.util.Formatter;
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-@Decor(value = "exception", types = Throwable.class)
 public final class ExceptionDecor implements Formattable {
 
     /**
@@ -53,11 +51,8 @@ public final class ExceptionDecor implements Formattable {
      * Public ctor.
      * @param thr The exception
      */
-    public ExceptionDecor(final Object thr) {
-        if (thr != null && !(thr instanceof Throwable)) {
-            throw new IllegalStateException("java.lang.Throwable is required");
-        }
-        this.throwable = (Throwable) thr;
+    public ExceptionDecor(final Throwable thr) {
+        this.throwable = thr;
     }
 
     /**

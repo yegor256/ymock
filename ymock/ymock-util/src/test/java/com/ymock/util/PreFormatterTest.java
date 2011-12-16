@@ -46,8 +46,11 @@ public final class PreFormatterTest {
      */
     @Test
     public void decoratesArguments() {
-        final PreFormatter pre =
-            new PreFormatter("%[foo]-5.2f and %1$+.6f", 1d, "x");
+        final PreFormatter pre = new PreFormatter(
+            "%[com.ymock.util.DecorMocker]-5.2f and %1$+.6f",
+            1d,
+            "some text"
+        );
         MatcherAssert.assertThat(
             pre.getFormat(),
             Matchers.equalTo("%-5.2f and %1$+.6f")
@@ -76,6 +79,19 @@ public final class PreFormatterTest {
         MatcherAssert.assertThat(
             pre.getArguments()[0],
             Matchers.instanceOf(String.class)
+        );
+    }
+
+    /**
+     * PreFormatter can handle directly provided decors.
+     */
+    @Test
+    public void formatsWithDirectlyProvidedDecors() {
+        final DecorMocker decor = new DecorMocker("a");
+        final PreFormatter pre = new PreFormatter("test: %s", decor);
+        MatcherAssert.assertThat(
+            pre.getArguments()[0],
+            Matchers.equalTo((Object) decor)
         );
     }
 

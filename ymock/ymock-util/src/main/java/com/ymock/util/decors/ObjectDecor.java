@@ -29,7 +29,6 @@
  */
 package com.ymock.util.decors;
 
-import com.ymock.util.Decor;
 import java.util.Formattable;
 import java.util.Formatter;
 
@@ -39,7 +38,6 @@ import java.util.Formatter;
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-@Decor("object")
 public final class ObjectDecor implements Formattable {
 
     /**

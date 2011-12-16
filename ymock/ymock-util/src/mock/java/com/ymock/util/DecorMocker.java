@@ -38,7 +38,6 @@ import java.util.Formatter;
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-@Decor("foo")
 final class DecorMocker implements Formattable {
 
     /**
