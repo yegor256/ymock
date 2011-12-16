@@ -30,45 +30,34 @@
 package com.ymock.util.decors;
 
 import com.ymock.util.Decor;
+import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Formattable;
 import java.util.Formatter;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import org.w3c.dom.Document;
 
 /**
- * Decorates XML Document.
+ * Decorates an exception.
  *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-@Decor(types = Document.class)
-public final class DocumentDecor implements Formattable {
+@Decor(value = "exception", types = Throwable.class)
+public final class ExceptionDecor implements Formattable {
 
     /**
-     * DOM transformer factory, DOM.
+     * The exception.
      */
-    private static final TransformerFactory FACTORY =
-        TransformerFactory.newInstance();
-
-    /**
-     * The document.
-     */
-    private final transient Document document;
+    private final transient Throwable throwable;
 
     /**
      * Public ctor.
-     * @param doc The document
+     * @param thr The exception
      */
-    public DocumentDecor(final Object doc) {
-        if (doc != null && !(doc instanceof Document)) {
-            throw new IllegalStateException("org.w3c.dom.Document is required");
+    public ExceptionDecor(final Object thr) {
+        if (thr != null && !(thr instanceof Throwable)) {
+            throw new IllegalStateException("java.lang.Throwable is required");
         }
-        this.document = (Document) doc;
+        this.throwable = (Throwable) thr;
     }
 
     /**
@@ -78,24 +67,15 @@ public final class DocumentDecor implements Formattable {
     @Override
     public void formatTo(final Formatter formatter, final int flags,
         final int width, final int precision) {
-        final StringWriter writer = new StringWriter();
-        if (this.document == null) {
-            writer.write("NULL");
+        String text;
+        if (this.throwable == null) {
+            text = "NULL";
         } else {
-            try {
-                final Transformer trans = this.FACTORY.newTransformer();
-                trans.setOutputProperty(OutputKeys.INDENT, "yes");
-                trans.transform(
-                    new DOMSource(this.document),
-                    new StreamResult(writer)
-                );
-            } catch (javax.xml.transform.TransformerConfigurationException ex) {
-                throw new IllegalStateException(ex);
-            } catch (javax.xml.transform.TransformerException ex) {
-                throw new IllegalStateException(ex);
-            }
+            final StringWriter writer = new StringWriter();
+            this.throwable.printStackTrace(new PrintWriter(writer));
+            text = writer.toString();
         }
-        formatter.format("%s", writer.toString());
+        formatter.format("%s", text);
     }
 
 }

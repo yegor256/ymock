@@ -29,46 +29,39 @@
  */
 package com.ymock.util.decors;
 
+import java.io.IOException;
 import java.util.Formattable;
 import java.util.Formatter;
-import javax.xml.parsers.DocumentBuilderFactory;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.w3c.dom.Document;
 
 /**
- * Test case for {@link DocumentDecor}.
+ * Test case for {@link ExceptionDecor}.
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class DocumentDecorTest {
+public final class ExceptionDecorTest {
 
     /**
-     * DocumentDecor can transform Document to text.
+     * ExceptionDecor can transform exception to text.
      * @throws Exception If some problem
      */
     @Test
-    public void convertsDocumentToText() throws Exception {
-        final Document doc = DocumentBuilderFactory.newInstance()
-            .newDocumentBuilder().newDocument();
-        doc.appendChild(doc.createElement("root"));
-        final Formattable decor = new DocumentDecor(doc);
+    public void convertsExceptionToText() throws Exception {
+        final Formattable decor = new ExceptionDecor(new IOException("ouch!"));
         final Appendable dest = Mockito.mock(Appendable.class);
         final Formatter fmt = new Formatter(dest);
         decor.formatTo(fmt, 0, 0, 0);
-        Mockito.verify(dest).append(
-            // @checkstyle LineLength (1 line)
-            "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<root/>\n"
-        );
+        Mockito.verify(dest).append(Mockito.contains("ouch"));
     }
 
     /**
-     * DocumentDecor can handle NULL properly.
+     * ExceptionDecor can handle NULL properly.
      * @throws Exception If some problem
      */
     @Test
     public void convertsNullToText() throws Exception {
-        final Formattable decor = new DocumentDecor(null);
+        final Formattable decor = new ExceptionDecor(null);
         final Appendable dest = Mockito.mock(Appendable.class);
         final Formatter fmt = new Formatter(dest);
         decor.formatTo(fmt, 0, 0, 0);
