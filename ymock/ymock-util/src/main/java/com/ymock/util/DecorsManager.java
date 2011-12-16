@@ -35,7 +35,12 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import org.apache.commons.lang.StringUtils;
 import org.reflections.Reflections;
+import org.reflections.scanners.TypeAnnotationsScanner;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
+import org.slf4j.LoggerFactory;
 
 /**
  * Manager of all {@link Decor} annotated classes found in classpath.
@@ -57,6 +62,7 @@ final class DecorsManager {
      * Protected ctor, for this package only.
      */
     protected DecorsManager() {
+        final long start = System.currentTimeMillis();
         for (Class<?> type : DecorsManager.discover()) {
             String name = ((Decor) type.getAnnotation(Decor.class)).value();
             if (!name.matches("[a-zA-Z0-9\\-\\.]*")) {
@@ -66,10 +72,18 @@ final class DecorsManager {
                 );
             }
             if (name.isEmpty()) {
-                name = type.getClass().getName();
+                name = type.getName();
             }
             this.decors.put(name, (Class<Formattable>) type);
         }
+        LoggerFactory.getLogger(DecorsManager.class).info(
+            String.format(
+                "%d decors discovered in classpath in %dms: %s",
+                this.decors.size(),
+                System.currentTimeMillis() - start,
+                StringUtils.join(this.decors.keySet(), ", ")
+            )
+        );
     }
 
     /**
@@ -157,9 +171,19 @@ final class DecorsManager {
     private static Set<Class<?>> discover() {
         Set<Class<?>> types;
         try {
-            types = new Reflections("").getTypesAnnotatedWith(Decor.class);
+            types = new Reflections(
+                new ConfigurationBuilder()
+                    .setUrls(ClasspathHelper.forJavaClassPath())
+                    .setScanners(new TypeAnnotationsScanner())
+            ).getTypesAnnotatedWith(Decor.class);
         } catch (NullPointerException ex) {
             types = new HashSet<Class<?>>();
+            LoggerFactory.getLogger(DecorsManager.class).error(
+                String.format(
+                    "NPE during classpath discovery: %s",
+                    ex.getMessage()
+                )
+            );
         }
         return types;
     }
