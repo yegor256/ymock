@@ -64,8 +64,11 @@ public final class DocumentDecor implements Formattable {
      * Public ctor.
      * @param doc The document
      */
-    public DocumentDecor(final Document doc) {
-        this.document = doc;
+    public DocumentDecor(final Object doc) {
+        if (!(doc instanceof Document)) {
+            throw new IllegalStateException("org.w3c.dom.Document is required");
+        }
+        this.document = (Document) doc;
     }
 
     /**
