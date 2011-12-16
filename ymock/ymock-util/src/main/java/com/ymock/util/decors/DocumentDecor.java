@@ -27,43 +27,68 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.util;
+package com.ymock.util.decors;
 
+import com.ymock.util.Decor;
+import java.io.StringWriter;
 import java.util.Formattable;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.Test;
+import java.util.Formatter;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Document;
 
 /**
- * Test case for {@link DecorsManager}.
- * @author Marina Kosenko (marina.kosenko@gmail.com)
+ * Decorates XML Document.
+ *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class DecorsManagerTest {
+@Decor(types = Document.class)
+public final class DocumentDecor implements Formattable {
 
     /**
-     * Object under test.
+     * DOM transformer factory, DOM.
      */
-    private final transient DecorsManager mgr = new DecorsManager();
+    private static final TransformerFactory FACTORY =
+        TransformerFactory.newInstance();
 
     /**
-     * Test with sample formatter.
+     * The document.
      */
-    @Test
-    public void testRetrievalOfSimpleDecor() {
-        MatcherAssert.assertThat(
-            this.mgr.decor("foo", "test"),
-            Matchers.instanceOf(Formattable.class)
-        );
+    private final transient Document document;
+
+    /**
+     * Public ctor.
+     * @param doc The document
+     */
+    public DocumentDecor(final Document doc) {
+        this.document = doc;
     }
 
     /**
-     * Test with non-existing formatter.
+     * {@inheritDoc}
+     * @checkstyle ParameterNumber (4 lines)
      */
-    @Test(expected = com.ymock.util.RuntimeProblem.class)
-    public void testWithNonExistingDecor() {
-        this.mgr.decor("non-existing-formatter", null);
+    @Override
+    public void formatTo(final Formatter formatter, final int flags,
+        final int width, final int precision) {
+        final StringWriter writer = new StringWriter();
+        try {
+            final Transformer trans = this.FACTORY.newTransformer();
+            trans.setOutputProperty(OutputKeys.INDENT, "yes");
+            trans.transform(
+                new DOMSource(this.document),
+                new StreamResult(writer)
+            );
+        } catch (javax.xml.transform.TransformerConfigurationException ex) {
+            throw new IllegalStateException(ex);
+        } catch (javax.xml.transform.TransformerException ex) {
+            throw new IllegalStateException(ex);
+        }
+        formatter.format("%s", writer.toString());
     }
 
 }

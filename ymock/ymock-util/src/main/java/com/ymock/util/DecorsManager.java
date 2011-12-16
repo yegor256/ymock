@@ -29,7 +29,9 @@
  */
 package com.ymock.util;
 
+import java.util.Arrays;
 import java.util.Formattable;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -45,11 +47,6 @@ import org.reflections.Reflections;
 final class DecorsManager {
 
     /**
-     * Singleton instance of this class.
-     */
-    public static final DecorsManager INSTANCE = new DecorsManager();
-
-    /**
      * Storage of all found decors.
      * @checkstyle LineLength (2 lines)
      */
@@ -57,19 +54,19 @@ final class DecorsManager {
         new ConcurrentHashMap<String, Class<? extends Formattable>>();
 
     /**
-     * Private constructor.
+     * Protected ctor, for this package only.
      */
-    private DecorsManager() {
-        final Set<Class<?>> types = new Reflections("")
-            .getTypesAnnotatedWith(Decor.class);
-        for (Class<?> type : types) {
-            final String name =
-                ((Decor) type.getAnnotation(Decor.class)).value();
-            if (!name.matches("[a-z0-9\\-\\.]+")) {
+    protected DecorsManager() {
+        for (Class<?> type : DecorsManager.discover()) {
+            String name = ((Decor) type.getAnnotation(Decor.class)).value();
+            if (!name.matches("[a-zA-Z0-9\\-\\.]*")) {
                 throw RuntimeProblem.make(
                     "Decor name '%s' has invalid format",
                     name
                 );
+            }
+            if (name.isEmpty()) {
+                name = type.getClass().getName();
             }
             this.decors.put(name, (Class<Formattable>) type);
         }
@@ -82,12 +79,10 @@ final class DecorsManager {
      * @return The decor
      */
     public Formattable decor(final String key, final Object arg) {
-        if (!this.decors.containsKey(key)) {
-            throw RuntimeProblem.make("Decor '%s' not found", key);
-        }
-        final Class<? extends Formattable> type = this.decors.get(key);
+        final Class<? extends Formattable> type = this.find(key, arg);
+        Formattable decor;
         try {
-            return type.getConstructor(Object.class).newInstance(arg);
+            decor = type.getConstructor(Object.class).newInstance(arg);
         } catch (NoSuchMethodException ex) {
             throw RuntimeProblem.make(
                 ex,
@@ -113,6 +108,60 @@ final class DecorsManager {
                 type.getName()
             );
         }
+        return decor;
+    }
+
+    /**
+     * Find decor.
+     * @param key Key for the formatter to be used to fmt the arguments
+     * @param arg The arbument to supply
+     * @return The type of decor found
+     */
+    private Class<? extends Formattable> find(final String key,
+        final Object arg) {
+        Class<? extends Formattable> type = null;
+        if (key.isEmpty()) {
+            boolean found = false;
+            for (Class<? extends Formattable> cls : this.decors.values()) {
+                found = Arrays
+                    .asList(((Decor) cls.getAnnotation(Decor.class)).types())
+                    .contains(arg.getClass());
+                if (found) {
+                    type = cls;
+                    break;
+                }
+            }
+            if (!found) {
+                throw RuntimeProblem.make(
+                    "No decors for type '%s' found",
+                    arg.getClass().getName()
+                );
+            }
+        } else {
+            if (!this.decors.containsKey(key)) {
+                throw RuntimeProblem.make("Decor '%s' not found", key);
+            }
+            type = this.decors.get(key);
+        }
+        return type;
+    }
+
+    /**
+     * Discover all annotated classes.
+     * @return Set of them
+     * @todo #33 It's a defect in Reflections, which leads to NPE.
+     */
+    @SuppressWarnings(
+        { "PMD.AvoidCatchingGenericException", "PMD.AvoidCatchingNPE" }
+    )
+    private static Set<Class<?>> discover() {
+        Set<Class<?>> types;
+        try {
+            types = new Reflections("").getTypesAnnotatedWith(Decor.class);
+        } catch (NullPointerException ex) {
+            types = new HashSet<Class<?>>();
+        }
+        return types;
     }
 
 }
