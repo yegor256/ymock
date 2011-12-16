@@ -1,9 +1,9 @@
  ------
- yMock utilities
+ yMock logging decors
  ------
  Yegor Bugayenko
  ------
- 2011-05-30
+ 2011-12-16
  ------
 
 ~~
@@ -38,45 +38,56 @@
 ~~ @version $Id$
 ~~
 
-Convenient Utilities
+Decors
 
-  {{{./apidocs/com/ymock/util/Logger.html}<<<Logger>>>}}
-  is a convenient wrapper around {{{http://www.slf4j.org/}slf4j}}
-  (don't forget to include one of
-  {{{http://www.slf4j.org/manual.html#binding}slf4j bindings}}
-  into your project):
+  Log an event like this:
 
 +--
   import com.ymock.util.Logger;
   class Foo {
     void bar(int value) {
-      Logger.debug(this, "method bar(%d) was called", value);
+      final long start = System.nanoTime();
+      // some operations
+      Logger.debug(
+        this,
+        "bar(%d): done in %[nano]d",
+        value,
+        System.nanoTime() - start
+      );
     }
   }
 +--
 
-  Read about {{{./decors.html}decors}}.
+  You will see something like this in log:
 
-  {{{./apidocs/com/ymock/util/RuntimeProblem.html}<<<RuntimeProblem>>>}}
-  is a convenient instantiator of
-  {{{http://download.oracle.com/javase/6/docs/api/java/lang/RuntimeException.html}<<<RuntimeException>>>}}:
+---
+[DEBUG] Foo: #bar(1234): done in 3.45ms
+---
+
+  Nano-seconds will be formatted as time through a built-in yMock "decor":
+  {{{./apidocs/com/ymock/util/decors/NanoDecor.html}<<<NanoDecor}}.
+  In order to define your own decor just implement <<<java.util.Formattable>>>
+  and annotate it with
+  {{{./apidocs/com/ymock/util/Decor.html}<<<com.ymock.util.Decor}}, for example:
 
 +--
-  import com.ymock.util.RuntimeProblem;
-  class Foo {
-    void bar(int value) {
-      throw RuntimeProblem.make("bar(%s) failed", value);
+import com.ymock.util.Decor;
+import java.util.Formattable;
+import java.util.Formatter;
+
+@Decor(name = "foo")
+public final class DataDecor implements Formattable {
+    private final transient Data data;
+    public DataDecor(final Data dat) {
+        this.data = dat;
     }
-  }
+    @Override
+    public void formatTo(final Formatter formatter, final int flags,
+        final int width, final int precision) {
+        formatter.format("%s", this.data.getSomeValueOutOfIt());
+    }
+
+}
 +--
 
-  Don't forget to include <<<ymock-util>>> dependency into your project:
-
-+--
-<dependency>
-  <groupId>com.ymock</groupId>
-  <artifactId>ymock-util</artifactId>
-  <version>${releasedVersion}</version>
-</dependency>
-+--
 

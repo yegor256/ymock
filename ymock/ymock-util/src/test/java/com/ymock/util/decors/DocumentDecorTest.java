@@ -27,48 +27,39 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.util;
+package com.ymock.util.decors;
 
 import java.util.Formattable;
 import java.util.Formatter;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.junit.Test;
+import org.mockito.Mockito;
+import org.w3c.dom.Document;
 
 /**
- * Primitive decor, for testing only.
+ * Test case for {@link DocumentDecor}.
  * @author Marina Kosenko (marina.kosenko@gmail.com)
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-@Decor("foo")
-final class FooDecor implements Formattable {
+public final class DocumentDecorTest {
 
     /**
-     * The text.
+     * DocumentDecor can transform Document to text.
+     * @throws Exception If some problem
      */
-    private final transient String text;
-
-    /**
-     * Public ctor.
-     * @param txt The text to output
-     */
-    public FooDecor(final Object txt) {
-        this.text = txt.toString();
-    }
-
-    /**
-     * {@inheritDoc}
-     * @checkstyle ParameterNumber (4 lines)
-     */
-    @Override
-    public void formatTo(final Formatter formatter, final int flags,
-        final int width, final int precision) {
-        formatter.format(
-            String.format(
-                "%s [f=%d, w=%d, p=%d]",
-                this.text,
-                flags,
-                width,
-                precision
-            )
+    @Test
+    public void convertsDocumentToText() throws Exception {
+        final Document doc = DocumentBuilderFactory.newInstance()
+            .newDocumentBuilder().newDocument();
+        doc.appendChild(doc.createElement("root"));
+        final Formattable decor = new DocumentDecor(doc);
+        final Appendable dest = Mockito.mock(Appendable.class);
+        final Formatter fmt = new Formatter(dest);
+        decor.formatTo(fmt, 0, 0, 0);
+        Mockito.verify(dest).append(
+            // @checkstyle LineLength (1 line)
+            "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<root/>\n"
         );
     }
 

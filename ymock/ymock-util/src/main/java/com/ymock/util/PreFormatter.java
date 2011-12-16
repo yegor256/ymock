@@ -45,6 +45,11 @@ import java.util.regex.Pattern;
 final class PreFormatter {
 
     /**
+     * Singleton instance of this class.
+     */
+    private static final DecorsManager MANAGER = new DecorsManager();
+
+    /**
      * The formatting string.
      */
     private transient String format;
@@ -89,7 +94,7 @@ final class PreFormatter {
         final StringBuffer buf = new StringBuffer();
         final Pattern pattern = Pattern.compile(
             // @checkstyle LineLength (1 line)
-            "%(?:\\d+\\$)?(\\[([a-z\\-\\.0-9]+)\\])?[\\+\\-]?(?:\\d*(?:\\.\\d+)?)?[a-zA-Z%]"
+            "%(?:\\d+\\$)?(\\[([A-Za-z\\-\\.0-9]*)\\])?[\\+\\-]?(?:\\d*(?:\\.\\d+)?)?[a-zA-Z%]"
         );
         final Matcher matcher = pattern.matcher(fmt);
         int pos = 0;
@@ -108,12 +113,7 @@ final class PreFormatter {
                         matcher.group().replace(matcher.group(1), "")
                     )
                 );
-                this.arguments.add(
-                    DecorsManager.INSTANCE.decor(
-                        decor,
-                        args[pos]
-                    )
-                );
+                this.arguments.add(this.MANAGER.decor(decor, args[pos]));
             }
             pos += 1;
         }

@@ -29,32 +29,47 @@
  */
 package com.ymock.util;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.util.Formattable;
+import java.util.Formatter;
 
 /**
- * Annotates discoverable formatters, which implement
- * {@link java.util.Formattable} interface.
- *
+ * Primitive decor, for testing only.
  * @author Marina Kosenko (marina.kosenko@gmail.com)
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface Decor {
+@Decor("foo")
+final class DecorMocker implements Formattable {
 
     /**
-     * Unique name of this decor.
+     * The text.
      */
-    String value() default "";
+    private final transient String text;
 
     /**
-     * List of classes it automatically catches.
+     * Public ctor.
+     * @param txt The text to output
      */
-    Class[] types() default { };
+    public DecorMocker(final Object txt) {
+        this.text = txt.toString();
+    }
+
+    /**
+     * {@inheritDoc}
+     * @checkstyle ParameterNumber (4 lines)
+     */
+    @Override
+    public void formatTo(final Formatter formatter, final int flags,
+        final int width, final int precision) {
+        formatter.format(
+            String.format(
+                "%s [f=%d, w=%d, p=%d]",
+                this.text,
+                flags,
+                width,
+                precision
+            )
+        );
+    }
 
 }
-

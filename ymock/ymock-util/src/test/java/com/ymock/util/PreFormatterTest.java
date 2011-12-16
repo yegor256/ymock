@@ -54,7 +54,7 @@ public final class PreFormatterTest {
         );
         MatcherAssert.assertThat(
             pre.getArguments()[0],
-            Matchers.instanceOf(FooDecor.class)
+            Matchers.instanceOf(DecorMocker.class)
         );
         MatcherAssert.assertThat(
             pre.getArguments()[1],
