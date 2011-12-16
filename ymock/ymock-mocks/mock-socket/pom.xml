@@ -39,7 +39,7 @@
     <parent>
         <groupId>com.ymock</groupId>
         <artifactId>ymock-mocks</artifactId>
-        <version ymock="yes">1.0.1</version>
+        <version ymock="yes">2.0-SNAPSHOT</version>
     </parent>
     <groupId>com.ymock.mock</groupId>
     <artifactId>mock-socket</artifactId>
@@ -50,17 +50,17 @@
         <dependency>
             <groupId>com.ymock</groupId>
             <artifactId>ymock-client</artifactId>
-            <version ymock="yes">1.0.1</version>
+            <version ymock="yes">2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.ymock</groupId>
             <artifactId>ymock-commons</artifactId>
-            <version ymock="yes">1.0.1</version>
+            <version ymock="yes">2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.ymock</groupId>
             <artifactId>ymock-server</artifactId>
-            <version ymock="yes">1.0.1</version>
+            <version ymock="yes">2.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
         <dependency>
