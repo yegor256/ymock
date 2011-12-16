@@ -65,10 +65,10 @@ Decors
 ---
 
   Nano-seconds will be formatted as time through a built-in yMock "decor":
-  {{{./apidocs/com/ymock/util/decors/NanoDecor.html}<<<NanoDecor}}.
+  {{{./apidocs/com/ymock/util/decors/NanoDecor.html}<<<NanoDecor>>>}}.
   In order to define your own decor just implement <<<java.util.Formattable>>>
   and annotate it with
-  {{{./apidocs/com/ymock/util/Decor.html}<<<com.ymock.util.Decor}}, for example:
+  {{{./apidocs/com/ymock/util/Decor.html}<<<com.ymock.util.Decor>>>}}, for example:
 
 +--
 import com.ymock.util.Decor;
