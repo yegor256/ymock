@@ -113,7 +113,11 @@ final class PreFormatter {
                         matcher.group().replace(matcher.group(1), "")
                     )
                 );
-                this.arguments.add(this.MANAGER.decor(decor, args[pos]));
+                try {
+                    this.arguments.add(this.MANAGER.decor(decor, args[pos]));
+                } catch (DecorException ex) {
+                    this.arguments.add(String.format("[%s]", ex.getMessage()));
+                }
             }
             pos += 1;
         }

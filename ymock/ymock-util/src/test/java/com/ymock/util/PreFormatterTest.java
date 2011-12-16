@@ -42,10 +42,10 @@ import org.junit.Test;
 public final class PreFormatterTest {
 
     /**
-     * Test with sample formatter.
+     * PreFormatter can format simple texts.
      */
     @Test
-    public void testArgumentsDecoration() {
+    public void decoratesArguments() {
         final PreFormatter pre =
             new PreFormatter("%[foo]-5.2f and %1$+.6f", 1d, "x");
         MatcherAssert.assertThat(
@@ -58,6 +58,23 @@ public final class PreFormatterTest {
         );
         MatcherAssert.assertThat(
             pre.getArguments()[1],
+            Matchers.instanceOf(String.class)
+        );
+    }
+
+    /**
+     * PreFormatter can handle missed decors.
+     */
+    @Test
+    public void formatsEvenWithMissedDecors() {
+        final PreFormatter pre =
+            new PreFormatter("ouch: %[missed]s", "test");
+        MatcherAssert.assertThat(
+            pre.getFormat(),
+            Matchers.equalTo("ouch: %s")
+        );
+        MatcherAssert.assertThat(
+            pre.getArguments()[0],
             Matchers.instanceOf(String.class)
         );
     }

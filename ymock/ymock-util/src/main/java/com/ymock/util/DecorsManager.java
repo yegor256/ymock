@@ -92,32 +92,34 @@ final class DecorsManager {
      * @param key Key for the formatter to be used to fmt the arguments
      * @param arg The arbument to supply
      * @return The decor
+     * @throws DecorException If some problem
      */
-    public Formattable decor(final String key, final Object arg) {
+    public Formattable decor(final String key, final Object arg)
+        throws DecorException {
         final Class<? extends Formattable> type = this.find(key, arg);
         Formattable decor;
         try {
             decor = type.getConstructor(Object.class).newInstance(arg);
         } catch (NoSuchMethodException ex) {
-            throw RuntimeProblem.make(
+            throw new DecorException(
                 ex,
                 "One-argument constructor is absent in %s",
                 type.getName()
             );
         } catch (InstantiationException ex) {
-            throw RuntimeProblem.make(
+            throw new DecorException(
                 ex,
                 "Can't instantiate %s",
                 type.getName()
             );
         } catch (IllegalAccessException ex) {
-            throw RuntimeProblem.make(
+            throw new DecorException(
                 ex,
                 "Can't access one-arg constructor in %s",
                 type.getName()
             );
         } catch (java.lang.reflect.InvocationTargetException ex) {
-            throw RuntimeProblem.make(
+            throw new DecorException(
                 ex,
                 "Can't invoke one-arg constructor in %s",
                 type.getName()
@@ -131,9 +133,10 @@ final class DecorsManager {
      * @param key Key for the formatter to be used to fmt the arguments
      * @param arg The arbument to supply
      * @return The type of decor found
+     * @throws DecorException If some problem
      */
     private Class<? extends Formattable> find(final String key,
-        final Object arg) {
+        final Object arg) throws DecorException {
         Class<? extends Formattable> type = null;
         if (key.isEmpty()) {
             boolean found = false;
@@ -147,14 +150,14 @@ final class DecorsManager {
                 }
             }
             if (!found) {
-                throw RuntimeProblem.make(
+                throw new DecorException(
                     "No decors for type '%s' found",
                     arg.getClass().getName()
                 );
             }
         } else {
             if (!this.decors.containsKey(key)) {
-                throw RuntimeProblem.make("Decor '%s' not found", key);
+                throw new DecorException("Decor '%s' not found", key);
             }
             type = this.decors.get(key);
         }
@@ -178,6 +181,9 @@ final class DecorsManager {
         found.addAll(ClasspathHelper.forManifest());
         final Set<URL> urls = new HashSet<URL>();
         for (URL url : found) {
+            if (url.toString().matches(".*\\.(zip|jnilib)$")) {
+                continue;
+            }
             urls.add(url);
         }
         Set<Class<?>> types;
