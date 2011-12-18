@@ -40,4 +40,12 @@
 
 JMConnection
 
-  TBD...
+  Include it to your <<<pom.xml>>> like this:
+
++--
+<dependency>
+  <groupId>com.ymock.mock</groupId>
+  <artifactId>mock-jdbc</artifactId>
+  <version>${releasedVersion}</version>
+</dependency>
++--

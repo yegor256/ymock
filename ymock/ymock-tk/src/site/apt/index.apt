@@ -40,4 +40,13 @@
 
 Tool Kit
 
-  TBD...
+  Include it to your <<<pom.xml>>> like this:
+
++--
+<dependency>
+  <groupId>com.ymock</groupId>
+  <artifactId>ymock-tk</artifactId>
+  <version>${releasedVersion}</version>
+</dependency>
++--
+

@@ -40,4 +40,12 @@
 
 YMockClient
 
-  TBD...
+  Include it to your <<<pom.xml>>> like this:
+
++--
+<dependency>
+  <groupId>com.ymock</groupId>
+  <artifactId>ymock-client</artifactId>
+  <version>${releasedVersion}</version>
+</dependency>
++--
