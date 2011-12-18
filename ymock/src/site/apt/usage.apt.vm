@@ -80,7 +80,7 @@ public final class LegacyCode {
 
 +--
 package com.example;
-import com.ymock.client.YMockServer;
+import com.ymock.server.YMockServer;
 import org.junit.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
