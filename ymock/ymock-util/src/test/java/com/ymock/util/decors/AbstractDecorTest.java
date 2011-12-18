@@ -101,8 +101,9 @@ public abstract class AbstractDecorTest {
     /**
      * Get decor with the object.
      * @return The decor to test
+     * @throws Exception If some problem
      */
-    protected abstract Formattable decor();
+    protected abstract Formattable decor() throws Exception;
 
     /**
      * Get object under test.

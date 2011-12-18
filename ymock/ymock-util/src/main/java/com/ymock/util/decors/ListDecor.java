@@ -29,28 +29,37 @@
  */
 package com.ymock.util.decors;
 
+import com.ymock.util.DecorException;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Formattable;
 import java.util.Formatter;
 
 /**
- * Size decorator.
- * @author Marina Kosenko (marina.kosenko@gmail.com)
+ * Format list.
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class SizeDecor implements Formattable {
+public final class ListDecor implements Formattable {
 
     /**
-     * The size to work with.
+     * The list.
      */
-    private final transient Long size;
+    private final transient Collection list;
 
     /**
      * Public ctor.
-     * @param sze The size
+     * @param obj The object to format
+     * @throws DecorException If some problem with it
      */
-    public SizeDecor(final Long sze) {
-        this.size = sze;
+    public ListDecor(final Object obj) throws DecorException {
+        if (obj == null || obj instanceof Collection) {
+            this.list = (Collection) obj;
+        } else if (obj instanceof Object[]) {
+            this.list = Arrays.asList((Object[]) obj);
+        } else {
+            throw new DecorException("Collection or array required");
+        }
     }
 
     /**
@@ -60,7 +69,22 @@ public final class SizeDecor implements Formattable {
     @Override
     public void formatTo(final Formatter formatter, final int flags,
         final int width, final int precision) {
-        formatter.format("%s", this.size.toString());
+        final StringBuilder builder = new StringBuilder();
+        builder.append("[");
+        if (this.list == null) {
+            builder.append("NULL");
+        } else {
+            boolean first = true;
+            for (Object item : this.list) {
+                if (!first) {
+                    builder.append(", ");
+                }
+                builder.append(String.format("\"%s\"", item));
+                first = false;
+            }
+        }
+        builder.append("]");
+        formatter.format("%s", builder.toString());
     }
 
 }

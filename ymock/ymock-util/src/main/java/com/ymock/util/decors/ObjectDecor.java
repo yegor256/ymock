@@ -60,7 +60,7 @@ public final class ObjectDecor implements Formattable {
     @Override
     public void formatTo(final Formatter formatter, final int flags,
         final int width, final int precision) {
-        formatter.format(this.object.getClass().getName());
+        formatter.format("%s", this.object.getClass().getName());
     }
 
 }

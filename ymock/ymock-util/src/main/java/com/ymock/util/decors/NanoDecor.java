@@ -60,7 +60,7 @@ public final class NanoDecor implements Formattable {
     @Override
     public void formatTo(final Formatter formatter, final int flags,
         final int width, final int precision) {
-        formatter.format(this.nano.toString());
+        formatter.format("%s", this.nano.toString());
     }
 
 }
