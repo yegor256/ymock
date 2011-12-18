@@ -35,7 +35,7 @@ package com.ymock.util;
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-final class DecorException extends Exception {
+public final class DecorException extends Exception {
 
     /**
      * Public ctor.

@@ -29,7 +29,7 @@
  */
 package com.ymock.util;
 
-import java.util.Formattable;
+import com.ymock.util.decors.NanoDecor;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -43,19 +43,14 @@ import org.junit.Test;
 public final class DecorsManagerTest {
 
     /**
-     * Object under test.
-     */
-    private final transient DecorsManager mgr = new DecorsManager();
-
-    /**
-     * DecorsManager can discover decors in classpaths.
+     * DecorsManager can return one of built-in decors.
      * @throws Exception If some problem
      */
     @Test
-    public void discoversSimpleDecorInClasspath() throws Exception {
+    public void hasBuiltInDecors() throws Exception {
         MatcherAssert.assertThat(
-            this.mgr.decor("foo", "test"),
-            Matchers.instanceOf(Formattable.class)
+            DecorsManager.decor("nano", 1L),
+            Matchers.instanceOf(NanoDecor.class)
         );
     }
 
@@ -65,7 +60,7 @@ public final class DecorsManagerTest {
      */
     @Test(expected = DecorException.class)
     public void throwsExceptionForAbsentDecor() throws Exception {
-        this.mgr.decor("non-existing-formatter", null);
+        DecorsManager.decor("non-existing-formatter", null);
     }
 
 }

@@ -29,7 +29,6 @@
  */
 package com.ymock.util.decors;
 
-import com.ymock.util.Decor;
 import java.util.Formattable;
 import java.util.Formatter;
 
@@ -39,7 +38,6 @@ import java.util.Formatter;
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-@Decor("secret")
 public final class SecretDecor implements Formattable {
 
     /**
@@ -51,8 +49,8 @@ public final class SecretDecor implements Formattable {
      * Public ctor.
      * @param scrt The secret
      */
-    public SecretDecor(final String scrt) {
-        this.secret = scrt;
+    public SecretDecor(final Object scrt) {
+        this.secret = scrt.toString();
     }
 
     /**
@@ -62,7 +60,7 @@ public final class SecretDecor implements Formattable {
     @Override
     public void formatTo(final Formatter formatter, final int flags,
         final int width, final int precision) {
-        formatter.format(this.secret);
+        formatter.format("%s", this.secret);
     }
 
 }

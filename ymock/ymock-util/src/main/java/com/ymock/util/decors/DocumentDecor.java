@@ -29,7 +29,6 @@
  */
 package com.ymock.util.decors;
 
-import com.ymock.util.Decor;
 import java.io.StringWriter;
 import java.util.Formattable;
 import java.util.Formatter;
@@ -46,7 +45,6 @@ import org.w3c.dom.Document;
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-@Decor(types = Document.class)
 public final class DocumentDecor implements Formattable {
 
     /**
@@ -64,11 +62,8 @@ public final class DocumentDecor implements Formattable {
      * Public ctor.
      * @param doc The document
      */
-    public DocumentDecor(final Object doc) {
-        if (doc != null && !(doc instanceof Document)) {
-            throw new IllegalStateException("org.w3c.dom.Document is required");
-        }
-        this.document = (Document) doc;
+    public DocumentDecor(final Document doc) {
+        this.document = doc;
     }
 
     /**

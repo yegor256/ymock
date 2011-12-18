@@ -29,38 +29,65 @@
  */
 package com.ymock.util.decors;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Formattable;
-import java.util.Formatter;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 /**
- * Size decorator.
- * @author Marina Kosenko (marina.kosenko@gmail.com)
+ * Test case for {@link ListDecor}.
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class SizeDecor implements Formattable {
-
-    /**
-     * The size to work with.
-     */
-    private final transient Long size;
+@RunWith(Parameterized.class)
+@SuppressWarnings("PMD.TestClassWithoutTestCases")
+public final class ListDecorTest extends AbstractDecorTest {
 
     /**
      * Public ctor.
-     * @param sze The size
+     * @param list The list to test
+     * @param text Expected text
+     * @param flags Flags
+     * @param width Width
+     * @param precision Precission
+     * @checkstyle ParameterNumber (3 lines)
      */
-    public SizeDecor(final Long sze) {
-        this.size = sze;
+    public ListDecorTest(final Object list, final String text,
+        final int flags, final int width, final int precision) {
+        super(list, text, flags, width, precision);
+    }
+
+    /**
+     * Params for this parametrized test.
+     * @return Array of arrays of params for ctor
+     * @todo #26 The SecretDecor class is not implemented yet, that's why
+     *  the test is not enabled at the moment. You should uncomment the
+     *  lines below and make sure the test passes.
+     */
+    @Parameters
+    public static Collection<Object[]> params() {
+        return Arrays.asList(
+            new Object[][] {
+                // @checkstyle MultipleStringLiterals (8 lines)
+                {null, "[NULL]", 0, 0, 0},
+                {new String[] {}, "[]", 0, 0, 0},
+                {new String[] {"a"}, "[\"a\"]", 0, 0, 0},
+                {new String[] {"b", "c"}, "[\"b\", \"c\"]", 0, 0, 0},
+                {new ArrayList<String>(), "[]", 0, 0, 0},
+                {Arrays.asList(new String[] {"x"}), "[\"x\"]", 0, 0, 0},
+            }
+        );
     }
 
     /**
      * {@inheritDoc}
-     * @checkstyle ParameterNumber (4 lines)
      */
     @Override
-    public void formatTo(final Formatter formatter, final int flags,
-        final int width, final int precision) {
-        formatter.format("%s", this.size.toString());
+    protected Formattable decor() throws Exception {
+        return new ListDecor(this.object());
     }
 
 }

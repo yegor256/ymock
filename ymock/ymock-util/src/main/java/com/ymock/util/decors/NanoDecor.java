@@ -29,7 +29,6 @@
  */
 package com.ymock.util.decors;
 
-import com.ymock.util.Decor;
 import java.util.Formattable;
 import java.util.Formatter;
 
@@ -39,7 +38,6 @@ import java.util.Formatter;
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-@Decor("nano")
 public final class NanoDecor implements Formattable {
 
     /**
@@ -62,7 +60,7 @@ public final class NanoDecor implements Formattable {
     @Override
     public void formatTo(final Formatter formatter, final int flags,
         final int width, final int precision) {
-        formatter.format(this.nano.toString());
+        formatter.format("%s", this.nano.toString());
     }
 
 }

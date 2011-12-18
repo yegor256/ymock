@@ -27,34 +27,64 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.ymock.util;
+package com.ymock.util.decors;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.ymock.util.DecorException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Formattable;
+import java.util.Formatter;
 
 /**
- * Annotates discoverable formatters, which implement
- * {@link java.util.Formattable} interface.
- *
- * @author Marina Kosenko (marina.kosenko@gmail.com)
+ * Format list.
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface Decor {
+public final class ListDecor implements Formattable {
 
     /**
-     * Unique name of this decor.
+     * The list.
      */
-    String value() default "";
+    private final transient Collection list;
 
     /**
-     * List of classes it automatically catches.
+     * Public ctor.
+     * @param obj The object to format
+     * @throws DecorException If some problem with it
      */
-    Class[] types() default { };
+    public ListDecor(final Object obj) throws DecorException {
+        if (obj == null || obj instanceof Collection) {
+            this.list = (Collection) obj;
+        } else if (obj instanceof Object[]) {
+            this.list = Arrays.asList((Object[]) obj);
+        } else {
+            throw new DecorException("Collection or array required");
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     * @checkstyle ParameterNumber (4 lines)
+     */
+    @Override
+    public void formatTo(final Formatter formatter, final int flags,
+        final int width, final int precision) {
+        final StringBuilder builder = new StringBuilder();
+        builder.append("[");
+        if (this.list == null) {
+            builder.append("NULL");
+        } else {
+            boolean first = true;
+            for (Object item : this.list) {
+                if (!first) {
+                    builder.append(", ");
+                }
+                builder.append(String.format("\"%s\"", item));
+                first = false;
+            }
+        }
+        builder.append("]");
+        formatter.format("%s", builder.toString());
+    }
 
 }
-

@@ -29,62 +29,49 @@
  */
 package com.ymock.util;
 
-import java.net.URL;
-import java.util.Arrays;
+import com.ymock.util.decors.DocumentDecor;
+import com.ymock.util.decors.ExceptionDecor;
+import com.ymock.util.decors.ListDecor;
+import com.ymock.util.decors.NanoDecor;
+import com.ymock.util.decors.ObjectDecor;
+import com.ymock.util.decors.SecretDecor;
+import com.ymock.util.decors.SizeDecor;
+import java.lang.reflect.Constructor;
 import java.util.Formattable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import org.apache.commons.lang.StringUtils;
-import org.reflections.Reflections;
-import org.reflections.scanners.TypeAnnotationsScanner;
-import org.reflections.util.ClasspathHelper;
-import org.reflections.util.ConfigurationBuilder;
-import org.slf4j.LoggerFactory;
 
 /**
- * Manager of all {@link Decor} annotated classes found in classpath.
+ * Manager of all decors.
  *
  * @author Marina Kosenko (marina.kosenko@gmail.com)
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-final class DecorsManager {
+public final class DecorsManager {
 
     /**
      * Storage of all found decors.
      * @checkstyle LineLength (2 lines)
      */
-    private final transient ConcurrentMap<String, Class<? extends Formattable>> decors =
+    private static final ConcurrentMap<String, Class<? extends Formattable>> DECORS =
         new ConcurrentHashMap<String, Class<? extends Formattable>>();
 
+    static {
+        DecorsManager.DECORS.put("list", ListDecor.class);
+        DecorsManager.DECORS.put("size", SizeDecor.class);
+        DecorsManager.DECORS.put("secret", SecretDecor.class);
+        DecorsManager.DECORS.put("object", ObjectDecor.class);
+        DecorsManager.DECORS.put("document", DocumentDecor.class);
+        DecorsManager.DECORS.put("nano", NanoDecor.class);
+        DecorsManager.DECORS.put("exception", ExceptionDecor.class);
+    }
+
     /**
-     * Protected ctor, for this package only.
+     * Private ctor.
      */
-    protected DecorsManager() {
-        final long start = System.currentTimeMillis();
-        for (Class<?> type : DecorsManager.discover()) {
-            String name = ((Decor) type.getAnnotation(Decor.class)).value();
-            if (!name.matches("[a-zA-Z0-9\\-\\.]*")) {
-                throw RuntimeProblem.make(
-                    "Decor name '%s' has invalid format",
-                    name
-                );
-            }
-            if (name.isEmpty()) {
-                name = type.getName();
-            }
-            this.decors.put(name, (Class<Formattable>) type);
-        }
-        LoggerFactory.getLogger(DecorsManager.class).info(
-            String.format(
-                "%d decor(s) discovered in classpath in %dms: %s",
-                this.decors.size(),
-                System.currentTimeMillis() - start,
-                StringUtils.join(this.decors.keySet(), ", ")
-            )
-        );
+    private DecorsManager() {
+        // empty
     }
 
     /**
@@ -94,18 +81,12 @@ final class DecorsManager {
      * @return The decor
      * @throws DecorException If some problem
      */
-    public Formattable decor(final String key, final Object arg)
+    public static Formattable decor(final String key, final Object arg)
         throws DecorException {
-        final Class<? extends Formattable> type = this.find(key, arg);
+        final Class<? extends Formattable> type = DecorsManager.find(key);
         Formattable decor;
         try {
-            decor = type.getConstructor(Object.class).newInstance(arg);
-        } catch (NoSuchMethodException ex) {
-            throw new DecorException(
-                ex,
-                "One-argument constructor is absent in %s",
-                type.getName()
-            );
+            decor = (Formattable) DecorsManager.ctor(type).newInstance(arg);
         } catch (InstantiationException ex) {
             throw new DecorException(
                 ex,
@@ -131,78 +112,52 @@ final class DecorsManager {
     /**
      * Find decor.
      * @param key Key for the formatter to be used to fmt the arguments
-     * @param arg The arbument to supply
      * @return The type of decor found
      * @throws DecorException If some problem
      */
-    private Class<? extends Formattable> find(final String key,
-        final Object arg) throws DecorException {
-        Class<? extends Formattable> type = null;
-        if (key.isEmpty()) {
-            boolean found = false;
-            for (Class<? extends Formattable> cls : this.decors.values()) {
-                found = Arrays
-                    .asList(((Decor) cls.getAnnotation(Decor.class)).types())
-                    .contains(arg.getClass());
-                if (found) {
-                    type = cls;
-                    break;
-                }
-            }
-            if (!found) {
+    private static Class<? extends Formattable> find(final String key)
+        throws DecorException {
+        Class<? extends Formattable> type;
+        if (DecorsManager.DECORS.containsKey(key)) {
+            type = DecorsManager.DECORS.get(key);
+        } else {
+            try {
+                type = (Class) Class.forName(key);
+            } catch (ClassNotFoundException ex) {
                 throw new DecorException(
-                    "No decors for type '%s' found",
-                    arg.getClass().getName()
+                    ex,
+                    "Decor '%s' not found and class can't be instantiated",
+                    key
                 );
             }
-        } else {
-            if (!this.decors.containsKey(key)) {
-                throw new DecorException("Decor '%s' not found", key);
-            }
-            type = this.decors.get(key);
         }
         return type;
     }
 
     /**
-     * Discover all annotated classes.
-     * @return Set of them
-     * @todo #33 It's a defect in Reflections, which leads to NPE.
+     * Get ctor of the type.
+     * @param type The type
+     * @return The ctor
+     * @throws DecorException If some problem
      */
-    @SuppressWarnings(
-        { "PMD.AvoidCatchingGenericException", "PMD.AvoidCatchingNPE" }
-    )
-    private static Set<Class<?>> discover() {
-        final Set<URL> found = new HashSet<URL>();
-        found.addAll(
-            ClasspathHelper.forClassLoader(ClasspathHelper.classLoaders())
-        );
-        found.addAll(ClasspathHelper.forJavaClassPath());
-        found.addAll(ClasspathHelper.forManifest());
-        final Set<URL> urls = new HashSet<URL>();
-        for (URL url : found) {
-            if (url.toString().matches(".*\\.(zip|jnilib)$")) {
-                continue;
-            }
-            urls.add(url);
-        }
-        Set<Class<?>> types;
-        try {
-            types = new Reflections(
-                new ConfigurationBuilder()
-                    .setUrls(urls)
-                    .setScanners(new TypeAnnotationsScanner())
-            ).getTypesAnnotatedWith(Decor.class);
-        } catch (NullPointerException ex) {
-            types = new HashSet<Class<?>>();
-            LoggerFactory.getLogger(DecorsManager.class).error(
-                String.format(
-                    "NPE during classpath discovery: %s",
-                    ex.getMessage()
-                )
+    private static Constructor ctor(final Class<? extends Formattable> type)
+        throws DecorException {
+        final Constructor[] ctors = type.getConstructors();
+        if (ctors.length != 1) {
+            throw new DecorException(
+                "%s should have just one public one-arg ctor, but there are %d",
+                type.getName(),
+                ctors.length
             );
         }
-        return types;
+        final Constructor ctor = ctors[0];
+        if (ctor.getParameterTypes().length != 1) {
+            throw new DecorException(
+                "%s public ctor should have just once parameter",
+                type.getName()
+            );
+        }
+        return ctor;
     }
 
 }
