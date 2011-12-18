@@ -43,7 +43,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ymock</groupId>
     <artifactId>ymock</artifactId>
-    <version ymock="yes">2.0-SNAPSHOT</version>
+    <version ymock="yes">1.0.3</version>
     <packaging>pom</packaging>
     <name>yMock</name>
 
@@ -243,7 +243,7 @@
                             <dependency>
                                 <groupId>com.ymock</groupId>
                                 <artifactId>ymock-tk</artifactId>
-                                <version ymock="yes">2.0-SNAPSHOT</version>
+                                <version ymock="yes">1.0.3</version>
                             </dependency>
                         </dependencies>
                     </plugin>
@@ -287,7 +287,7 @@
                             <dependency>
                                 <groupId>com.ymock</groupId>
                                 <artifactId>ymock-tk</artifactId>
-                                <version ymock="yes">2.0-SNAPSHOT</version>
+                                <version ymock="yes">1.0.3</version>
                             </dependency>
                         </dependencies>
                     </plugin>
@@ -404,7 +404,7 @@
                             <dependency>
                                 <groupId>com.ymock</groupId>
                                 <artifactId>ymock-tk</artifactId>
-                                <version ymock="yes">2.0-SNAPSHOT</version>
+                                <version ymock="yes">1.0.3</version>
                             </dependency>
                         </dependencies>
                         <executions>
@@ -447,7 +447,7 @@
                                             <!-- for TIKZ closures -->
                                             <groupId>com.ymock</groupId>
                                             <artifactId>ymock-tk</artifactId>
-                                            <version ymock="yes">2.0-SNAPSHOT</version>
+                                            <version ymock="yes">1.0.3</version>
                                         </element>
                                         <element>
                                             <!-- for execution of shell commands -->
