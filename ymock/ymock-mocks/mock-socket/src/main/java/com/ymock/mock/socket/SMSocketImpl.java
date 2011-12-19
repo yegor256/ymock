@@ -138,10 +138,13 @@ final class SMSocketImpl extends SocketImpl {
      */
     @Override
     public void close() throws IOException {
-        Logger.debug(
-            this,
-            "#close(): done"
-        );
+        if (!this.over) {
+            this.socket.close();
+            Logger.debug(
+                this,
+                "#close(): done with original"
+            );
+        }
     }
 
     /**
@@ -150,12 +153,18 @@ final class SMSocketImpl extends SocketImpl {
     @Override
     public void connect(final InetAddress host, final int port)
         throws IOException {
-        Logger.debug(
-            this,
-            "#connect('%s', %d): done with InetAddress",
-            host,
-            port
-        );
+        if (this.pattern.matcher(host.getHostName()).matches()) {
+            this.ymockConnect(host.getHostName());
+        } else {
+            this.over = false;
+            this.socket.connect(new InetSocketAddress(host, port));
+            Logger.debug(
+                this,
+                "#connect('%s', %d): done with InetAddress (original)",
+                host,
+                port
+            );
+        }
     }
 
     /**
@@ -164,12 +173,19 @@ final class SMSocketImpl extends SocketImpl {
     @Override
     public void connect(final SocketAddress pnt, final int timeout)
         throws IOException {
-        Logger.debug(
-            this,
-            "#connect('%s', %d): done with SocketAddress",
-            pnt,
-            timeout
-        );
+        final String host = ((InetSocketAddress) pnt).getHostName();
+        if (this.pattern.matcher(host).matches()) {
+            this.ymockConnect(host);
+        } else {
+            this.over = false;
+            this.socket.connect(pnt);
+            Logger.debug(
+                this,
+                "#connect('%s', %d): done with SocketAddress (original)",
+                pnt,
+                timeout
+            );
+        }
     }
 
     /**
@@ -178,20 +194,9 @@ final class SMSocketImpl extends SocketImpl {
     @Override
     public void connect(final String host, final int port) throws IOException {
         if (this.pattern.matcher(host).matches()) {
-            final YMockClient client = new YMockClient(
-                String.format("com.ymock.mock.socket:%s", host)
-            );
-            final DataBuffer buffer = new YMockBuffer(client);
-            this.input = new SMInputStream(buffer);
-            this.output = new SMOutputStream(buffer);
-            Logger.debug(
-                this,
-                "#connect('%s', %d): done with mock",
-                host,
-                port
-            );
+            this.ymockConnect(host);
         } else {
-            this.over = true;
+            this.over = false;
             this.socket.connect(new InetSocketAddress(host, port));
             Logger.debug(
                 this,
@@ -252,16 +257,21 @@ final class SMSocketImpl extends SocketImpl {
     @Override
     public InputStream getInputStream() throws IOException {
         InputStream stream;
-        if (this.input == null) {
-            stream = this.socket.getInputStream();
-        } else {
+        if (this.over) {
             stream = this.input;
+            Logger.debug(
+                this,
+                "#getInputStream(): returned '%s'",
+                stream.getClass().getName()
+            );
+        } else {
+            stream = this.socket.getInputStream();
+            Logger.debug(
+                this,
+                "#getInputStream(): returned '%s' (original)",
+                stream.getClass().getName()
+            );
         }
-        Logger.debug(
-            this,
-            "#getInputStream(): returned '%s'",
-            stream.getClass().getName()
-        );
         return stream;
     }
 
@@ -303,16 +313,21 @@ final class SMSocketImpl extends SocketImpl {
     @Override
     public OutputStream getOutputStream() throws IOException {
         OutputStream stream;
-        if (this.output == null) {
-            stream = this.socket.getOutputStream();
-        } else {
+        if (this.over) {
             stream = this.output;
+            Logger.debug(
+                this,
+                "#getOutputStream(): returned '%s'",
+                stream.getClass().getName()
+            );
+        } else {
+            stream = this.socket.getOutputStream();
+            Logger.debug(
+                this,
+                "#getOutputStream(): returned '%s' (original)",
+                stream.getClass().getName()
+            );
         }
-        Logger.debug(
-            this,
-            "#getOutputStream(): returned '%s'",
-            stream.getClass().getName()
-        );
         return stream;
     }
 
@@ -417,6 +432,25 @@ final class SMSocketImpl extends SocketImpl {
             supports
         );
         return supports;
+    }
+
+    /**
+     * Connect to ymock.
+     * @param host The host
+     */
+    private void ymockConnect(final String host) {
+        final YMockClient client = new YMockClient(
+            String.format("com.ymock.mock.socket:%s", host)
+        );
+        final DataBuffer buffer = new YMockBuffer(client);
+        this.input = new SMInputStream(buffer);
+        this.output = new SMOutputStream(buffer);
+        this.over = true;
+        Logger.debug(
+            this,
+            "#ymockConnect('%s'): done",
+            host
+        );
     }
 
 }

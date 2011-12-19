@@ -76,7 +76,7 @@ public final class SMSocketImplFactory implements SocketImplFactory {
 
     /**
      * Start it working.
-     * @param This object
+     * @return This object
      * @throws IOException If some problem inside
      */
     public SMSocketImplFactory start() throws IOException {
@@ -92,7 +92,7 @@ public final class SMSocketImplFactory implements SocketImplFactory {
     /**
      * Add new pattern to match.
      * @param regex What hosts do we match?
-     * @param This object
+     * @return This object
      */
     public SMSocketImplFactory match(final String regex) {
         this.patterns.add(regex);
