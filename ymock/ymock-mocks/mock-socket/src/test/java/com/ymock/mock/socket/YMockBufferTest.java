@@ -29,6 +29,8 @@
  */
 package com.ymock.mock.socket;
 
+import com.ymock.client.Connector;
+import com.ymock.client.YMockClient;
 import com.ymock.commons.YMockException;
 import com.ymock.server.Response;
 import com.ymock.server.YMockServer;
@@ -37,6 +39,7 @@ import java.io.IOException;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 /**
  * Test case for {@link YMockBuffer}.
@@ -56,7 +59,7 @@ public final class YMockBufferTest {
         final DataBuffer buffer = new YMockBuffer(client);
         final String request = "some message to send";
         buffer.send(request);
-        Mockito.verify(connector).send(request);
+        Mockito.verify(connector).call(request);
     }
 
     /**

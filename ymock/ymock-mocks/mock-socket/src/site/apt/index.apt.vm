@@ -64,12 +64,12 @@ import java.net.URL;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 
-Socket.setSocketImplFactory(new SMSocketFactory(".*"));
+Socket.setSocketImplFactory(new SMSocketImplFactory(".*"));
 new YMockServer("com.ymock.mock.socket:www.google.com")
-  .when("GET /test", "some text to return");
+  .when("GET /test", "200 OK\n\nour custom content");
 MatcherAssert.assertThat(
   new URL("http://www.google.com/test").getContent()
-  Matchers.containsString("text to return")
+  Matchers.equalTo("our custom content")
 );
 +--
 

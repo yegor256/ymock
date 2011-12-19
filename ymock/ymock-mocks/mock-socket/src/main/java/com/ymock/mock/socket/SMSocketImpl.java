@@ -29,9 +29,18 @@
  */
 package com.ymock.mock.socket;
 
+import com.ymock.client.YMockClient;
+import java.io.FileDescriptor;
 import java.io.InputStream;
+import java.io.IOException;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
+import java.net.SocketException;
+import java.net.SocketImpl;
+import java.nio.channels.SocketChannel;
+import java.util.regex.Pattern;
 
 /**
  * Mock version of {@link SocketImpl}.
@@ -39,12 +48,17 @@ import java.net.Socket;
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-final class SMSocket extends SocketImpl {
+final class SMSocketImpl extends SocketImpl {
 
     /**
      * Regex for connections.
      */
     private final transient Pattern pattern;
+
+    /**
+     * Real socket.
+     */
+    private transient Socket socket;
 
     /**
      * Output stream.
@@ -69,35 +83,86 @@ final class SMSocket extends SocketImpl {
      * {@inheritDoc}
      */
     @Override
-    public void connect(final String host, final int port) {
-        if (this.pattern.matches(host)) {
+    public void accept(final SocketImpl sckt) throws IOException {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int available() throws IOException {
+        return 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void bind(final InetAddress host, final int port)
+        throws IOException {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void close() throws IOException {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void connect(final InetAddress host, final int port)
+        throws IOException {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void connect(final SocketAddress pnt, final int timeout)
+        throws IOException {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void connect(final String host, final int port) throws IOException {
+        if (this.pattern.matcher(host).matches()) {
             final YMockClient client = new YMockClient(
                 String.format("com.ymock.mock.socket:%s", host)
             );
             final DataBuffer buffer = new YMockBuffer(client);
             this.input = new SMInputStream(buffer);
-            this.output = new SMInputStream(buffer);
+            this.output = new SMOutputStream(buffer);
         } else {
-            this.connect(host, port);
+            this.socket = new Socket(host, port);
         }
     }
 
     /**
      * {@inheritDoc}
-     *
-     * <p>We are overriding the default implementation of {@link Socket},
-     * in order to mock its real behavior. Instead of writing to socket
-     * we're writing to {@link DataBuffer}.
      */
     @Override
-    public OutputStream getOutputStream() {
-        OutputStream stream;
-        if (this.output == null) {
-            stream = super.getOutputStream();
-        } else {
-            stream = this.output;
-        }
-        return stream;
+    public void create(final boolean stream) throws IOException {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FileDescriptor getFileDescriptor() {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public InetAddress getInetAddress() {
+        return null;
     }
 
     /**
@@ -108,14 +173,108 @@ final class SMSocket extends SocketImpl {
      * we're reading from {@link DataBuffer}.
      */
     @Override
-    public InputStream getInputStream() {
+    public InputStream getInputStream() throws IOException {
         InputStream stream;
         if (this.input == null) {
-            stream = super.getInputStream();
+            stream = this.socket.getInputStream();
         } else {
             stream = this.input;
         }
         return stream;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getLocalPort() {
+        return 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Object getOption(final int opt) throws SocketException {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>We are overriding the default implementation of {@link Socket},
+     * in order to mock its real behavior. Instead of writing to socket
+     * we're writing to {@link DataBuffer}.
+     */
+    @Override
+    public OutputStream getOutputStream() throws IOException {
+        OutputStream stream;
+        if (this.output == null) {
+            stream = this.socket.getOutputStream();
+        } else {
+            stream = this.output;
+        }
+        return stream;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getPort() {
+        return 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void listen(final int backlog) throws IOException {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void sendUrgentData(final int data) throws IOException {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setOption(final int opt, final Object obj)
+        throws SocketException {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPerformancePreferences(final int time,
+        final int latency, final int bandwidth) {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void shutdownInput() throws IOException {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void shutdownOutput() throws IOException {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean supportsUrgentData() {
+        return false;
     }
 
 }

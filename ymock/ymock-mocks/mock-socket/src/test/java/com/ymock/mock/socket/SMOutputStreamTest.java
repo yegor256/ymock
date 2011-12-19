@@ -30,6 +30,7 @@
 package com.ymock.mock.socket;
 
 import java.io.OutputStream;
+import java.util.regex.Pattern;
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -50,8 +51,7 @@ public final class SMOutputStreamTest {
     public void testSimulatesStreamWriting() throws Exception {
         final String request = "text\ntest\r\ntest3";
         final DataBuffer buffer = new DataBufferMocker()
-            .expect(request)
-            .doReturn("")
+            .doReturn(Pattern.quote(request), "")
             .mock();
         final OutputStream stream = new SMOutputStream(buffer);
         IOUtils.write(request, stream);

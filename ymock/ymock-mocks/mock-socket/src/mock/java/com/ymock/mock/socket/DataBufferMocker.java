@@ -29,8 +29,10 @@
  */
 package com.ymock.mock.socket;
 
+import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.regex.Pattern;
 import org.mockito.Mockito;
 
 /**
@@ -38,50 +40,13 @@ import org.mockito.Mockito;
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class DataBufferMocker implements DataBuffer {
-
-    /**
-     * Requests and responses.
-     */
-    private final transient ConcurrentMap<Pattern, String> matches =
-        new ConcurrrentHashMap<Pattern, String>();
+public final class DataBufferMocker {
 
     /**
      * The mock.
      */
-    private final transient DataBuffer buffer = new DataBufferMocker();
-
-    /**
-     * Response ready.
-     */
-    private transient String response;
-
-    /**
-     * Response is ready?
-     */
-    private transient boolean ready;
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void send(final String message) throws IOException {
-        this.response = this.matches.get(message);
-        this.ready = true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String receive() throws IOException {
-        if (!this.ready) {
-            throw new IOException("Nothing to return");
-        }
-        final String msg = this.response;
-        this.ready = false;
-        return msg;
-    }
+    private final transient DataBufferMocker.Mock buffer =
+        new DataBufferMocker.Mock();
 
     /**
      * Return this response on the request.
@@ -89,8 +54,9 @@ public final class DataBufferMocker implements DataBuffer {
      * @param response The response to return
      * @return This object
      */
-    public DataBuffer doReturn(final String pattern, final String response) {
-        this.buffer.matches.put(Pattern.compile(pattern), response);
+    public DataBufferMocker doReturn(final String pattern,
+        final String response) {
+        this.buffer.add(Pattern.compile(pattern), response);
         return this;
     }
 
@@ -102,4 +68,56 @@ public final class DataBufferMocker implements DataBuffer {
         return this.buffer;
     }
 
+    /**
+     * The mock.
+     */
+    private static final class Mock implements DataBuffer {
+        /**
+         * Requests and responses.
+         */
+        private final transient ConcurrentMap<Pattern, String> matches =
+            new ConcurrentHashMap<Pattern, String>();
+        /**
+         * Response ready.
+         */
+        private transient String response;
+        /**
+         * Response is ready?
+         */
+        private transient boolean ready;
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void send(final String message) throws IOException {
+            for (ConcurrentMap.Entry<Pattern, String> entry
+                : this.matches.entrySet()) {
+                if (entry.getKey().matcher(message).matches()) {
+                    this.response = entry.getValue();
+                    this.ready = true;
+                    break;
+                }
+            }
+        }
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String receive() throws IOException {
+            if (!this.ready) {
+                throw new IOException("Nothing to return");
+            }
+            final String msg = this.response;
+            this.ready = false;
+            return msg;
+        }
+        /**
+         * Add new match.
+         * @param pattern The request to listen to
+         * @param response The response to return
+         */
+        public void add(final Pattern pattern, final String response) {
+            this.matches.put(pattern, response);
+        }
+    }
 }

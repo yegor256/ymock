@@ -54,7 +54,7 @@ public final class SMInputStreamTest {
         };
         for (String text : texts) {
             final DataBuffer buffer = new DataBufferMocker()
-                .doReturn(text)
+                .doReturn(".*", text)
                 .mock();
             final InputStream stream = new SMInputStream(buffer);
             MatcherAssert.assertThat(
