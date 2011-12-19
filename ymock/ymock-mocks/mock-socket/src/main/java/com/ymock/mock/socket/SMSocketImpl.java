@@ -164,7 +164,19 @@ final class SMSocketImpl extends SocketImpl {
         throws IOException {
         final String host = ((InetSocketAddress) pnt).getHostName();
         if (this.pattern.matcher(host).matches()) {
-            this.fake(host);
+            final YMockClient client = new YMockClient(
+                String.format("com.ymock.mock.socket:%s", host)
+            );
+            final DataBuffer buffer = new YMockBuffer(client);
+            this.input = new SMInputStream(buffer);
+            this.output = new SMOutputStream(buffer);
+            this.over = true;
+            Logger.info(
+                this,
+                "#connect('%s', %d): fake connection established",
+                pnt,
+                timeout
+            );
         } else {
             this.over = false;
             if (this.socket.isConnected()) {
@@ -413,25 +425,6 @@ final class SMSocketImpl extends SocketImpl {
             supports
         );
         return supports;
-    }
-
-    /**
-     * Connect to ymock.
-     * @param host The host
-     */
-    private void fake(final String host) {
-        final YMockClient client = new YMockClient(
-            String.format("com.ymock.mock.socket:%s", host)
-        );
-        final DataBuffer buffer = new YMockBuffer(client);
-        this.input = new SMInputStream(buffer);
-        this.output = new SMOutputStream(buffer);
-        this.over = true;
-        Logger.info(
-            this,
-            "#fake('%s'): TCP/IP connection established",
-            host
-        );
     }
 
 }
