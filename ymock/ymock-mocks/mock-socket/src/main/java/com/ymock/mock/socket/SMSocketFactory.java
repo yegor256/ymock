@@ -31,6 +31,7 @@ package com.ymock.mock.socket;
 
 import java.net.SocketImpl;
 import java.net.SocketImplFactory;
+import java.util.regex.Pattern;
 
 /**
  * Mock version of {@link SocketImplFactory}.
@@ -41,23 +42,16 @@ import java.net.SocketImplFactory;
 public final class SMSocketFactory implements SocketImplFactory {
 
     /**
-     * Bridge to use.
+     * Regex for connections.
      */
-    private final transient DataBuffer bridge;
+    private final transient Pattern pattern;
 
     /**
      * Public ctor.
+     * @param regex What hosts do we match?
      */
-    public SMSocketFactory() {
-        this(new YMockBridge());
-    }
-
-    /**
-     * Public ctor.
-     * @param brdg The bridge
-     */
-    public SMSocketFactory(final DataBuffer brdg) {
-        this.bridge = brdg;
+    public SMSocketFactory(final String regex) {
+        this.pattern = Pattern.compile(regex);
     }
 
     /**
@@ -65,7 +59,7 @@ public final class SMSocketFactory implements SocketImplFactory {
      */
     @Override
     public SocketImpl createSocketImpl() {
-        return new SMSocketImpl(this.bridge);
+        return new SMSocketImpl(this.pattern);
     }
 
 }

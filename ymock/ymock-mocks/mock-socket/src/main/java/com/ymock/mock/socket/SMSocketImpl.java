@@ -39,26 +39,47 @@ import java.net.Socket;
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class SMSocket extends SocketImpl {
+final class SMSocket extends SocketImpl {
+
+    /**
+     * Regex for connections.
+     */
+    private final transient Pattern pattern;
 
     /**
      * Output stream.
      */
-    private final transient OutputStream outputStream;
+    private transient OutputStream output;
 
     /**
      * Input stream.
      */
-    private final transient InputStream inputStream;
+    private transient InputStream input;
 
     /**
      * Public ctor.
-     * @param bridge The dispatcher to use
+     * @param regex What hosts do we match?
      */
-    @SuppressWarnings("PMD.CallSuperInConstructor")
-    public SMSocketImpl(final DataBuffer bridge) {
-        this.outputStream = new SMOutputStream(bridge);
-        this.inputStream = new SMInputStream(bridge);
+    public SMSocketImpl(final Pattern ptrn) {
+        super();
+        this.pattern = ptrn;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void connect(final String host, final int port) {
+        if (this.pattern.matches(host)) {
+            final YMockClient client = new YMockClient(
+                String.format("com.ymock.mock.socket:%s", host)
+            );
+            final DataBuffer buffer = new YMockBuffer(client);
+            this.input = new SMInputStream(buffer);
+            this.output = new SMInputStream(buffer);
+        } else {
+            this.connect(host, port);
+        }
     }
 
     /**
@@ -70,7 +91,13 @@ public final class SMSocket extends SocketImpl {
      */
     @Override
     public OutputStream getOutputStream() {
-        return this.outputStream;
+        OutputStream stream;
+        if (this.output == null) {
+            stream = super.getOutputStream();
+        } else {
+            stream = this.output;
+        }
+        return stream;
     }
 
     /**
@@ -82,7 +109,13 @@ public final class SMSocket extends SocketImpl {
      */
     @Override
     public InputStream getInputStream() {
-        return this.inputStream;
+        InputStream stream;
+        if (this.input == null) {
+            stream = super.getInputStream();
+        } else {
+            stream = this.input;
+        }
+        return stream;
     }
 
 }

@@ -32,7 +32,7 @@ package com.ymock.mock.socket;
 import java.io.IOException;
 
 /**
- * Bridge between this component and {@link YMockClient}.
+ * Bridge between this component and mocking server.
  *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
@@ -40,16 +40,17 @@ import java.io.IOException;
 interface DataBuffer {
 
     /**
-     * Send message to {@link YMockClient}.
+     * Send message to the server.
      * @param message The message to send
      * @throws IOException If something goes wrong
      */
     void send(String message) throws IOException;
 
     /**
-     * Receive message from {@link YMockClient}.
+     * Receive message from mocking server.
      * @return The message received (after waiting)
+     * @throws IOException If something goes wrong
      */
-    String receive();
+    String receive() throws IOException;
 
 }

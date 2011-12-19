@@ -49,8 +49,8 @@ public final class SMSocketFactoryTest {
     @Test
     public void instantiatesSocketImplObjects() throws Exception {
         final String content = "this is our mocked content";
-        final 
-        Socket.setSocketImplFactory(new SMSocketFactory(bridge));
+        final
+        Socket.setSocketImplFactory(new SMSocketFactory(buffer));
         MatcherAssert.assertThat(
             new URL("http://www.google.com").getContent(),
             Matchers.equalTo(content)

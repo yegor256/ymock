@@ -53,10 +53,10 @@ public final class SMInputStreamTest {
             "simple text\r\nagain\n\nmore",
         };
         for (String text : texts) {
-            final DataBuffer bridge = new DataBufferMocker()
+            final DataBuffer buffer = new DataBufferMocker()
                 .doReturn(text)
                 .mock();
-            final InputStream stream = new SMInputStream(bridge);
+            final InputStream stream = new SMInputStream(buffer);
             MatcherAssert.assertThat(
                 IOUtils.toString(stream),
                 Matchers.equalTo(text)

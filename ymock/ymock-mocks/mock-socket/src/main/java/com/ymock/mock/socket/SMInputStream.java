@@ -43,10 +43,10 @@ import java.io.InputStream;
 final class SMInputStream extends InputStream {
 
     /**
-     * The data bridge.
+     * The data buffer.
      * @see #read()
      */
-    private final transient DataBuffer bridge;
+    private final transient DataBuffer buffer;
 
     /**
      * The message to return.
@@ -63,12 +63,12 @@ final class SMInputStream extends InputStream {
 
     /**
      * Public ctor.
-     * @param bdg The data bridge to use
-     * @see MockSocket#getOutputStream()
+     * @param buf The buffer
+     * @see SMSocketImpl#getOutputStream()
      */
     @SuppressWarnings("PMD.CallSuperInConstructor")
-    public SMInputStream(final DataBuffer bdg) {
-        this.bridge = bdg;
+    public SMInputStream(final DataBuffer buf) {
+        this.buffer = buf;
     }
 
     /**
@@ -84,7 +84,7 @@ final class SMInputStream extends InputStream {
         if (this.message.length() == 0) {
             if (this.eof == 0) {
                 this.eof = 2;
-                this.message.append(this.bridge.receive());
+                this.message.append(this.buffer.receive());
                 if (this.message.length() == 0) {
                     return -1;
                 }

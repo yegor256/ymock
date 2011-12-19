@@ -44,24 +44,24 @@ import java.io.OutputStream;
 final class SMOutputStream extends OutputStream {
 
     /**
-     * The bridge.
+     * The buffer.
      */
-    private final transient DataBuffer bridge;
+    private final transient DataBuffer buffer;
 
     /**
-     * Recent HTTP message.
+     * Recent message.
      * @see #write(int)
      */
     private final transient StringBuilder message = new StringBuilder();
 
     /**
      * Public ctor.
-     * @param bdg The bridge to use
-     * @see SMSocket#getOutputStream()
+     * @param buf The buffer to use
+     * @see SMSocketImpl#getOutputStream()
      */
     @SuppressWarnings("PMD.CallSuperInConstructor")
-    public SMOutputStream(final DataBuffer bdg) {
-        this.bridge = bdg;
+    public SMOutputStream(final DataBuffer buf) {
+        this.buffer = buf;
     }
 
     /**
@@ -77,7 +77,7 @@ final class SMOutputStream extends OutputStream {
      */
     @Override
     public void flush() throws IOException {
-        this.bridge.send(this.message.toString());
+        this.buffer.send(this.message.toString());
         this.message.setLength(0);
     }
 

@@ -59,10 +59,12 @@ Mocking of java.net.Socket
 
 +--
 import com.ymock.server.YMockServer;
+import java.net.Socket;
 import java.net.URL;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 
+Socket.setSocketImplFactory(new SMSocketFactory(".*"));
 new YMockServer("com.ymock.mock.socket:www.google.com")
   .when("GET /test", "some text to return");
 MatcherAssert.assertThat(

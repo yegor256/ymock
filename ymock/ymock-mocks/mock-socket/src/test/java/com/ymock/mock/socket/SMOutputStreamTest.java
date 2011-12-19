@@ -49,11 +49,11 @@ public final class SMOutputStreamTest {
     @Test
     public void testSimulatesStreamWriting() throws Exception {
         final String request = "text\ntest\r\ntest3";
-        final DataBuffer bridge = new DataBufferMocker()
+        final DataBuffer buffer = new DataBufferMocker()
             .expect(request)
             .doReturn("")
             .mock();
-        final OutputStream stream = new SMOutputStream(bridge);
+        final OutputStream stream = new SMOutputStream(buffer);
         IOUtils.write(request, stream);
     }
 

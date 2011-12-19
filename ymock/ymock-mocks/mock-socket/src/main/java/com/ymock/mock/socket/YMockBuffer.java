@@ -39,17 +39,12 @@ import java.io.IOException;
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-final class YMockBridge implements DataBuffer {
-
-    /**
-     * YMock client's name.
-     */
-    public static final String NAME = "com.ymock.mock.socket";
+final class YMockBuffer implements DataBuffer {
 
     /**
      * YMock client.
      */
-    private final YMockClient client = new YMockClient(YMockBridge.NAME);
+    private final transient YMockClient client;
 
     /**
      * The response to return to {@link #receive()}.
@@ -62,6 +57,14 @@ final class YMockBridge implements DataBuffer {
     private transient boolean ready;
 
     /**
+     * Public ctor.
+     * @param clnt The client
+     */
+    public YMockBuffer(final YMockClient clnt) {
+        this.client = clnt;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -70,7 +73,7 @@ final class YMockBridge implements DataBuffer {
             this.response = this.client.call(message);
             this.ready = true;
         } catch (YMockException ex) {
-            throw new java.io.IOException(ex);
+            throw new IOException(ex);
         }
     }
 
@@ -78,9 +81,9 @@ final class YMockBridge implements DataBuffer {
      * {@inheritDoc}
      */
     @Override
-    public String receive() {
+    public String receive() throws IOException {
         if (!this.ready) {
-            throw new IllegalStateException("Nothing to return");
+            throw new IOException("Nothing to return");
         }
         final String msg = this.response;
         this.ready = false;
