@@ -56,7 +56,7 @@ public final class SMSocketImplFactory implements SocketImplFactory {
     /**
      * Regex for connections.
      */
-    private final transient Collection<String> patterns =
+    private final transient Collection<String> hosts =
         new ArrayList<String>();
 
     /**
@@ -90,16 +90,16 @@ public final class SMSocketImplFactory implements SocketImplFactory {
     }
 
     /**
-     * Add new pattern to match.
-     * @param regex What hosts do we match?
+     * Add new host name to match.
+     * @param host What host do we match?
      * @return This object
      */
-    public SMSocketImplFactory match(final String regex) {
-        this.patterns.add(regex);
+    public SMSocketImplFactory match(final String host) {
+        this.hosts.add(host);
         Logger.debug(
             SMSocketImplFactory.class,
             "#match('%s'): added",
-            regex
+            host
         );
         return this;
     }
@@ -112,12 +112,12 @@ public final class SMSocketImplFactory implements SocketImplFactory {
         final StringBuilder pattern = new StringBuilder();
         pattern.append("^");
         boolean first = true;
-        for (String regex : this.patterns) {
+        for (String host : this.hosts) {
             if (!first) {
                 pattern.append("|");
             }
             first = false;
-            pattern.append("(").append(Pattern.quote(regex)).append(")");
+            pattern.append("(").append(Pattern.quote(host)).append(")");
         }
         pattern.append("$");
         final SocketImpl socket = new SMSocketImpl(
