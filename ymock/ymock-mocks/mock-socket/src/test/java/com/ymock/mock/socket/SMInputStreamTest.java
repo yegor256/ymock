@@ -57,10 +57,7 @@ public final class SMInputStreamTest {
                 .doReturn(".*", text)
                 .mock();
             final InputStream stream = new SMInputStream(buffer);
-            MatcherAssert.assertThat(
-                IOUtils.toString(stream),
-                Matchers.equalTo(text)
-            );
+            buffer.send("ping");
             MatcherAssert.assertThat(
                 IOUtils.toString(stream),
                 Matchers.equalTo(text)

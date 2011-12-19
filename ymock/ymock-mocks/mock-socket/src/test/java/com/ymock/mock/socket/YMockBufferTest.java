@@ -103,7 +103,7 @@ public final class YMockBufferTest {
     public void throwsIoExceptionWhenYmockExceptionAppears() throws Exception {
         final String request = "some request with exception";
         final Connector connector = Mockito.mock(Connector.class);
-        Mockito.doThrow(new IOException()).when(connector).call(request);
+        Mockito.doThrow(new YMockException("")).when(connector).call(request);
         final YMockClient client = new YMockClient("", connector);
         new YMockBuffer(client).send(request);
     }
