@@ -29,6 +29,7 @@
  */
 package com.ymock.mock.socket;
 
+import com.ymock.commons.PortDetector;
 import com.ymock.server.YMockServer;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -67,6 +68,24 @@ public final class SMSocketImplTest {
         MatcherAssert.assertThat(
             IOUtils.toString(socket.getInputStream()),
             Matchers.equalTo(response)
+        );
+    }
+
+    /**
+     * SMSocketImpl can pass the traffic that is not relevant.
+     * @throws Exception If something wrong inside
+     */
+    @Test
+    public void passesNonRelatedTcpTraffic() throws Exception {
+        final int port = new PortDetector().port();
+        final String host = "localhost";
+        SMSocketImplFactory.INSTANCE.start();
+        final Socket socket = new Socket(host, port);
+        IOUtils.write("GET / HTTP/1.1", socket.getOutputStream());
+        socket.getOutputStream().flush();
+        MatcherAssert.assertThat(
+            IOUtils.toString(socket.getInputStream()),
+            Matchers.containsString("200")
         );
     }
 

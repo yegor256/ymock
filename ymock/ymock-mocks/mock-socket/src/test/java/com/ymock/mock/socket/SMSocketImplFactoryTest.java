@@ -47,7 +47,7 @@ public final class SMSocketImplFactoryTest {
      */
     @Test
     public void instantiatesSocketImplObjects() throws Exception {
-        final SocketImplFactory factory = new SMSocketImplFactory(".*");
+        final SocketImplFactory factory = SMSocketImplFactory.INSTANCE;
         MatcherAssert.assertThat(
             factory.createSocketImpl(),
             Matchers.notNullValue()

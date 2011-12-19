@@ -30,8 +30,12 @@
 package com.ymock.mock.socket;
 
 import com.ymock.util.Logger;
+import java.io.IOException;
+import java.net.Socket;
 import java.net.SocketImpl;
 import java.net.SocketImplFactory;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.regex.Pattern;
 
 /**
@@ -44,21 +48,54 @@ import java.util.regex.Pattern;
 public final class SMSocketImplFactory implements SocketImplFactory {
 
     /**
+     * Singleton.
+     */
+    public static final SMSocketImplFactory INSTANCE =
+        new SMSocketImplFactory();
+
+    /**
      * Regex for connections.
      */
-    private final transient Pattern pattern;
+    private final transient Collection<String> patterns =
+        new ArrayList<String>();
 
     /**
      * Public ctor.
-     * @param regex What hosts do we match?
      */
-    public SMSocketImplFactory(final String regex) {
-        this.pattern = Pattern.compile(regex);
+    private SMSocketImplFactory() {
         Logger.debug(
             this,
-            "#SMSocketImplFactory('%s'): instantiated",
+            "#SMSocketImplFactory(): instantiated"
+        );
+    }
+
+    /**
+     * Start it working.
+     * @param This object
+     * @throws IOException If some problem inside
+     */
+    public SMSocketImplFactory start() throws IOException {
+        Socket.setSocketImplFactory(this);
+        Logger.debug(
+            SMSocketImplFactory.class,
+            "#start(): started"
+        );
+        return this;
+    }
+
+    /**
+     * Add new pattern to match.
+     * @param regex What hosts do we match?
+     * @param This object
+     */
+    public SMSocketImplFactory match(final String regex) {
+        this.patterns.add(regex);
+        Logger.debug(
+            SMSocketImplFactory.class,
+            "#match('%s'): added",
             regex
         );
+        return this;
     }
 
     /**
@@ -66,11 +103,24 @@ public final class SMSocketImplFactory implements SocketImplFactory {
      */
     @Override
     public SocketImpl createSocketImpl() {
-        final SocketImpl socket = new SMSocketImpl(this.pattern);
+        final StringBuilder pattern = new StringBuilder();
+        pattern.append("^");
+        boolean first = true;
+        for (String regex : this.patterns) {
+            if (!first) {
+                pattern.append("|");
+            }
+            first = false;
+            pattern.append("(").append(Pattern.quote(regex)).append(")");
+        }
+        pattern.append("$");
+        final SocketImpl socket = new SMSocketImpl(
+            Pattern.compile(pattern.toString())
+        );
         Logger.debug(
             this,
             "#createSocketImpl(): instantiated with '%s' pattern",
-            this.pattern
+            pattern.toString()
         );
         return socket;
     }
