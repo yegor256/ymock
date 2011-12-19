@@ -129,8 +129,9 @@ public final class YMockServer implements Catcher {
      * @param matcher The matcher
      * @param response The response to send
      */
-    public void when(final Matcher matcher, final Response response) {
+    public YMockServer when(final Matcher matcher, final Response response) {
         this.matchers.put(matcher, response);
+        return this;
     }
 
     /**
@@ -138,8 +139,9 @@ public final class YMockServer implements Catcher {
      * @param matcher The matcher
      * @param response The response to send
      */
-    public void when(final String matcher, final String response) {
+    public YMockServer when(final String matcher, final String response) {
         this.when(new RegexMatcher(matcher), new TextResponse(response));
+        return this;
     }
 
 }

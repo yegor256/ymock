@@ -30,16 +30,16 @@
 package com.ymock.mock.socket;
 
 import com.ymock.client.YMockClient;
+import com.ymock.util.Logger;
 import java.io.FileDescriptor;
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketException;
 import java.net.SocketImpl;
-import java.nio.channels.SocketChannel;
 import java.util.regex.Pattern;
 
 /**
@@ -48,6 +48,7 @@ import java.util.regex.Pattern;
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
+@SuppressWarnings("PMD.TooManyMethods")
 final class SMSocketImpl extends SocketImpl {
 
     /**
@@ -72,11 +73,16 @@ final class SMSocketImpl extends SocketImpl {
 
     /**
      * Public ctor.
-     * @param regex What hosts do we match?
+     * @param ptrn What hosts do we match?
      */
     public SMSocketImpl(final Pattern ptrn) {
         super();
         this.pattern = ptrn;
+        Logger.debug(
+            this,
+            "#SMSocketImpl('%s'): instantiated",
+            ptrn
+        );
     }
 
     /**
@@ -84,6 +90,11 @@ final class SMSocketImpl extends SocketImpl {
      */
     @Override
     public void accept(final SocketImpl sckt) throws IOException {
+        Logger.debug(
+            this,
+            "#accept('%s'): done",
+            sckt.getClass().getName()
+        );
     }
 
     /**
@@ -91,7 +102,13 @@ final class SMSocketImpl extends SocketImpl {
      */
     @Override
     public int available() throws IOException {
-        return 0;
+        final int bytes = 0;
+        Logger.debug(
+            this,
+            "#available(): returned %d",
+            bytes
+        );
+        return bytes;
     }
 
     /**
@@ -100,6 +117,12 @@ final class SMSocketImpl extends SocketImpl {
     @Override
     public void bind(final InetAddress host, final int port)
         throws IOException {
+        Logger.debug(
+            this,
+            "#bind('%s', %d): done",
+            host,
+            port
+        );
     }
 
     /**
@@ -107,6 +130,10 @@ final class SMSocketImpl extends SocketImpl {
      */
     @Override
     public void close() throws IOException {
+        Logger.debug(
+            this,
+            "#close(): done"
+        );
     }
 
     /**
@@ -115,6 +142,12 @@ final class SMSocketImpl extends SocketImpl {
     @Override
     public void connect(final InetAddress host, final int port)
         throws IOException {
+        Logger.debug(
+            this,
+            "#connect('%s', %d): done with InetAddress",
+            host,
+            port
+        );
     }
 
     /**
@@ -123,6 +156,12 @@ final class SMSocketImpl extends SocketImpl {
     @Override
     public void connect(final SocketAddress pnt, final int timeout)
         throws IOException {
+        Logger.debug(
+            this,
+            "#connect('%s', %d): done with SocketAddress",
+            pnt,
+            timeout
+        );
     }
 
     /**
@@ -140,6 +179,12 @@ final class SMSocketImpl extends SocketImpl {
         } else {
             this.socket = new Socket(host, port);
         }
+        Logger.debug(
+            this,
+            "#connect('%s', %d): done",
+            host,
+            port
+        );
     }
 
     /**
@@ -147,6 +192,11 @@ final class SMSocketImpl extends SocketImpl {
      */
     @Override
     public void create(final boolean stream) throws IOException {
+        Logger.debug(
+            this,
+            "#create(%B): done",
+            stream
+        );
     }
 
     /**
@@ -154,7 +204,13 @@ final class SMSocketImpl extends SocketImpl {
      */
     @Override
     public FileDescriptor getFileDescriptor() {
-        return null;
+        final FileDescriptor descriptor = this.fd;
+        Logger.debug(
+            this,
+            "#getFileDescriptor(): returned %s",
+            descriptor
+        );
+        return descriptor;
     }
 
     /**
@@ -162,7 +218,13 @@ final class SMSocketImpl extends SocketImpl {
      */
     @Override
     public InetAddress getInetAddress() {
-        return null;
+        final InetAddress addr = this.address;
+        Logger.debug(
+            this,
+            "#getInetAddress(): returned %s",
+            addr
+        );
+        return addr;
     }
 
     /**
@@ -180,6 +242,11 @@ final class SMSocketImpl extends SocketImpl {
         } else {
             stream = this.input;
         }
+        Logger.debug(
+            this,
+            "#getInputStream(): returned '%s'",
+            stream.getClass().getName()
+        );
         return stream;
     }
 
@@ -188,7 +255,13 @@ final class SMSocketImpl extends SocketImpl {
      */
     @Override
     public int getLocalPort() {
-        return 0;
+        final int local = this.localport;
+        Logger.debug(
+            this,
+            "#getLocalPort(): returned %d",
+            local
+        );
+        return local;
     }
 
     /**
@@ -196,7 +269,13 @@ final class SMSocketImpl extends SocketImpl {
      */
     @Override
     public Object getOption(final int opt) throws SocketException {
-        return null;
+        final Object obj = "nothing";
+        Logger.debug(
+            this,
+            "#getOption(%d): returned %s",
+            obj.getClass().getName()
+        );
+        return obj;
     }
 
     /**
@@ -214,6 +293,11 @@ final class SMSocketImpl extends SocketImpl {
         } else {
             stream = this.output;
         }
+        Logger.debug(
+            this,
+            "#getOutputStream(): returned '%s'",
+            stream.getClass().getName()
+        );
         return stream;
     }
 
@@ -222,7 +306,13 @@ final class SMSocketImpl extends SocketImpl {
      */
     @Override
     public int getPort() {
-        return 0;
+        final int prt = this.port;
+        Logger.debug(
+            this,
+            "#getPort(): returned %d",
+            prt
+        );
+        return prt;
     }
 
     /**
@@ -230,6 +320,11 @@ final class SMSocketImpl extends SocketImpl {
      */
     @Override
     public void listen(final int backlog) throws IOException {
+        Logger.debug(
+            this,
+            "#listen(%d): done",
+            backlog
+        );
     }
 
     /**
@@ -237,6 +332,11 @@ final class SMSocketImpl extends SocketImpl {
      */
     @Override
     public void sendUrgentData(final int data) throws IOException {
+        Logger.debug(
+            this,
+            "#sendUrgentData(%d): done",
+            data
+        );
     }
 
     /**
@@ -245,6 +345,12 @@ final class SMSocketImpl extends SocketImpl {
     @Override
     public void setOption(final int opt, final Object obj)
         throws SocketException {
+        Logger.debug(
+            this,
+            "#setOption(%d, %s): done",
+            opt,
+            obj.getClass().getName()
+        );
     }
 
     /**
@@ -253,6 +359,13 @@ final class SMSocketImpl extends SocketImpl {
     @Override
     public void setPerformancePreferences(final int time,
         final int latency, final int bandwidth) {
+        Logger.debug(
+            this,
+            "#setPerformancePreferences(%d, %d, %d): done",
+            time,
+            latency,
+            bandwidth
+        );
     }
 
     /**
@@ -260,6 +373,10 @@ final class SMSocketImpl extends SocketImpl {
      */
     @Override
     public void shutdownInput() throws IOException {
+        Logger.debug(
+            this,
+            "#shutdownInput(): done"
+        );
     }
 
     /**
@@ -267,6 +384,10 @@ final class SMSocketImpl extends SocketImpl {
      */
     @Override
     public void shutdownOutput() throws IOException {
+        Logger.debug(
+            this,
+            "#shutdownOutput(): done"
+        );
     }
 
     /**
@@ -274,7 +395,13 @@ final class SMSocketImpl extends SocketImpl {
      */
     @Override
     public boolean supportsUrgentData() {
-        return false;
+        final boolean supports = false;
+        Logger.debug(
+            this,
+            "#supportsUrgentData(): returned %B",
+            supports
+        );
+        return supports;
     }
 
 }

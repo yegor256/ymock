@@ -47,6 +47,7 @@ public final class SMInputStreamTest {
      * @throws Exception If something wrong inside
      */
     @Test
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     public void readsStreamThroughDataBuffer() throws Exception {
         final String[] texts = new String[] {
             "",

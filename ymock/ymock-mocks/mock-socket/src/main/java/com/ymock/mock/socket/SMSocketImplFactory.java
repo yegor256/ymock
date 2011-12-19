@@ -29,6 +29,7 @@
  */
 package com.ymock.mock.socket;
 
+import com.ymock.util.Logger;
 import java.net.SocketImpl;
 import java.net.SocketImplFactory;
 import java.util.regex.Pattern;
@@ -38,6 +39,7 @@ import java.util.regex.Pattern;
  *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
+ * @checkstyle AbstractClassName (50 lines)
  */
 public final class SMSocketImplFactory implements SocketImplFactory {
 
@@ -52,6 +54,11 @@ public final class SMSocketImplFactory implements SocketImplFactory {
      */
     public SMSocketImplFactory(final String regex) {
         this.pattern = Pattern.compile(regex);
+        Logger.debug(
+            this,
+            "#SMSocketImplFactory('%s'): instantiated",
+            regex
+        );
     }
 
     /**
@@ -59,7 +66,13 @@ public final class SMSocketImplFactory implements SocketImplFactory {
      */
     @Override
     public SocketImpl createSocketImpl() {
-        return new SMSocketImpl(this.pattern);
+        final SocketImpl socket = new SMSocketImpl(this.pattern);
+        Logger.debug(
+            this,
+            "#createSocketImpl(): instantiated with '%s' pattern",
+            this.pattern
+        );
+        return socket;
     }
 
 }

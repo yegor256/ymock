@@ -29,7 +29,10 @@
  */
 package com.ymock.mock.socket;
 
+import com.ymock.server.YMockServer;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.regex.Pattern;
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -43,22 +46,28 @@ import org.junit.Test;
 public final class SMSocketImplTest {
 
     /**
-     * SMSocketImpl can catch HTTP sessions requests and responses.
+     * SMSocketImpl can do the job end-to-end.
      * @throws Exception If something wrong inside
      */
     @Test
-    public void respondsToHttpSessionSimulation() throws Exception {
-        // final DataBuffer buffer = new DataBufferMocker()
-        //     .doReturn(".*POST.*", "200 OK")
-        //     .mock();
-        // final SocketImpl socket = new SMSocketImpl(".*");
-        // final String message = "POST /index HTTP/1.0\r\n"
-        //     + "Content-Length: " + this.REQUEST.length() + "\r\n"
-        //     + "Content-Type: application/x-www-form-urlencoded\r\n\r\n"
-        //     + this.REQUEST;
-        // final String response = IOUtils.toString(socket.getInputStream());
-        // IOUtils.write(message, socket.getOutputStream());
-        // MatcherAssert.assertThat(response, Matchers.equalTo(this.RESPONSE));
+    public void forwardsTcpTrafficToYmockServer() throws Exception {
+        final int port = 1;
+        final String host = "www.google.com";
+        final String response = "some text back";
+        new YMockServer(String.format("com.ymock.mock.socket:%s", host))
+            .when(".*", response);
+        final SMSocketImpl impl = new SMSocketImpl(
+            Pattern.compile(Pattern.quote(host))
+        );
+        impl.connect(host, port);
+        final Socket socket = new Socket(impl) { };
+        socket.connect(new InetSocketAddress(host, port));
+        IOUtils.write("GET / HTTP/1.1", socket.getOutputStream());
+        socket.getOutputStream().flush();
+        MatcherAssert.assertThat(
+            IOUtils.toString(socket.getInputStream()),
+            Matchers.equalTo(response)
+        );
     }
 
 }

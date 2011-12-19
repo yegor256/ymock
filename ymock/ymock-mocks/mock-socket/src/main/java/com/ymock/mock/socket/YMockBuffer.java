@@ -31,6 +31,7 @@ package com.ymock.mock.socket;
 
 import com.ymock.client.YMockClient;
 import com.ymock.commons.YMockException;
+import com.ymock.util.Logger;
 import java.io.IOException;
 
 /**
@@ -62,6 +63,11 @@ final class YMockBuffer implements DataBuffer {
      */
     public YMockBuffer(final YMockClient clnt) {
         this.client = clnt;
+        Logger.debug(
+            this,
+            "#YMockBuffer(%s): instantiated",
+            clnt.getClass().getName()
+        );
     }
 
     /**
@@ -75,6 +81,11 @@ final class YMockBuffer implements DataBuffer {
         } catch (YMockException ex) {
             throw new IOException(ex);
         }
+        Logger.debug(
+            this,
+            "#send('%s'): sent to client",
+            message
+        );
     }
 
     /**
@@ -87,6 +98,11 @@ final class YMockBuffer implements DataBuffer {
         }
         final String msg = this.response;
         this.ready = false;
+        Logger.debug(
+            this,
+            "#receive(): returned '%s'",
+            msg
+        );
         return msg;
     }
 

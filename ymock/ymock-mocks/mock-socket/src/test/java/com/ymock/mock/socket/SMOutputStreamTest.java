@@ -32,8 +32,6 @@ package com.ymock.mock.socket;
 import java.io.OutputStream;
 import java.util.regex.Pattern;
 import org.apache.commons.io.IOUtils;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
@@ -44,7 +42,7 @@ import org.junit.Test;
 public final class SMOutputStreamTest {
 
     /**
-     * Test it.
+     * SMOutputStream can write data to buffer.
      * @throws Exception If something wrong inside
      */
     @Test
@@ -55,6 +53,7 @@ public final class SMOutputStreamTest {
             .mock();
         final OutputStream stream = new SMOutputStream(buffer);
         IOUtils.write(request, stream);
+        stream.flush();
     }
 
 }
