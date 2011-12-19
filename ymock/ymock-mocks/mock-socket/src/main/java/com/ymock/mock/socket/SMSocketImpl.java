@@ -153,18 +153,7 @@ final class SMSocketImpl extends SocketImpl {
     @Override
     public void connect(final InetAddress host, final int port)
         throws IOException {
-        if (this.pattern.matcher(host.getHostName()).matches()) {
-            this.fake(host.getHostName());
-        } else {
-            this.over = false;
-            this.socket.connect(new InetSocketAddress(host, port));
-            Logger.debug(
-                this,
-                "#connect('%s', %d): done with InetAddress (original)",
-                host,
-                port
-            );
-        }
+        this.connect(host.getHostName(), port);
     }
 
     /**
@@ -178,10 +167,13 @@ final class SMSocketImpl extends SocketImpl {
             this.fake(host);
         } else {
             this.over = false;
+            if (this.socket.isConnected()) {
+                this.socket.close();
+            }
             this.socket.connect(pnt);
             Logger.debug(
                 this,
-                "#connect('%s', %d): done with SocketAddress (original)",
+                "#connect('%s', %d): done through original socket",
                 pnt,
                 timeout
             );
@@ -193,18 +185,7 @@ final class SMSocketImpl extends SocketImpl {
      */
     @Override
     public void connect(final String host, final int port) throws IOException {
-        if (this.pattern.matcher(host).matches()) {
-            this.fake(host);
-        } else {
-            this.over = false;
-            this.socket.connect(new InetSocketAddress(host, port));
-            Logger.debug(
-                this,
-                "#connect('%s', %d): done through default Socket",
-                host,
-                port
-            );
-        }
+        this.connect(new InetSocketAddress(host, port), 0);
     }
 
     /**
