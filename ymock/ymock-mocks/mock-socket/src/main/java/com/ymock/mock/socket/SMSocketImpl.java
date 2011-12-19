@@ -154,7 +154,7 @@ final class SMSocketImpl extends SocketImpl {
     public void connect(final InetAddress host, final int port)
         throws IOException {
         if (this.pattern.matcher(host.getHostName()).matches()) {
-            this.ymockConnect(host.getHostName());
+            this.fake(host.getHostName());
         } else {
             this.over = false;
             this.socket.connect(new InetSocketAddress(host, port));
@@ -175,7 +175,7 @@ final class SMSocketImpl extends SocketImpl {
         throws IOException {
         final String host = ((InetSocketAddress) pnt).getHostName();
         if (this.pattern.matcher(host).matches()) {
-            this.ymockConnect(host);
+            this.fake(host);
         } else {
             this.over = false;
             this.socket.connect(pnt);
@@ -194,7 +194,7 @@ final class SMSocketImpl extends SocketImpl {
     @Override
     public void connect(final String host, final int port) throws IOException {
         if (this.pattern.matcher(host).matches()) {
-            this.ymockConnect(host);
+            this.fake(host);
         } else {
             this.over = false;
             this.socket.connect(new InetSocketAddress(host, port));
@@ -438,7 +438,7 @@ final class SMSocketImpl extends SocketImpl {
      * Connect to ymock.
      * @param host The host
      */
-    private void ymockConnect(final String host) {
+    private void fake(final String host) {
         final YMockClient client = new YMockClient(
             String.format("com.ymock.mock.socket:%s", host)
         );
@@ -446,9 +446,9 @@ final class SMSocketImpl extends SocketImpl {
         this.input = new SMInputStream(buffer);
         this.output = new SMOutputStream(buffer);
         this.over = true;
-        Logger.debug(
+        Logger.info(
             this,
-            "#ymockConnect('%s'): done",
+            "#fake('%s'): TCP/IP connection established",
             host
         );
     }

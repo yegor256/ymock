@@ -82,7 +82,7 @@ public final class SMSocketImplFactory implements SocketImplFactory {
     public SMSocketImplFactory start() throws IOException {
         this.original = new Socket();
         Socket.setSocketImplFactory(this);
-        Logger.debug(
+        Logger.info(
             SMSocketImplFactory.class,
             "#start(): started"
         );
@@ -96,7 +96,7 @@ public final class SMSocketImplFactory implements SocketImplFactory {
      */
     public SMSocketImplFactory match(final String host) {
         this.hosts.add(host);
-        Logger.debug(
+        Logger.info(
             SMSocketImplFactory.class,
             "#match('%s'): added",
             host
