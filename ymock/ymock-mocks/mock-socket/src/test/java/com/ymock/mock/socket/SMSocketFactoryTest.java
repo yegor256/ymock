@@ -29,8 +29,7 @@
  */
 package com.ymock.mock.socket;
 
-import java.net.Socket;
-import java.net.URL;
+import java.net.SocketImplFactory;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -48,12 +47,10 @@ public final class SMSocketFactoryTest {
      */
     @Test
     public void instantiatesSocketImplObjects() throws Exception {
-        final String content = "this is our mocked content";
-        final
-        Socket.setSocketImplFactory(new SMSocketFactory(buffer));
+        final SocketImplFactory factory = new SMSocketImplFactory(".*");
         MatcherAssert.assertThat(
-            new URL("http://www.google.com").getContent(),
-            Matchers.equalTo(content)
+            factory.createSocketImpl(),
+            Matchers.notNullValue()
         );
     }
 

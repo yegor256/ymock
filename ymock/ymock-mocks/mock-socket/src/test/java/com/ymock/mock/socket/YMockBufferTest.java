@@ -33,84 +33,76 @@ import com.ymock.commons.YMockException;
 import com.ymock.server.Response;
 import com.ymock.server.YMockServer;
 import com.ymock.server.matchers.RegexMatcher;
+import java.io.IOException;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
- * Test case for {@link YMockBridge}.
+ * Test case for {@link YMockBuffer}.
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class YMockBridgeTest {
+public final class YMockBufferTest {
 
     /**
-     * Request.
-     */
-    private static final String REQUEST = "some data";
-
-    /**
-     * Response.
-     */
-    private static final String RESPONSE = "completed";
-
-    /**
-     * Test it.
+     * YMockBuffer can send messages to YMockClient.
      * @throws Exception If something wrong inside
      */
     @Test
-    public void testSimulatesYMockClientServerInteraction() throws Exception {
-        final YMockServer server = new YMockServer(YMockBridge.NAME);
-        server.when(this.quote(this.REQUEST), this.RESPONSE);
-        final DataBuffer buffer = new YMockBridge();
-        buffer.send(this.REQUEST);
+    public void sendsMessagesThroughClient() throws Exception {
+        final Connector connector = Mockito.mock(Connector.class);
+        final YMockClient client = new YMockClient("", connector);
+        final DataBuffer buffer = new YMockBuffer(client);
+        final String request = "some message to send";
+        buffer.send(request);
+        Mockito.verify(connector).send(request);
+    }
+
+    /**
+     * YMockBuffer can read responses from YMockClient.
+     * @throws Exception If something wrong inside
+     */
+    @Test
+    public void receivesResponsesFromClient() throws Exception {
+        final String request = "some request";
+        final String response = "some response";
+        final Connector connector = Mockito.mock(Connector.class);
+        Mockito.doReturn(response).when(connector).call(request);
+        final YMockClient client = new YMockClient("", connector);
+        final DataBuffer buffer = new YMockBuffer(client);
+        buffer.send(request);
         MatcherAssert.assertThat(
             buffer.receive(),
-            Matchers.equalTo(this.RESPONSE)
+            Matchers.equalTo(response)
         );
     }
 
     /**
-     * Test it.
+     * YMockBuffer can throw exception if buffer is empty.
      * @throws Exception If something wrong inside
      */
-    @Test(expected = IllegalStateException.class)
-    public void testSimulatesDuplicateCallToReceive() throws Exception {
-        final YMockServer server = new YMockServer(YMockBridge.NAME);
-        server.when(this.quote(this.REQUEST), this.RESPONSE);
-        final DataBuffer buffer = new YMockBridge();
+    @Test(expected = IOException.class)
+    public void throwsExceptionWhenBufferIsEmpty() throws Exception {
+        final Connector connector = Mockito.mock(Connector.class);
+        final YMockClient client = new YMockClient("", connector);
+        final DataBuffer buffer = new YMockBuffer(client);
+        buffer.send("some text to send");
+        buffer.receive();
         buffer.receive();
     }
 
     /**
-     * Test it.
+     * YMockBuffer can throw IOException when there is a problem with client.
      * @throws Exception If something wrong inside
      */
-    @Test(expected = java.io.IOException.class)
-    public void testCallsToError() throws Exception {
-        final YMockServer server = new YMockServer(YMockBridge.NAME);
-        server.when(
-            new RegexMatcher(this.quote(this.REQUEST)),
-            new Response() {
-                // @checkstyle RedundantThrows (3 lines)
-                @Override
-                public String process(final String request)
-                    throws YMockException {
-                    throw new YMockException("some text");
-                }
-            }
-        );
-        final DataBuffer buffer = new YMockBridge();
-        buffer.send(this.REQUEST);
-    }
-
-    /**
-     * Quote it.
-     * @param regex The regular expression
-     * @return Quoted
-     */
-    private String quote(final String regex) {
-        return String.format("\\Q%s\\E", regex);
+    @Test(expected = IOException.class)
+    public void throwsIoExceptionWhenYmockExceptionAppears() throws Exception {
+        final String request = "some request with exception";
+        final Connector connector = Mockito.mock(Connector.class);
+        Mockito.doThrow(new IOException()).when(connector).call(request);
+        final YMockClient client = new YMockClient("", connector);
+        new YMockBuffer(client).send(request);
     }
 
 }
