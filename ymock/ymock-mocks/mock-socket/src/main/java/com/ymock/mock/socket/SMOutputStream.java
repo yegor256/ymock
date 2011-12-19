@@ -46,7 +46,7 @@ final class SMOutputStream extends OutputStream {
     /**
      * The bridge.
      */
-    private final transient DataBridge bridge;
+    private final transient DataBuffer bridge;
 
     /**
      * Recent HTTP message.
@@ -60,7 +60,7 @@ final class SMOutputStream extends OutputStream {
      * @see SMSocket#getOutputStream()
      */
     @SuppressWarnings("PMD.CallSuperInConstructor")
-    public SMOutputStream(final DataBridge bdg) {
+    public SMOutputStream(final DataBuffer bdg) {
         this.bridge = bdg;
     }
 

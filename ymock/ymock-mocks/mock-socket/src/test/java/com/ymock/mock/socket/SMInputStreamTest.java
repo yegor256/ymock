@@ -43,17 +43,17 @@ import org.junit.Test;
 public final class SMInputStreamTest {
 
     /**
-     * SMInputStream can read text from DataBridge.
+     * SMInputStream can read text from DataBuffer.
      * @throws Exception If something wrong inside
      */
     @Test
-    public void readsStreamThroughDataBridge() throws Exception {
+    public void readsStreamThroughDataBuffer() throws Exception {
         final String[] texts = new String[] {
             "",
             "simple text\r\nagain\n\nmore",
         };
         for (String text : texts) {
-            final DataBridge bridge = new DataBridgeMocker()
+            final DataBuffer bridge = new DataBufferMocker()
                 .doReturn(text)
                 .mock();
             final InputStream stream = new SMInputStream(bridge);

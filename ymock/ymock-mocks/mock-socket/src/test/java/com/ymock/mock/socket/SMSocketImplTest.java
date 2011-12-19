@@ -29,72 +29,57 @@
  */
 package com.ymock.mock.socket;
 
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.Socket;
+import org.apache.commons.io.IOUtils;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
 
 /**
- * Mock version of {@link Socket}.
- *
+ * Test case for {@link SMSocket}.
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
- * @todo #7 There should be some mechanism implemented in order to
- *  watch a real connection and protocol what's going on with
- *  it. Also extra logging should be added to this component. Now
- *  it is very silent.
  */
-public final class SMSocket extends Socket {
+public final class SMSocketTest {
 
     /**
-     * Output stream.
+     * Request.
      */
-    private final transient OutputStream outputStream;
+    private static final String REQUEST = "some data";
 
     /**
-     * Input stream.
+     * Response.
      */
-    private final transient InputStream inputStream;
+    private static final String RESPONSE = "completed";
 
     /**
-     * Public ctor.
+     * Test it.
+     * @throws Exception If something wrong inside
      */
-    @SuppressWarnings("PMD.CallSuperInConstructor")
-    public SMSocket() {
-        this(new YMockBridge());
-    }
-
-    /**
-     * Public ctor.
-     * @param bridge The dispatcher to use
-     */
-    @SuppressWarnings("PMD.CallSuperInConstructor")
-    public SMSocket(final DataBridge bridge) {
-        this.outputStream = new SMOutputStream(bridge);
-        this.inputStream = new SMInputStream(bridge);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * <p>We are overriding the default implementation of {@link Socket},
-     * in order to mock its real behavior. Instead of writing to socket
-     * we're writing to {@link DataBridge}.
-     */
-    @Override
-    public OutputStream getOutputStream() {
-        return this.outputStream;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * <p>We are overriding the default implementation of {@link Socket},
-     * in order to mock its real behavior. Instead of writing to socket
-     * we're reading from {@link DataBridge}.
-     */
-    @Override
-    public InputStream getInputStream() {
-        return this.inputStream;
+    @Test
+    public void testSimulatesHttpSession() throws Exception {
+        final Socket socket = new SMSocket(
+            new DataBuffer() {
+                @Override
+                public void send(final String message) {
+                    MatcherAssert.assertThat(
+                        message,
+                        Matchers.equalTo(SMSocketTest.REQUEST)
+                    );
+                }
+                @Override
+                public String receive() {
+                    return SMSocketTest.RESPONSE;
+                }
+            }
+        );
+        final String message = "POST /index HTTP/1.0\r\n"
+            + "Content-Length: " + this.REQUEST.length() + "\r\n"
+            + "Content-Type: application/x-www-form-urlencoded\r\n\r\n"
+            + this.REQUEST;
+        final String response = IOUtils.toString(socket.getInputStream());
+        IOUtils.write(message, socket.getOutputStream());
+        MatcherAssert.assertThat(response, Matchers.equalTo(this.RESPONSE));
     }
 
 }

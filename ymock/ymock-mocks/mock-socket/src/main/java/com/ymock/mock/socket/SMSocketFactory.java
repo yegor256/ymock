@@ -43,7 +43,7 @@ public final class SMSocketFactory implements SocketImplFactory {
     /**
      * Bridge to use.
      */
-    private final transient DataBridge bridge;
+    private final transient DataBuffer bridge;
 
     /**
      * Public ctor.
@@ -56,7 +56,7 @@ public final class SMSocketFactory implements SocketImplFactory {
      * Public ctor.
      * @param brdg The bridge
      */
-    public SMSocketFactory(final DataBridge brdg) {
+    public SMSocketFactory(final DataBuffer brdg) {
         this.bridge = brdg;
     }
 

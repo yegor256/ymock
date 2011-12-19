@@ -62,7 +62,7 @@ public final class YMockBridgeTest {
     public void testSimulatesYMockClientServerInteraction() throws Exception {
         final YMockServer server = new YMockServer(YMockBridge.NAME);
         server.when(this.quote(this.REQUEST), this.RESPONSE);
-        final DataBridge bridge = new YMockBridge();
+        final DataBuffer bridge = new YMockBridge();
         bridge.send(this.REQUEST);
         MatcherAssert.assertThat(
             bridge.receive(),
@@ -78,7 +78,7 @@ public final class YMockBridgeTest {
     public void testSimulatesDuplicateCallToReceive() throws Exception {
         final YMockServer server = new YMockServer(YMockBridge.NAME);
         server.when(this.quote(this.REQUEST), this.RESPONSE);
-        final DataBridge bridge = new YMockBridge();
+        final DataBuffer bridge = new YMockBridge();
         bridge.receive();
     }
 
@@ -100,7 +100,7 @@ public final class YMockBridgeTest {
                 }
             }
         );
-        final DataBridge bridge = new YMockBridge();
+        final DataBuffer bridge = new YMockBridge();
         bridge.send(this.REQUEST);
     }
 

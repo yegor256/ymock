@@ -29,57 +29,62 @@
  */
 package com.ymock.mock.socket;
 
-import java.net.Socket;
-import org.apache.commons.io.IOUtils;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.Test;
+import com.ymock.client.YMockClient;
+import com.ymock.commons.YMockException;
+import java.io.IOException;
 
 /**
- * Test case for {@link SMSocket}.
+ * Bridge between this component and {@link YMockClient}.
+ *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class SMSocketTest {
+final class YMockBridge implements DataBuffer {
 
     /**
-     * Request.
+     * YMock client's name.
      */
-    private static final String REQUEST = "some data";
+    public static final String NAME = "com.ymock.mock.socket";
 
     /**
-     * Response.
+     * YMock client.
      */
-    private static final String RESPONSE = "completed";
+    private final YMockClient client = new YMockClient(YMockBridge.NAME);
 
     /**
-     * Test it.
-     * @throws Exception If something wrong inside
+     * The response to return to {@link #receive()}.
      */
-    @Test
-    public void testSimulatesHttpSession() throws Exception {
-        final Socket socket = new SMSocket(
-            new DataBridge() {
-                @Override
-                public void send(final String message) {
-                    MatcherAssert.assertThat(
-                        message,
-                        Matchers.equalTo(SMSocketTest.REQUEST)
-                    );
-                }
-                @Override
-                public String receive() {
-                    return SMSocketTest.RESPONSE;
-                }
-            }
-        );
-        final String message = "POST /index HTTP/1.0\r\n"
-            + "Content-Length: " + this.REQUEST.length() + "\r\n"
-            + "Content-Type: application/x-www-form-urlencoded\r\n\r\n"
-            + this.REQUEST;
-        final String response = IOUtils.toString(socket.getInputStream());
-        IOUtils.write(message, socket.getOutputStream());
-        MatcherAssert.assertThat(response, Matchers.equalTo(this.RESPONSE));
+    private transient String response;
+
+    /**
+     * Response is ready?
+     */
+    private transient boolean ready;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void send(final String message) throws IOException {
+        try {
+            this.response = this.client.call(message);
+            this.ready = true;
+        } catch (YMockException ex) {
+            throw new java.io.IOException(ex);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String receive() {
+        if (!this.ready) {
+            throw new IllegalStateException("Nothing to return");
+        }
+        final String msg = this.response;
+        this.ready = false;
+        return msg;
     }
 
 }

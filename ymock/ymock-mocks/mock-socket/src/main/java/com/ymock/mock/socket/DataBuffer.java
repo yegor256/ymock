@@ -29,8 +29,6 @@
  */
 package com.ymock.mock.socket;
 
-import com.ymock.client.YMockClient;
-import com.ymock.commons.YMockException;
 import java.io.IOException;
 
 /**
@@ -39,52 +37,19 @@ import java.io.IOException;
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-final class YMockBridge implements DataBridge {
+interface DataBuffer {
 
     /**
-     * YMock client's name.
+     * Send message to {@link YMockClient}.
+     * @param message The message to send
+     * @throws IOException If something goes wrong
      */
-    public static final String NAME = "com.ymock.mock.socket";
+    void send(String message) throws IOException;
 
     /**
-     * YMock client.
+     * Receive message from {@link YMockClient}.
+     * @return The message received (after waiting)
      */
-    private final YMockClient client = new YMockClient(YMockBridge.NAME);
-
-    /**
-     * The response to return to {@link #receive()}.
-     */
-    private transient String response;
-
-    /**
-     * Response is ready?
-     */
-    private transient boolean ready;
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void send(final String message) throws IOException {
-        try {
-            this.response = this.client.call(message);
-            this.ready = true;
-        } catch (YMockException ex) {
-            throw new java.io.IOException(ex);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String receive() {
-        if (!this.ready) {
-            throw new IllegalStateException("Nothing to return");
-        }
-        final String msg = this.response;
-        this.ready = false;
-        return msg;
-    }
+    String receive();
 
 }

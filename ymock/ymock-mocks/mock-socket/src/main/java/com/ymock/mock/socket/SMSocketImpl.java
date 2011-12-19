@@ -56,7 +56,7 @@ public final class SMSocket extends SocketImpl {
      * @param bridge The dispatcher to use
      */
     @SuppressWarnings("PMD.CallSuperInConstructor")
-    public SMSocketImpl(final DataBridge bridge) {
+    public SMSocketImpl(final DataBuffer bridge) {
         this.outputStream = new SMOutputStream(bridge);
         this.inputStream = new SMInputStream(bridge);
     }
@@ -66,7 +66,7 @@ public final class SMSocket extends SocketImpl {
      *
      * <p>We are overriding the default implementation of {@link Socket},
      * in order to mock its real behavior. Instead of writing to socket
-     * we're writing to {@link DataBridge}.
+     * we're writing to {@link DataBuffer}.
      */
     @Override
     public OutputStream getOutputStream() {
@@ -78,7 +78,7 @@ public final class SMSocket extends SocketImpl {
      *
      * <p>We are overriding the default implementation of {@link Socket},
      * in order to mock its real behavior. Instead of writing to socket
-     * we're reading from {@link DataBridge}.
+     * we're reading from {@link DataBuffer}.
      */
     @Override
     public InputStream getInputStream() {

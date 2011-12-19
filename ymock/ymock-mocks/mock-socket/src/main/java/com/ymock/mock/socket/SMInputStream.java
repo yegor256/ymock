@@ -46,7 +46,7 @@ final class SMInputStream extends InputStream {
      * The data bridge.
      * @see #read()
      */
-    private final transient DataBridge bridge;
+    private final transient DataBuffer bridge;
 
     /**
      * The message to return.
@@ -67,7 +67,7 @@ final class SMInputStream extends InputStream {
      * @see MockSocket#getOutputStream()
      */
     @SuppressWarnings("PMD.CallSuperInConstructor")
-    public SMInputStream(final DataBridge bdg) {
+    public SMInputStream(final DataBuffer bdg) {
         this.bridge = bdg;
     }
 
