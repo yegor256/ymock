@@ -1,5 +1,5 @@
  ------
- mock socket
+ Mock java.net.Socket
  ------
  Yegor Bugayenko
  ------
@@ -38,7 +38,7 @@
 ~~ @version $Id$
 ~~
 
-SMSocket
+Mocking of java.net.Socket
 
   Include it to your <<<pom.xml>>> like this:
 
@@ -48,4 +48,27 @@ SMSocket
   <artifactId>mock-socket</artifactId>
   <version>${releasedVersion}</version>
 </dependency>
+<dependency>
+  <groupId>com.ymock</groupId>
+  <artifactId>ymock-server</artifactId>
+  <version>${releasedVersion}</version>
+</dependency>
 +--
+
+  Then, in a Groovy/Java script:
+
++--
+import com.ymock.server.YMockServer;
+import java.net.URL;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+
+new YMockServer("com.ymock.mock.socket:www.google.com")
+  .when("GET /test", "some text to return");
+MatcherAssert.assertThat(
+  new URL("http://www.google.com/test").getContent()
+  Matchers.containsString("text to return")
+);
++--
+
+  That's it.

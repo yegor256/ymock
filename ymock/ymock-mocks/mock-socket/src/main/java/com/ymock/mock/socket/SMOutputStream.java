@@ -52,8 +52,7 @@ final class SMOutputStream extends OutputStream {
      * Recent HTTP message.
      * @see #write(int)
      */
-    @SuppressWarnings("PMD.AvoidStringBufferField")
-    private final transient StringBuffer message = new StringBuffer();
+    private final transient StringBuilder message = new StringBuilder();
 
     /**
      * Public ctor.

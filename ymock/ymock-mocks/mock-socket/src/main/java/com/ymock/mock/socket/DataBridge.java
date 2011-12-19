@@ -44,11 +44,11 @@ interface DataBridge {
      * @param message The message to send
      * @throws IOException If something goes wrong
      */
-    void send(final String message) throws IOException;
+    void send(String message) throws IOException;
 
     /**
      * Receive message from {@link YMockClient}.
-     * @return The message to send
+     * @return The message received (after waiting)
      */
     String receive();
 

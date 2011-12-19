@@ -37,7 +37,6 @@ import java.io.InputStream;
  *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
- * @see MockDispatcher#getInputStream
  * @see <a href="http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol">HTTP</a>
  * @see <a href="http://tools.ietf.org/html/rfc2616">RFC2616</a>
  */
@@ -53,8 +52,7 @@ final class SMInputStream extends InputStream {
      * The message to return.
      * @see #read()
      */
-    @SuppressWarnings("PMD.AvoidStringBufferField")
-    private final transient StringBuffer message = new StringBuffer();
+    private final transient StringBuilder message = new StringBuilder();
 
     /**
      * End of file was JUST returned, and we should return "-1" this

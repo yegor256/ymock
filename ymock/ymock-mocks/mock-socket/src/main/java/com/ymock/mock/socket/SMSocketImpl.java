@@ -30,42 +30,59 @@
 package com.ymock.mock.socket;
 
 import java.io.InputStream;
-import org.apache.commons.io.IOUtils;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.Test;
+import java.io.OutputStream;
+import java.net.Socket;
 
 /**
- * Test case for {@link SMInputStream}.
+ * Mock version of {@link SocketImpl}.
+ *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class SMInputStreamTest {
+public final class SMSocket extends SocketImpl {
 
     /**
-     * SMInputStream can read text from DataBridge.
-     * @throws Exception If something wrong inside
+     * Output stream.
      */
-    @Test
-    public void readsStreamThroughDataBridge() throws Exception {
-        final String[] texts = new String[] {
-            "",
-            "simple text\r\nagain\n\nmore",
-        };
-        for (String text : texts) {
-            final DataBridge bridge = new DataBridgeMocker()
-                .doReturn(text)
-                .mock();
-            final InputStream stream = new SMInputStream(bridge);
-            MatcherAssert.assertThat(
-                IOUtils.toString(stream),
-                Matchers.equalTo(text)
-            );
-            MatcherAssert.assertThat(
-                IOUtils.toString(stream),
-                Matchers.equalTo(text)
-            );
-        }
+    private final transient OutputStream outputStream;
+
+    /**
+     * Input stream.
+     */
+    private final transient InputStream inputStream;
+
+    /**
+     * Public ctor.
+     * @param bridge The dispatcher to use
+     */
+    @SuppressWarnings("PMD.CallSuperInConstructor")
+    public SMSocketImpl(final DataBridge bridge) {
+        this.outputStream = new SMOutputStream(bridge);
+        this.inputStream = new SMInputStream(bridge);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>We are overriding the default implementation of {@link Socket},
+     * in order to mock its real behavior. Instead of writing to socket
+     * we're writing to {@link DataBridge}.
+     */
+    @Override
+    public OutputStream getOutputStream() {
+        return this.outputStream;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>We are overriding the default implementation of {@link Socket},
+     * in order to mock its real behavior. Instead of writing to socket
+     * we're reading from {@link DataBridge}.
+     */
+    @Override
+    public InputStream getInputStream() {
+        return this.inputStream;
     }
 
 }

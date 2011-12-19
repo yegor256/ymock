@@ -29,43 +29,32 @@
  */
 package com.ymock.mock.socket;
 
-import java.io.InputStream;
-import org.apache.commons.io.IOUtils;
+import java.net.Socket;
+import java.net.URL;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
- * Test case for {@link SMInputStream}.
+ * Test case for {@link SMSocketFactory}.
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class SMInputStreamTest {
+public final class SMSocketFactoryTest {
 
     /**
-     * SMInputStream can read text from DataBridge.
+     * SMSocketFactory can instantiate SocketImpl objects.
      * @throws Exception If something wrong inside
      */
     @Test
-    public void readsStreamThroughDataBridge() throws Exception {
-        final String[] texts = new String[] {
-            "",
-            "simple text\r\nagain\n\nmore",
-        };
-        for (String text : texts) {
-            final DataBridge bridge = new DataBridgeMocker()
-                .doReturn(text)
-                .mock();
-            final InputStream stream = new SMInputStream(bridge);
-            MatcherAssert.assertThat(
-                IOUtils.toString(stream),
-                Matchers.equalTo(text)
-            );
-            MatcherAssert.assertThat(
-                IOUtils.toString(stream),
-                Matchers.equalTo(text)
-            );
-        }
+    public void instantiatesSocketImplObjects() throws Exception {
+        final String content = "this is our mocked content";
+        final 
+        Socket.setSocketImplFactory(new SMSocketFactory(bridge));
+        MatcherAssert.assertThat(
+            new URL("http://www.google.com").getContent(),
+            Matchers.equalTo(content)
+        );
     }
 
 }

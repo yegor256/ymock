@@ -43,32 +43,18 @@ import org.junit.Test;
 public final class SMOutputStreamTest {
 
     /**
-     * Request.
-     */
-    private static final String REQUEST = "text\ntest\r\ntest3";
-
-    /**
      * Test it.
      * @throws Exception If something wrong inside
      */
     @Test
     public void testSimulatesStreamWriting() throws Exception {
-        final OutputStream stream = new SMOutputStream(
-            new DataBridge() {
-                @Override
-                public void send(final String message) {
-                    MatcherAssert.assertThat(
-                        message,
-                        Matchers.equalTo(SMOutputStreamTest.REQUEST)
-                    );
-                }
-                @Override
-                public String receive() {
-                    return "";
-                }
-            }
-        );
-        IOUtils.write(this.REQUEST, stream);
+        final String request = "text\ntest\r\ntest3";
+        final DataBridge bridge = new DataBridgeMocker()
+            .expect(request)
+            .doReturn("")
+            .mock();
+        final OutputStream stream = new SMOutputStream(bridge);
+        IOUtils.write(request, stream);
     }
 
 }

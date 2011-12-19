@@ -40,4 +40,7 @@
 
 Mocks
 
-  TBD...
+  Read about {{{./mock-socket/index.html}java.net.Socket mocking}}.
+
+  Read about {{{./mock-jdbc/index.html}java.sql.Driver mocking}}.
+

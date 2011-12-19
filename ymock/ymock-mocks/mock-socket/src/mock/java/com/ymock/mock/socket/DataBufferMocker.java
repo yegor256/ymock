@@ -29,43 +29,37 @@
  */
 package com.ymock.mock.socket;
 
-import java.io.InputStream;
-import org.apache.commons.io.IOUtils;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.mockito.Mockito;
 
 /**
- * Test case for {@link SMInputStream}.
+ * Mocker of {@link DataBridge}.
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class SMInputStreamTest {
+public final class DataBufferMocker implements DataBuffer {
 
     /**
-     * SMInputStream can read text from DataBridge.
-     * @throws Exception If something wrong inside
+     * The bridge.
      */
-    @Test
-    public void readsStreamThroughDataBridge() throws Exception {
-        final String[] texts = new String[] {
-            "",
-            "simple text\r\nagain\n\nmore",
-        };
-        for (String text : texts) {
-            final DataBridge bridge = new DataBridgeMocker()
-                .doReturn(text)
-                .mock();
-            final InputStream stream = new SMInputStream(bridge);
-            MatcherAssert.assertThat(
-                IOUtils.toString(stream),
-                Matchers.equalTo(text)
-            );
-            MatcherAssert.assertThat(
-                IOUtils.toString(stream),
-                Matchers.equalTo(text)
-            );
-        }
+    private final transient DataBuffer buffer = Mockito.mock(DataBuffer.class);
+
+    /**
+     * Return this response on the request.
+     * @param request The request to listen to
+     * @param response The response to return
+     * @return This object
+     */
+    public DataBuffer doReturn(final Stirng request, final String response) {
+        Mockito.doReturn(msg).when(this.buffer).receive();
+        return this;
+    }
+
+    /**
+     * Mock it.
+     * @return The bridge
+     */
+    public DataBuffer mock() {
+        return this.bridge;
     }
 
 }

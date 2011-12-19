@@ -41,11 +41,31 @@ import java.net.SocketImplFactory;
 public final class SMSocketFactory implements SocketImplFactory {
 
     /**
+     * Bridge to use.
+     */
+    private final transient DataBridge bridge;
+
+    /**
+     * Public ctor.
+     */
+    public SMSocketFactory() {
+        this(new YMockBridge());
+    }
+
+    /**
+     * Public ctor.
+     * @param brdg The bridge
+     */
+    public SMSocketFactory(final DataBridge brdg) {
+        this.bridge = brdg;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public SocketImpl createSocketImpl() {
-        return new SMSocketImpl();
+        return new SMSocketImpl(this.bridge);
     }
 
 }
