@@ -35,11 +35,11 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
- * Test case for {@link SMSocketFactory}.
+ * Test case for {@link SMSocketImplFactory}.
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class SMSocketFactoryTest {
+public final class SMSocketImplFactoryTest {
 
     /**
      * SMSocketFactory can instantiate SocketImpl objects.

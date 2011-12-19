@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class SMSocketFactory implements SocketImplFactory {
+public final class SMSocketImplFactory implements SocketImplFactory {
 
     /**
      * Regex for connections.
@@ -50,7 +50,7 @@ public final class SMSocketFactory implements SocketImplFactory {
      * Public ctor.
      * @param regex What hosts do we match?
      */
-    public SMSocketFactory(final String regex) {
+    public SMSocketImplFactory(final String regex) {
         this.pattern = Pattern.compile(regex);
     }
 
