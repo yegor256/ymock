@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketException;
@@ -59,7 +60,12 @@ final class SMSocketImpl extends SocketImpl {
     /**
      * Real socket.
      */
-    private transient Socket socket;
+    private final transient Socket socket;
+
+    /**
+     * Do we match and override default functionality?
+     */
+    private transient boolean over;
 
     /**
      * Output stream.
@@ -74,10 +80,12 @@ final class SMSocketImpl extends SocketImpl {
     /**
      * Public ctor.
      * @param ptrn What hosts do we match?
+     * @param original The socket to use if we don't match
      */
-    public SMSocketImpl(final Pattern ptrn) {
+    public SMSocketImpl(final Pattern ptrn, final Socket original) {
         super();
         this.pattern = ptrn;
+        this.socket = original;
         Logger.debug(
             this,
             "#SMSocketImpl('%s'): instantiated",
@@ -176,15 +184,22 @@ final class SMSocketImpl extends SocketImpl {
             final DataBuffer buffer = new YMockBuffer(client);
             this.input = new SMInputStream(buffer);
             this.output = new SMOutputStream(buffer);
+            Logger.debug(
+                this,
+                "#connect('%s', %d): done with mock",
+                host,
+                port
+            );
         } else {
-            this.socket = new Socket(host, port);
+            this.over = true;
+            this.socket.connect(new InetSocketAddress(host, port));
+            Logger.debug(
+                this,
+                "#connect('%s', %d): done through default Socket",
+                host,
+                port
+            );
         }
-        Logger.debug(
-            this,
-            "#connect('%s', %d): done",
-            host,
-            port
-        );
     }
 
     /**

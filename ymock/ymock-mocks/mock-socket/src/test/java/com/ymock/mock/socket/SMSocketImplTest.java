@@ -58,7 +58,8 @@ public final class SMSocketImplTest {
         new YMockServer(String.format("com.ymock.mock.socket:%s", host))
             .when(".*", response);
         final SMSocketImpl impl = new SMSocketImpl(
-            Pattern.compile(Pattern.quote(host))
+            Pattern.compile(Pattern.quote(host)),
+            new Socket()
         );
         impl.connect(host, port);
         final Socket socket = new Socket(impl) { };

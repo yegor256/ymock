@@ -60,6 +60,11 @@ public final class SMSocketImplFactory implements SocketImplFactory {
         new ArrayList<String>();
 
     /**
+     * Real socket.
+     */
+    private transient Socket original;
+
+    /**
      * Public ctor.
      */
     private SMSocketImplFactory() {
@@ -75,6 +80,7 @@ public final class SMSocketImplFactory implements SocketImplFactory {
      * @throws IOException If some problem inside
      */
     public SMSocketImplFactory start() throws IOException {
+        this.original = new Socket();
         Socket.setSocketImplFactory(this);
         Logger.debug(
             SMSocketImplFactory.class,
@@ -115,7 +121,8 @@ public final class SMSocketImplFactory implements SocketImplFactory {
         }
         pattern.append("$");
         final SocketImpl socket = new SMSocketImpl(
-            Pattern.compile(pattern.toString())
+            Pattern.compile(pattern.toString()),
+            this.original
         );
         Logger.debug(
             this,
