@@ -29,8 +29,11 @@
  */
 package com.ymock.util.decors;
 
+import com.ymock.util.Logger;
 import java.util.Formattable;
 import java.util.Formatter;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -86,16 +89,28 @@ public abstract class AbstractDecorTest {
     }
 
     /**
-     * Zero should be formatted without problems.
+     * AbstractDecor can convert object to text.
      * @throws Exception If some problem inside
      */
     @Test
-    public final void testDifferentFormats() throws Exception {
+    public final void convertsDifferentFormats() throws Exception {
         final Formattable decor = this.decor();
         final Appendable dest = Mockito.mock(Appendable.class);
         final Formatter fmt = new Formatter(dest);
         decor.formatTo(fmt, this.flags, this.width, this.precision);
         Mockito.verify(dest).append(this.text);
+    }
+
+    /**
+     * AbstractDecor can convert object to text, via Logger.
+     * @throws Exception If some problem inside
+     */
+    @Test
+    public final void convertsDifferentFormatsViaLogger() throws Exception {
+        MatcherAssert.assertThat(
+            Logger.format("%s", this.decor()),
+            Matchers.equalTo(this.text)
+        );
     }
 
     /**

@@ -58,7 +58,12 @@ public final class ListDecor implements Formattable {
         } else if (obj instanceof Object[]) {
             this.list = Arrays.asList((Object[]) obj);
         } else {
-            throw new DecorException("Collection or array required");
+            throw new DecorException(
+                String.format(
+                    "Collection or array required, while %s provided",
+                    obj.getClass().getName()
+                )
+            );
         }
     }
 

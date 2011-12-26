@@ -37,11 +37,11 @@ import org.mockito.Mockito;
 import org.w3c.dom.Document;
 
 /**
- * Test case for {@link DocumentDecor}.
+ * Test case for {@link DomDecor}.
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class DocumentDecorTest {
+public final class DomDecorTest {
 
     /**
      * DocumentDecor can transform Document to text.
@@ -52,7 +52,7 @@ public final class DocumentDecorTest {
         final Document doc = DocumentBuilderFactory.newInstance()
             .newDocumentBuilder().newDocument();
         doc.appendChild(doc.createElement("root"));
-        final Formattable decor = new DocumentDecor(doc);
+        final Formattable decor = new DomDecor(doc);
         final Appendable dest = Mockito.mock(Appendable.class);
         final Formatter fmt = new Formatter(dest);
         decor.formatTo(fmt, 0, 0, 0);
@@ -68,7 +68,7 @@ public final class DocumentDecorTest {
      */
     @Test
     public void convertsNullToText() throws Exception {
-        final Formattable decor = new DocumentDecor(null);
+        final Formattable decor = new DomDecor(null);
         final Appendable dest = Mockito.mock(Appendable.class);
         final Formatter fmt = new Formatter(dest);
         decor.formatTo(fmt, 0, 0, 0);

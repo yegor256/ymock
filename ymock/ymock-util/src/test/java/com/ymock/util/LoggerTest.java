@@ -71,8 +71,8 @@ public final class LoggerTest {
      */
     @Test
     public void testDetectionOfLogger() throws Exception {
-        Logger.debug(this, "number %d", 1L);
-        Mockito.verify(this.logger).debug("number 1");
+        Logger.debug(this, "%[list]s, %d", new String[] {"foo"}, 1);
+        Mockito.verify(this.logger).debug("[\"foo\"], 1");
     }
 
     /**
