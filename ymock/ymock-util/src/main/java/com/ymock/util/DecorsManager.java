@@ -36,6 +36,7 @@ import com.ymock.util.decors.NanoDecor;
 import com.ymock.util.decors.ObjectDecor;
 import com.ymock.util.decors.SecretDecor;
 import com.ymock.util.decors.SizeDecor;
+import com.ymock.util.decors.TypeDecor;
 import java.lang.reflect.Constructor;
 import java.util.Formattable;
 import java.util.concurrent.ConcurrentHashMap;
@@ -58,13 +59,14 @@ public final class DecorsManager {
         new ConcurrentHashMap<String, Class<? extends Formattable>>();
 
     static {
+        DecorsManager.DECORS.put("dom", DomDecor.class);
+        DecorsManager.DECORS.put("exception", ExceptionDecor.class);
         DecorsManager.DECORS.put("list", ListDecor.class);
+        DecorsManager.DECORS.put("nano", NanoDecor.class);
+        DecorsManager.DECORS.put("object", ObjectDecor.class);
         DecorsManager.DECORS.put("size", SizeDecor.class);
         DecorsManager.DECORS.put("secret", SecretDecor.class);
-        DecorsManager.DECORS.put("object", ObjectDecor.class);
-        DecorsManager.DECORS.put("dom", DomDecor.class);
-        DecorsManager.DECORS.put("nano", NanoDecor.class);
-        DecorsManager.DECORS.put("exception", ExceptionDecor.class);
+        DecorsManager.DECORS.put("type", TypeDecor.class);
     }
 
     /**

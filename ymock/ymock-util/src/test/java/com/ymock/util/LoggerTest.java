@@ -95,8 +95,8 @@ public final class LoggerTest {
         Mockito.verify(this.logger).trace(Mockito.anyString());
         Logger.warn(this, "%s + %s", "alex", "mary");
         Mockito.verify(this.logger).warn("alex + mary");
-        Logger.error(this, "%d + %d", 1, 1);
-        Mockito.verify(this.logger).error("1 + 1");
+        Logger.error(this, "%[type]s", "test");
+        Mockito.verify(this.logger).error("java.lang.String");
     }
 
     /**
