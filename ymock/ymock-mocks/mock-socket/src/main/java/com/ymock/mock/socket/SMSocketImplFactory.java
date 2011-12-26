@@ -68,6 +68,12 @@ public final class SMSocketImplFactory implements SocketImplFactory {
      * Public ctor.
      */
     private SMSocketImplFactory() {
+        this.original = new Socket();
+        try {
+            Socket.setSocketImplFactory(this);
+        } catch (IOException ex) {
+            throw new IllegalStateException(ex);
+        }
         Logger.debug(
             this,
             "#SMSocketImplFactory(): instantiated"
@@ -75,16 +81,27 @@ public final class SMSocketImplFactory implements SocketImplFactory {
     }
 
     /**
-     * Start it working.
+     * Start this mocking mechanism.
      * @return This object
-     * @throws IOException If some problem inside
      */
-    public SMSocketImplFactory start() throws IOException {
-        this.original = new Socket();
-        Socket.setSocketImplFactory(this);
+    public SMSocketImplFactory start() {
+        this.hosts.clear();
         Logger.info(
             SMSocketImplFactory.class,
             "#start(): started"
+        );
+        return this;
+    }
+
+    /**
+     * Stop all mocking.
+     * @return This object
+     */
+    public SMSocketImplFactory stop() {
+        this.hosts.clear();
+        Logger.info(
+            SMSocketImplFactory.class,
+            "#stop(): stopped"
         );
         return this;
     }
