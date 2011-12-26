@@ -29,6 +29,7 @@
  */
 package com.ymock.util.decors;
 
+import com.ymock.util.DecorException;
 import java.io.StringWriter;
 import java.util.Formattable;
 import java.util.Formatter;
@@ -37,7 +38,7 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
 /**
  * Decorates XML Document.
@@ -45,7 +46,7 @@ import org.w3c.dom.Document;
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
-public final class DocumentDecor implements Formattable {
+public final class DomDecor implements Formattable {
 
     /**
      * DOM transformer factory, DOM.
@@ -56,14 +57,23 @@ public final class DocumentDecor implements Formattable {
     /**
      * The document.
      */
-    private final transient Document document;
+    private final transient Node node;
 
     /**
      * Public ctor.
      * @param doc The document
+     * @throws DecorException If some problem with it
      */
-    public DocumentDecor(final Document doc) {
-        this.document = doc;
+    public DomDecor(final Object doc) throws DecorException {
+        if (doc != null && !(doc instanceof Node)) {
+            throw new DecorException(
+                String.format(
+                    "Instance of org.w3c.dom.Node required, while %s provided",
+                    doc.getClass().getName()
+                )
+            );
+        }
+        this.node = (Node) doc;
     }
 
     /**
@@ -74,14 +84,14 @@ public final class DocumentDecor implements Formattable {
     public void formatTo(final Formatter formatter, final int flags,
         final int width, final int precision) {
         final StringWriter writer = new StringWriter();
-        if (this.document == null) {
+        if (this.node == null) {
             writer.write("NULL");
         } else {
             try {
                 final Transformer trans = this.FACTORY.newTransformer();
                 trans.setOutputProperty(OutputKeys.INDENT, "yes");
                 trans.transform(
-                    new DOMSource(this.document),
+                    new DOMSource(this.node),
                     new StreamResult(writer)
                 );
             } catch (javax.xml.transform.TransformerConfigurationException ex) {
