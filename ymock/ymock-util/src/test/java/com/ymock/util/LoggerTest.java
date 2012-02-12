@@ -61,6 +61,8 @@ public final class LoggerTest {
     public void mockLoggerFactory() {
         PowerMockito.mockStatic(LoggerFactory.class);
         this.logger = Mockito.mock(org.slf4j.Logger.class);
+        Mockito.doReturn(true).when(this.logger).isTraceEnabled();
+        Mockito.doReturn(true).when(this.logger).isDebugEnabled();
         Mockito.when(LoggerFactory.getLogger(Mockito.any(Class.class)))
             .thenReturn(this.logger);
     }

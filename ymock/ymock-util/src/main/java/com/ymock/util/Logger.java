@@ -117,7 +117,9 @@ public final class Logger {
      */
     public static void trace(final Object source,
         final String msg, final Object... args) {
-        Logger.logger(source).trace(Logger.format(msg, args));
+        if (Logger.isTraceEnabled(source)) {
+            Logger.logger(source).trace(Logger.format(msg, args));
+        }
     }
 
     /**
@@ -128,7 +130,9 @@ public final class Logger {
      */
     public static void debug(final Object source,
         final String msg, final Object... args) {
-        Logger.logger(source).debug(Logger.format(msg, args));
+        if (Logger.isDebugEnabled(source)) {
+            Logger.logger(source).debug(Logger.format(msg, args));
+        }
     }
 
     /**
