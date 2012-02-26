@@ -41,6 +41,7 @@ import java.util.regex.Pattern;
  * @author Marina Kosenko (marina.kosenko@gmail.com)
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
+ * @since 1.0.4
  */
 final class PreFormatter {
 

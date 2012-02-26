@@ -48,6 +48,7 @@ import java.util.concurrent.ConcurrentMap;
  * @author Marina Kosenko (marina.kosenko@gmail.com)
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
+ * @since 1.0.4
  */
 public final class DecorsManager {
 

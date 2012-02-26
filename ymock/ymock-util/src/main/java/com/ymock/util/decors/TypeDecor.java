@@ -34,8 +34,18 @@ import java.util.Formatter;
 
 /**
  * Decorator of a type.
+ *
+ * <p>For example:
+ *
+ * <pre>
+ * public void func(Object input) {
+ *   Logger.debug("Input of type %[type]s provided", input);
+ * }
+ * </pre>
+ *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
+ * @since 1.0.4
  */
 public final class TypeDecor implements Formattable {
 

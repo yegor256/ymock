@@ -49,6 +49,7 @@ package com.ymock.util;
  *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
+ * @since 1.0
  */
 public final class RuntimeProblem extends RuntimeException {
 

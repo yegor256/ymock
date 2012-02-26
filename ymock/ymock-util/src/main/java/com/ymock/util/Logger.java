@@ -80,6 +80,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
+ * @since 1.0
  */
 public final class Logger {
 
@@ -115,8 +116,10 @@ public final class Logger {
      * @param msg The text message to be logged, with meta-tags
      * @param args List of arguments
      */
-    public static void trace(final Object source,
-        final String msg, final Object... args) {
+    public static void trace(
+        final Object source,
+        final String msg, final Object... args
+    ) {
         if (Logger.isTraceEnabled(source)) {
             Logger.logger(source).trace(Logger.format(msg, args));
         }
@@ -128,8 +131,10 @@ public final class Logger {
      * @param msg The text message to be logged, with meta-tags
      * @param args List of arguments
      */
-    public static void debug(final Object source,
-        final String msg, final Object... args) {
+    public static void debug(
+        final Object source,
+        final String msg, final Object... args
+    ) {
         if (Logger.isDebugEnabled(source)) {
             Logger.logger(source).debug(Logger.format(msg, args));
         }
@@ -141,8 +146,10 @@ public final class Logger {
      * @param msg The text message to be logged, with meta-tags
      * @param args List of arguments
      */
-    public static void info(final Object source,
-        final String msg, final Object... args) {
+    public static void info(
+        final Object source,
+        final String msg, final Object... args
+    ) {
         Logger.logger(source).info(Logger.format(msg, args));
     }
 
@@ -152,8 +159,10 @@ public final class Logger {
      * @param msg The text message to be logged, with meta-tags
      * @param args List of arguments
      */
-    public static void warn(final Object source,
-        final String msg, final Object... args) {
+    public static void warn(
+        final Object source,
+        final String msg, final Object... args
+    ) {
         Logger.logger(source).warn(Logger.format(msg, args));
     }
 

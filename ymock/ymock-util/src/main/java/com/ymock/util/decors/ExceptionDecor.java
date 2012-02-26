@@ -37,8 +37,20 @@ import java.util.Formatter;
 /**
  * Decorates an exception.
  *
+ * <p>For example:
+ *
+ * <pre>
+ * try {
+ *   // ...
+ * } catch (IOException ex) {
+ *   Logger.error("failed to open file: %[exception]s", ex);
+ *   throw new IllegalArgumentException(ex);
+ * }
+ * </pre>
+ *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
+ * @since 1.0.4
  */
 public final class ExceptionDecor implements Formattable {
 

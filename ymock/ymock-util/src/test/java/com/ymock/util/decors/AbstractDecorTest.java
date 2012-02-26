@@ -31,6 +31,7 @@ package com.ymock.util.decors;
 
 import com.ymock.util.Logger;
 import java.util.Formattable;
+import java.util.FormattableFlags;
 import java.util.Formatter;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -107,8 +108,26 @@ public abstract class AbstractDecorTest {
      */
     @Test
     public final void convertsDifferentFormatsViaLogger() throws Exception {
+        final StringBuilder format = new StringBuilder();
+        format.append('%');
+        if ((this.flags & FormattableFlags.LEFT_JUSTIFY)
+            == FormattableFlags.LEFT_JUSTIFY) {
+            format.append('-');
+        }
+        if (this.width > 0) {
+            format.append(Integer.toString(this.width));
+        }
+        if (this.precision > 0) {
+            format.append('.').append(Integer.toString(this.precision));
+        }
+        if ((this.flags & FormattableFlags.UPPERCASE)
+            == FormattableFlags.UPPERCASE) {
+            format.append('S');
+        } else {
+            format.append('s');
+        }
         MatcherAssert.assertThat(
-            Logger.format("%s", this.decor()),
+            Logger.format(format.toString(), this.decor()),
             Matchers.equalTo(this.text)
         );
     }
