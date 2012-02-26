@@ -66,16 +66,31 @@ Decors
 
   Nano-seconds will be formatted as time through a built-in yMock "decor":
   {{{./apidocs/com/ymock/util/decors/NanoDecor.html}<<<NanoDecor>>>}}.
-  In order to define your own decor just implement <<<java.util.Formattable>>>
-  and annotate it with
-  {{{./apidocs/com/ymock/util/Decor.html}<<<com.ymock.util.Decor>>>}}, for example:
+
+  Pre-defined decors:
+
+   * {{{./apidocs/com/ymock/util/decors/NanoDecor.html}<<<DomDecor>>>}}
+
+   * {{{./apidocs/com/ymock/util/decors/NanoDecor.html}<<<ExceptionDecor>>>}}
+
+   * {{{./apidocs/com/ymock/util/decors/NanoDecor.html}<<<ListDecor>>>}}
+
+   * {{{./apidocs/com/ymock/util/decors/NanoDecor.html}<<<NanoDecor>>>}}
+
+   * {{{./apidocs/com/ymock/util/decors/NanoDecor.html}<<<ObjectDecor>>>}}
+
+   * {{{./apidocs/com/ymock/util/decors/NanoDecor.html}<<<SecretDecor>>>}}
+
+   * {{{./apidocs/com/ymock/util/decors/NanoDecor.html}<<<SizeDecor>>>}}
+
+   * {{{./apidocs/com/ymock/util/decors/NanoDecor.html}<<<TypeDecor>>>}}
+
+  In order to use your own decor just implement <<<java.util.Formattable>>>:
 
 +--
 import com.ymock.util.Decor;
 import java.util.Formattable;
 import java.util.Formatter;
-
-@Decor(name = "foo")
 public final class DataDecor implements Formattable {
     private final transient Data data;
     public DataDecor(final Data dat) {
@@ -86,8 +101,18 @@ public final class DataDecor implements Formattable {
         final int width, final int precision) {
         formatter.format("%s", this.data.getSomeValueOutOfIt());
     }
-
 }
 +--
 
+  Then, provide its class name in log formatting string, for example:
+
++--
+  import com.ymock.util.Logger;
+  Logger.debug(
+    this,
+    "bar(%d): show some data: %[com.example.DataDecor]s",
+    value,
+    data
+  );
++--
 

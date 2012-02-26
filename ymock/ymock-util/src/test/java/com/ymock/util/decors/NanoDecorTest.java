@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, yMock.com
+ * Copyright (c) 2011-2012, yMock.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -72,25 +72,26 @@ public final class NanoDecorTest extends AbstractDecorTest {
         return Arrays.asList(
             new Object[][] {
                 // @checkstyle LineLength (20 lines)
-                // { null, "NULL", 0, 0, 0 },
-                // { 13L, "0ms", 0, 0, 0 },
-                // { 21L, "0ms", 0, 0, 1 },
-                // { 25L, "0.02mcs", 0, 0, 2 },
-                // { 234L, "0.2mcs", 0, 0, 1 },
-                // { 1024L, "1mcs", 0, 0, 0 },
-                // { 1056L, "1.056ns", 0, 0, 3 },
-                // { 9022L, "9.02ns", 0, 0, 2 },
-                // { 53111L, "53.11mcs  ", FormattableFlags.LEFT_JUSTIFY, 10, 2 },
-                // { 53156L, " 53mcs", 0, 5, 0 },
-                // { 87090432L, "  87ms", 0, 6, 0 },
-                // { 87090543L, "87.09ms", 0, 0, 2 },
-                // { 87090548L, "87.0905ms", 0, 0, 4 },
-                // { 6001001001L, "6.0010s", 0, 0, 4 },
-                // { 122001001001L, "  2MIN", FormattableFlags.UPPERCASE, 6, 0 },
-                // { 3789001001001L, "63.15min", 0, 0, 5 },
-                // { 3789002002002L, "63.1min", 0, 0, 1 },
-                // { 3789003003003L, "63min", 0, 0, 0 },
-                // { 342000004004004L, "5700min", 0, 0, 0 },
+                { null, "NULL", 0, 0, 0 },
+                { 13L, "0ms", 0, 0, 0 },
+                { 13L, "0ms", 0, 0, 0 },
+                { 21L, "0ms", 0, 0, 1 },
+                { 25L, "0.02mcs", 0, 0, 2 },
+                { 234L, "0.2mcs", 0, 0, 1 },
+                { 1024L, "1mcs", 0, 0, 0 },
+                { 1056L, "1.056ns", 0, 0, 3 },
+                { 9022L, "9.02ns", 0, 0, 2 },
+                { 53111L, "53.11mcs  ", FormattableFlags.LEFT_JUSTIFY, 10, 2 },
+                { 53156L, " 53mcs", 0, 5, 0 },
+                { 87090432L, "  87ms", 0, 6, 0 },
+                { 87090543L, "87.09ms", 0, 0, 2 },
+                { 87090548L, "87.0905ms", 0, 0, 4 },
+                { 6001001001L, "6.0010s", 0, 0, 4 },
+                { 122001001001L, "  2MIN", FormattableFlags.UPPERCASE, 6, 0 },
+                { 3789001001001L, "63.15min", 0, 0, 5 },
+                { 3789002002002L, "63.1min", 0, 0, 1 },
+                { 3789003003003L, "63min", 0, 0, 0 },
+                { 342000004004004L, "5700min", 0, 0, 0 },
             }
         );
     }

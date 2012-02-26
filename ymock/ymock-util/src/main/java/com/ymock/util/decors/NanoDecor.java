@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, yMock.com
+ * Copyright (c) 2011-2012, yMock.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -60,6 +60,7 @@ public final class NanoDecor implements Formattable {
     @Override
     public void formatTo(final Formatter formatter, final int flags,
         final int width, final int precision) {
+
         formatter.format("%s", this.nano.toString());
     }
 
