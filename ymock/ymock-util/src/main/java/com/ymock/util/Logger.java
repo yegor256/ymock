@@ -53,7 +53,7 @@ import org.slf4j.LoggerFactory;
  * }
  * </pre>
  *
- * <p>Or statically (pay attention to <tt>MyClass.class</tt>):
+ * <p>Or statically (pay attention to {@code MyClass.class}):
  *
  * <pre>
  * public class MyClass {
@@ -64,10 +64,10 @@ import org.slf4j.LoggerFactory;
  * </pre>
  *
  * <p>Exact binding between SLF4J and logging facility has to be
- * specified in <tt>pom.xml</tt> of your project.
+ * specified in {@code pom.xml} of your project.
  *
  * <p>For performance reasons in most cases before sending a
- * <tt>TRACE</tt> or <tt>DEBUG</tt> log message you should check whether this
+ * {@code TRACE} or {@code DEBUG} log message you should check whether this
  * logging level is enabled in the project, e.g.:
  *
  * <pre>
@@ -111,7 +111,7 @@ public final class Logger {
     }
 
     /**
-     * Protocol one message, with <tt>TRACE</tt> priority level.
+     * Protocol one message, with {@code TRACE} priority level.
      * @param source The source of the logging operation
      * @param msg The text message to be logged, with meta-tags
      * @param args List of arguments
@@ -126,7 +126,7 @@ public final class Logger {
     }
 
     /**
-     * Protocol one message, with <tt>DEBUG</tt> priority level.
+     * Protocol one message, with {@code DEBUG} priority level.
      * @param source The source of the logging operation
      * @param msg The text message to be logged, with meta-tags
      * @param args List of arguments
@@ -141,7 +141,7 @@ public final class Logger {
     }
 
     /**
-     * Protocol one message, with <tt>INFO</tt> priority level.
+     * Protocol one message, with {@code INFO} priority level.
      * @param source The source of the logging operation
      * @param msg The text message to be logged, with meta-tags
      * @param args List of arguments
@@ -150,11 +150,13 @@ public final class Logger {
         final Object source,
         final String msg, final Object... args
     ) {
-        Logger.logger(source).info(Logger.format(msg, args));
+        if (Logger.isInfoEnabled(source)) {
+            Logger.logger(source).info(Logger.format(msg, args));
+        }
     }
 
     /**
-     * Protocol one message, with <tt>WARN</tt> priority level.
+     * Protocol one message, with {@code WARN} priority level.
      * @param source The source of the logging operation
      * @param msg The text message to be logged, with meta-tags
      * @param args List of arguments
@@ -163,11 +165,13 @@ public final class Logger {
         final Object source,
         final String msg, final Object... args
     ) {
-        Logger.logger(source).warn(Logger.format(msg, args));
+        if (Logger.isWarnEnabled(source)) {
+            Logger.logger(source).warn(Logger.format(msg, args));
+        }
     }
 
     /**
-     * Protocol one message, with <tt>ERROR</tt> priority level.
+     * Protocol one message, with {@code ERROR} priority level.
      * @param source The source of the logging operation
      * @param msg The text message to be logged, with meta-tags
      * @param args List of arguments
@@ -178,7 +182,7 @@ public final class Logger {
     }
 
     /**
-     * Validates whether <tt>TRACE</tt> priority level is enabled for
+     * Validates whether {@code TRACE} priority level is enabled for
      * this particular logger.
      * @param source The source of the logging operation
      * @return Is it enabled?
@@ -188,13 +192,35 @@ public final class Logger {
     }
 
     /**
-     * Validates whether <tt>DEBUG</tt> priority level is enabled for
+     * Validates whether {@code DEBUG} priority level is enabled for
      * this particular logger.
      * @param source The source of the logging operation
      * @return Is it enabled?
      */
     public static boolean isDebugEnabled(final Object source) {
         return Logger.logger(source).isDebugEnabled();
+    }
+
+    /**
+     * Validates whether {@code INFO} priority level is enabled for
+     * this particular logger.
+     * @param source The source of the logging operation
+     * @return Is it enabled?
+     * @since 1.0.5
+     */
+    public static boolean isInfoEnabled(final Object source) {
+        return Logger.logger(source).isInfoEnabled();
+    }
+
+    /**
+     * Validates whether {@code INFO} priority level is enabled for
+     * this particular logger.
+     * @param source The source of the logging operation
+     * @return Is it enabled?
+     * @since 1.0.5
+     */
+    public static boolean isWarnEnabled(final Object source) {
+        return Logger.logger(source).isWarnEnabled();
     }
 
     /**

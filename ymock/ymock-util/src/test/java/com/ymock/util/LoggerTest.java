@@ -63,6 +63,8 @@ public final class LoggerTest {
         this.logger = Mockito.mock(org.slf4j.Logger.class);
         Mockito.doReturn(true).when(this.logger).isTraceEnabled();
         Mockito.doReturn(true).when(this.logger).isDebugEnabled();
+        Mockito.doReturn(true).when(this.logger).isInfoEnabled();
+        Mockito.doReturn(true).when(this.logger).isWarnEnabled();
         Mockito.when(LoggerFactory.getLogger(Mockito.any(Class.class)))
             .thenReturn(this.logger);
     }
