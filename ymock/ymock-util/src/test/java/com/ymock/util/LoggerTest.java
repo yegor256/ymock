@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, yMock.com
+ * Copyright (c) 2011-2012, yMock.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -63,6 +63,8 @@ public final class LoggerTest {
         this.logger = Mockito.mock(org.slf4j.Logger.class);
         Mockito.doReturn(true).when(this.logger).isTraceEnabled();
         Mockito.doReturn(true).when(this.logger).isDebugEnabled();
+        Mockito.doReturn(true).when(this.logger).isInfoEnabled();
+        Mockito.doReturn(true).when(this.logger).isWarnEnabled();
         Mockito.when(LoggerFactory.getLogger(Mockito.any(Class.class)))
             .thenReturn(this.logger);
     }

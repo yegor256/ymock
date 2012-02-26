@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, yMock.com
+ * Copyright (c) 2011-2012, yMock.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,8 +34,18 @@ import java.util.Formatter;
 
 /**
  * Decorator of a type.
+ *
+ * <p>For example:
+ *
+ * <pre>
+ * public void func(Object input) {
+ *   Logger.debug("Input of type %[type]s provided", input);
+ * }
+ * </pre>
+ *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
+ * @since 1.0.4
  */
 public final class TypeDecor implements Formattable {
 

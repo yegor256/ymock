@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, yMock.com
+ * Copyright (c) 2011-2012, yMock.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,6 +34,7 @@ package com.ymock.util;
  *
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
+ * @since 1.0.4
  */
 public final class DecorException extends Exception {
 
@@ -43,8 +44,9 @@ public final class DecorException extends Exception {
      * @param format The message
      * @param args Optional arguments
      */
-    public DecorException(final Throwable cause, final String format,
-        final Object... args) {
+    public DecorException(
+        final Throwable cause, final String format, final Object... args
+    ) {
         super(String.format(format, args), cause);
     }
 
