@@ -110,8 +110,8 @@ public abstract class AbstractDecorTest {
     public final void convertsDifferentFormatsViaLogger() throws Exception {
         final StringBuilder format = new StringBuilder();
         format.append('%');
-        if ((this.flags & FormattableFlags.LEFT_JUSTIFY)
-            == FormattableFlags.LEFT_JUSTIFY) {
+        if ((this.flags & FormattableFlags.LEFT_JUSTIFY) == FormattableFlags
+            .LEFT_JUSTIFY) {
             format.append('-');
         }
         if (this.width > 0) {
@@ -120,8 +120,8 @@ public abstract class AbstractDecorTest {
         if (this.precision > 0) {
             format.append('.').append(Integer.toString(this.precision));
         }
-        if ((this.flags & FormattableFlags.UPPERCASE)
-            == FormattableFlags.UPPERCASE) {
+        if ((this.flags & FormattableFlags.UPPERCASE) == FormattableFlags
+            .UPPERCASE) {
             format.append('S');
         } else {
             format.append('s');

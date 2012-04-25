@@ -32,50 +32,51 @@ package com.ymock.util.decors;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Formattable;
+import java.util.FormattableFlags;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 /**
- * Test case for {@link SecretDecor}.
- * @author Marina Kosenko (marina.kosenko@gmail.com)
+ * Test case for {@link MsDecor}.
  * @author Yegor Bugayenko (yegor@ymock.com)
  * @version $Id$
  */
 @RunWith(Parameterized.class)
 @SuppressWarnings("PMD.TestClassWithoutTestCases")
-public final class SecretDecorTest extends AbstractDecorTest {
+public final class MsDecorTest extends AbstractDecorTest {
 
     /**
      * Public ctor.
-     * @param secret The secret
+     * @param nano The amount of nanoseconds
      * @param text Expected text
      * @param flags Flags
      * @param width Width
      * @param precision Precission
      * @checkstyle ParameterNumber (3 lines)
      */
-    public SecretDecorTest(final String secret, final String text,
+    public MsDecorTest(final Long nano, final String text,
         final int flags, final int width, final int precision) {
-        super(secret, text, flags, width, precision);
+        super(nano, text, flags, width, precision);
     }
 
     /**
      * Params for this parametrized test.
      * @return Array of arrays of params for ctor
-     * @todo #26 The SecretDecor class is not implemented yet, that's why
-     *  the test is not enabled at the moment. You should uncomment the
-     *  lines below and make sure the test passes.
      */
     @Parameters
     public static Collection<Object[]> params() {
         return Arrays.asList(
             new Object[][] {
-                // @checkstyle MethodBodyComments (4 lines)
-                // { "testing", "t***g", 0, 0, 0 },
-                // { "ouch", "o***h  ", FormattableFlags.LEFT_JUSTIFY, 7, 5 },
-                // { "x", " X***X", FormattableFlags.UPPERCASE, 6, 0 },
-                // { null, "NULL", FormattableFlags.UPPERCASE, 6, 0 },
+                // @checkstyle LineLength (20 lines)
+                // @checkstyle MagicNumber (20 lines)
+                {null, "NULL", 0, 0, 0},
+                {13L, "13ms", 0, 0, -1},
+                {13L, "13.0ms", 0, 0, 1},
+                {1024L, "1s", 0, 0, 0},
+                {6001L, "6.0010s", 0, 0, 4},
+                {122001L, "  2MIN", FormattableFlags.UPPERCASE, 6, 0},
+                {3789003L, "63min", 0, 0, 0},
             }
         );
     }
@@ -85,7 +86,7 @@ public final class SecretDecorTest extends AbstractDecorTest {
      */
     @Override
     protected Formattable decor() {
-        return new SecretDecor((String) this.object());
+        return new MsDecor((Long) this.object());
     }
 
 }

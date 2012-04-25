@@ -71,6 +71,7 @@ public final class ObjectDecorTest extends AbstractDecorTest {
     public static Collection<Object[]> params() {
         return Arrays.asList(
             new Object[][] {
+                // @checkstyle MethodBodyComments (2 lines)
                 // { null, "NULL", 0, 0, 0 },
                 // { new SecretDecor("x"), "{secret: \"x\"}", 0, 0, 0 }
             }

@@ -32,6 +32,7 @@ package com.ymock.util;
 import com.ymock.util.decors.DomDecor;
 import com.ymock.util.decors.ExceptionDecor;
 import com.ymock.util.decors.ListDecor;
+import com.ymock.util.decors.MsDecor;
 import com.ymock.util.decors.NanoDecor;
 import com.ymock.util.decors.ObjectDecor;
 import com.ymock.util.decors.SecretDecor;
@@ -63,6 +64,7 @@ public final class DecorsManager {
         DecorsManager.DECORS.put("dom", DomDecor.class);
         DecorsManager.DECORS.put("exception", ExceptionDecor.class);
         DecorsManager.DECORS.put("list", ListDecor.class);
+        DecorsManager.DECORS.put("ms", MsDecor.class);
         DecorsManager.DECORS.put("nano", NanoDecor.class);
         DecorsManager.DECORS.put("object", ObjectDecor.class);
         DecorsManager.DECORS.put("size", SizeDecor.class);
