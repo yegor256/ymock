@@ -41,6 +41,7 @@
         <menu ref="parent" />
         <menu name="Overview">
             <item name="Introduction" href="./index.html" />
+            <item name="API (JavaDoc)" href="./apidocs/index.html" />
         </menu>
         <menu ref="reports" />
     </body>

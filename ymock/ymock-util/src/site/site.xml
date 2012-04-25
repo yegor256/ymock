@@ -42,6 +42,7 @@
         <menu name="Overview">
             <item name="Introduction" href="index.html" />
             <item name="Decors" href="decors.html" />
+            <item name="API (JavaDoc)" href="./apidocs/index.html" />
         </menu>
         <menu ref="reports" />
     </body>
