@@ -71,6 +71,7 @@ public final class SizeDecorTest extends AbstractDecorTest {
     public static Collection<Object[]> params() {
         return Arrays.asList(
             new Object[][] {
+                // @checkstyle MethodBodyComments (12 lines)
                 // { null, "NULL", 0, 0, 0 },
                 // { 1L, "1b", 0, 0, 0 },
                 // { 123L, "  123b", 0, 6, 0 },

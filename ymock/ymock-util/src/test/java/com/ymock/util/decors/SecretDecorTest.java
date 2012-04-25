@@ -71,6 +71,7 @@ public final class SecretDecorTest extends AbstractDecorTest {
     public static Collection<Object[]> params() {
         return Arrays.asList(
             new Object[][] {
+                // @checkstyle MethodBodyComments (4 lines)
                 // { "testing", "t***g", 0, 0, 0 },
                 // { "ouch", "o***h  ", FormattableFlags.LEFT_JUSTIFY, 7, 5 },
                 // { "x", " X***X", FormattableFlags.UPPERCASE, 6, 0 },

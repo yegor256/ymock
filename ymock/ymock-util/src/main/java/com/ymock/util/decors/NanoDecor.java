@@ -81,15 +81,15 @@ public final class NanoDecor implements Formattable {
         } else {
             final StringBuilder format = new StringBuilder();
             format.append('%');
-            if ((flags & FormattableFlags.LEFT_JUSTIFY)
-                == FormattableFlags.LEFT_JUSTIFY) {
+            if ((flags & FormattableFlags.LEFT_JUSTIFY) == FormattableFlags
+                .LEFT_JUSTIFY) {
                 format.append('-');
             }
             if (width > 0) {
                 format.append(Integer.toString(width));
             }
-            if ((flags & FormattableFlags.UPPERCASE)
-                == FormattableFlags.UPPERCASE) {
+            if ((flags & FormattableFlags.UPPERCASE) == FormattableFlags
+                .UPPERCASE) {
                 format.append('S');
             } else {
                 format.append('s');

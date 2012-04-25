@@ -111,7 +111,6 @@ public final class HttpConnectorTest {
         try {
             connector.call("first request");
         } catch (YMockException ex) {
-            // swallow it
             MatcherAssert.assertThat(
                 ex,
                 Matchers.instanceOf(YMockException.class)
@@ -120,7 +119,6 @@ public final class HttpConnectorTest {
         try {
             connector.call("second request");
         } catch (YMockException ex) {
-            // swallow it
             MatcherAssert.assertThat(
                 ex,
                 Matchers.instanceOf(YMockException.class)
