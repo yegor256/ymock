@@ -48,7 +48,6 @@
     <name>yMock</name>
 
     <modules>
-        <module>ymock-tk</module>
         <module>ymock-commons</module>
         <module>ymock-client</module>
         <module>ymock-server</module>
@@ -231,6 +230,9 @@
                         <groupId>com.qulice</groupId>
                         <artifactId>qulice-maven-plugin</artifactId>
                         <version since="25 Apr 2012">1.0-SNAPSHOT</version>
+                        <configuration>
+                            <license>file:${basedir}/LICENSE.txt</license>
+                        </configuration>
                         <executions>
                             <execution>
                                 <goals>
@@ -238,13 +240,6 @@
                                 </goals>
                             </execution>
                         </executions>
-                        <dependencies>
-                            <dependency>
-                                <groupId>com.ymock</groupId>
-                                <artifactId>ymock-tk</artifactId>
-                                <version ymock="yes">2.0-SNAPSHOT</version>
-                            </dependency>
-                        </dependencies>
                     </plugin>
                     <plugin>
                         <artifactId>maven-dependency-plugin</artifactId>
@@ -272,21 +267,16 @@
                                 </goals>
                                 <configuration>
                                     <descriptorRefs>
-                                        <!--
-                                        This descriptor is in ymock-tk sub-module, which is in classpath of
-                                        this plugin.
-                                        @see http://maven.apache.org/plugins/maven-assembly-plugin/examples/sharing-descriptors.html
-                                        -->
-                                        <descriptorRef>ymock-sources</descriptorRef>
+                                        <descriptorRef>jcabi-sources</descriptorRef>
                                     </descriptorRefs>
                                 </configuration>
                             </execution>
                         </executions>
                         <dependencies>
                             <dependency>
-                                <groupId>com.ymock</groupId>
-                                <artifactId>ymock-tk</artifactId>
-                                <version ymock="yes">2.0-SNAPSHOT</version>
+                                <groupId>com.jcabi</groupId>
+                                <artifactId>jcabi-assembly</artifactId>
+                                <version>0.1.9</version>
                             </dependency>
                         </dependencies>
                     </plugin>
