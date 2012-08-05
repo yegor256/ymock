@@ -63,14 +63,13 @@
         </dependency>
         <dependency>
             <groupId>com.ymock</groupId>
-            <artifactId>ymock-util</artifactId>
-            <version ymock="yes">2.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.ymock</groupId>
             <artifactId>ymock-client</artifactId>
             <version ymock="yes">2.0-SNAPSHOT</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.jcabi</groupId>
+            <artifactId>jcabi-log</artifactId>
         </dependency>
         <dependency>
             <!--
@@ -172,9 +171,6 @@
                                 <copy verbose="true"
                                     file="${com.ymock:ymock-commons:jar}"
                                     tofile="${project.build.directory}/local-repo/com/ymock/ymock-commons/${project.version}/ymock-commons-${project.version}.jar"/>
-                                <copy verbose="true"
-                                    file="${com.ymock:ymock-util:jar}"
-                                    tofile="${project.build.directory}/local-repo/com/ymock/ymock-util/${project.version}/ymock-util-${project.version}.jar"/>
                             </target>
                         </configuration>
                         <goals>

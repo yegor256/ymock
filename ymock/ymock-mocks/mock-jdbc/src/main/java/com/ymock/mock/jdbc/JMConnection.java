@@ -45,6 +45,7 @@ import java.sql.Struct;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.Executor;
 import org.mockito.Mockito;
 
 /**
@@ -461,6 +462,56 @@ final class JMConnection implements Connection {
     @Override
     public void setTypeMap(final Map<String, Class<?>> map) {
         // intentionally empty
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * JDK 7 only.
+     */
+    @Override
+    public int getNetworkTimeout() {
+        return 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * JDK 7 only.
+     */
+    @Override
+    public void setNetworkTimeout(final Executor exec, final int timeout) {
+        // empty
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * JDK 7 only.
+     */
+    @Override
+    public void abort(final Executor exec) {
+        // empty
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * JDK 7 only.
+     */
+    @Override
+    public String getSchema() {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * JDK 7 only.
+     */
+    @Override
+    public void setSchema(final String schema) {
+        // empty
     }
 
 }

@@ -4,9 +4,9 @@
  */
 package com.ymock;
 
+import com.jcabi.log.Logger;
 import com.ymock.client.YMockClient;
 import com.ymock.commons.YMockException;
-import com.ymock.util.Logger;
 
 class Calculator {
 

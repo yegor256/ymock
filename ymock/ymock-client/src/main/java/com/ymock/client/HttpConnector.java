@@ -29,9 +29,9 @@
  */
 package com.ymock.client;
 
+import com.jcabi.log.Logger;
 import com.ymock.commons.PortDetector;
 import com.ymock.commons.YMockException;
-import com.ymock.util.Logger;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
