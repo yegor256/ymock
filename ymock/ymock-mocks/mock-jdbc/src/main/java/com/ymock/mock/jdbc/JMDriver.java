@@ -33,6 +33,7 @@ import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverPropertyInfo;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 /**
  * Jdbc Mock Driver.
@@ -90,6 +91,16 @@ public final class JMDriver implements Driver {
     @Override
     public boolean jdbcCompliant() {
         return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * JDK 7 only.
+     */
+    @Override
+    public Logger getParentLogger() {
+        throw new UnsupportedOperationException();
     }
 
 }
