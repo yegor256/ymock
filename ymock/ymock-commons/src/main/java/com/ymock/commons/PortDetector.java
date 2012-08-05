@@ -29,7 +29,7 @@
  */
 package com.ymock.commons;
 
-import com.ymock.util.Logger;
+import com.jcabi.log.Logger;
 
 /**
  * Port detector.

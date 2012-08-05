@@ -29,8 +29,8 @@
  */
 package com.ymock.server;
 
+import com.jcabi.log.Logger;
 import com.ymock.commons.YMockException;
-import com.ymock.util.Logger;
 import java.io.InputStream;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;

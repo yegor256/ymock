@@ -50,7 +50,6 @@
     <modules>
         <module>ymock-tk</module>
         <module>ymock-commons</module>
-        <module>ymock-util</module>
         <module>ymock-client</module>
         <module>ymock-server</module>
         <module>ymock-cli</module>
@@ -537,6 +536,14 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <!--
+                Logging facility wrapper.
+                -->
+                <groupId>com.jcabi</groupId>
+                <artifactId>jcabi-log</artifactId>
+                <version since="5 Aug 2012">0.1.9</version>
+            </dependency>
             <dependency>
                 <!--
                 Mediator between SLF4j and LOG4j.

@@ -29,12 +29,12 @@
  */
 package com.ymock.server;
 
+import com.jcabi.log.Logger;
 import com.sun.grizzly.http.embed.GrizzlyWebServer;
 import com.sun.grizzly.http.servlet.ServletAdapter;
 import com.sun.jersey.spi.container.servlet.ServletContainer;
 import com.ymock.commons.PortDetector;
 import com.ymock.commons.YMockException;
-import com.ymock.util.Logger;
 import java.util.logging.Handler;
 import java.util.logging.LogManager;
 import org.slf4j.bridge.SLF4JBridgeHandler;

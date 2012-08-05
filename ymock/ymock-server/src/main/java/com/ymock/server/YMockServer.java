@@ -29,10 +29,10 @@
  */
 package com.ymock.server;
 
+import com.jcabi.log.Logger;
 import com.ymock.server.matchers.RegexMatcher;
 import com.ymock.server.responses.ErrorResponse;
 import com.ymock.server.responses.TextResponse;
-import com.ymock.util.Logger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;

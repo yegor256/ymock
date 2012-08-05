@@ -4,7 +4,7 @@
  */
 package com.ymock;
 
-import com.ymock.util.Logger;
+import com.jcabi.log.Logger;
 
 class Client {
 
