@@ -45,7 +45,7 @@
     <artifactId>ymock</artifactId>
     <version ymock="yes">2.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>yMock</name>
+    <name>ymock</name>
 
     <modules>
         <module>ymock-commons</module>
