@@ -38,6 +38,11 @@ package com.ymock.commons;
 public final class YMockException extends Exception {
 
     /**
+     * Serialization marker.
+     */
+    private static final long serialVersionUID = 0x7526CA78CEDACF7FL;
+
+    /**
      * Public ctor.
      * @param cause The cause of exception
      */

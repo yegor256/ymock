@@ -7,9 +7,9 @@ package com.ymock;
 import com.ymock.server.Response;
 import com.ymock.server.YMockServer;
 import com.ymock.server.matchers.RegexMatcher;
-import org.junit.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers.*;
+import org.junit.Test;
 
 public final class ClientTest {
 
@@ -22,7 +22,7 @@ public final class ClientTest {
             new LineLengthResponse(text)
         );
         final Integer length = new Client().calculate(text);
-        assertThat(length, equalTo(text.length()));
+        MatcherAssert.assertThat(length, Matchers.equalTo(text.length()));
     }
 
     private static class LineLengthResponse implements Response {
@@ -32,7 +32,7 @@ public final class ClientTest {
         }
         @Override
         public String process(final String request) {
-            assertThat(request, equalTo(this.expected));
+            MatcherAssert.assertThat(request, Matchers.equalTo(this.expected));
             return Integer.toString(request.length());
         }
     }

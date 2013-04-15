@@ -118,9 +118,9 @@ final class RestfulServer implements CallsProvider {
             "com.sun.jersey.config.property.packages",
             "com.ymock.server"
         );
-        adapter.setContextPath(this.CONTEXT);
+        adapter.setContextPath(RestfulServer.CONTEXT);
         adapter.setServletInstance(new ServletContainer());
-        gws.addGrizzlyAdapter(adapter, new String[] {this.CONTEXT});
+        gws.addGrizzlyAdapter(adapter, new String[] {RestfulServer.CONTEXT});
         try {
             gws.start();
         } catch (java.io.IOException ex) {

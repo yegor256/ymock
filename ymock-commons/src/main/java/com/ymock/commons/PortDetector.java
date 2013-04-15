@@ -55,7 +55,7 @@ public final class PortDetector {
      *  - default value
      */
     public Integer port() {
-        final Integer port = this.DEFAULT;
+        final Integer port = PortDetector.DEFAULT;
         Logger.debug(this, "#port(): TCP port %d to be used", port);
         return port;
     }

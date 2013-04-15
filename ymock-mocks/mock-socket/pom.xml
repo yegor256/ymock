@@ -34,55 +34,36 @@
  *       to be implemented in full, ready for real-life use cases.
  -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.ymock</groupId>
         <artifactId>ymock-mocks</artifactId>
-        <version ymock="yes">2.0-SNAPSHOT</version>
+        <version>2.0-SNAPSHOT</version>
     </parent>
     <groupId>com.ymock.mock</groupId>
     <artifactId>mock-socket</artifactId>
     <packaging>jar</packaging>
     <name>mock-socket</name>
-
     <dependencies>
         <dependency>
             <groupId>com.ymock</groupId>
             <artifactId>ymock-client</artifactId>
-            <version ymock="yes">2.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.ymock</groupId>
             <artifactId>ymock-commons</artifactId>
-            <version ymock="yes">2.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.ymock</groupId>
             <artifactId>ymock-server</artifactId>
-            <version ymock="yes">2.0-SNAPSHOT</version>
+            <version>${project.version}</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-library</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit-dep</artifactId>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
         </dependency>
     </dependencies>
-
 </project>

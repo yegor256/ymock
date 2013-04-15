@@ -56,7 +56,7 @@ final class SimpleClient {
      * Public ctor.
      */
     public SimpleClient() {
-        this.client = new YMockClient(this.ID);
+        this.client = new YMockClient(SimpleClient.ID);
     }
 
     /**
@@ -64,7 +64,7 @@ final class SimpleClient {
      * @param connector The connector to use
      */
     public SimpleClient(final Connector connector) {
-        this.client = new YMockClient(this.ID, connector);
+        this.client = new YMockClient(SimpleClient.ID, connector);
     }
 
     /**

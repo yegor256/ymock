@@ -58,7 +58,10 @@ public final class YMockServerTest {
         final SimpleProvider provider = new SimpleProvider();
         final Connector connector = new SimpleConnector(provider);
         final YMockServer server = new YMockServer(SimpleClient.ID, provider);
-        server.when(String.format("\\Q%s\\E", this.REQUEST), this.RESPONSE);
+        server.when(
+            String.format("\\Q%s\\E", YMockServerTest.REQUEST),
+            YMockServerTest.RESPONSE
+        );
         new SimpleClient(connector).run();
     }
 
@@ -73,12 +76,12 @@ public final class YMockServerTest {
         final Connector connector = new SimpleConnector(provider);
         final YMockServer server = new YMockServer(SimpleClient.ID, provider);
         server.when(
-            new SimpleMatcher(this.REQUEST, false),
-            new SimpleResponse(this.RESPONSE)
+            new SimpleMatcher(YMockServerTest.REQUEST, false),
+            new SimpleResponse(YMockServerTest.RESPONSE)
         );
         server.when(
-            new SimpleMatcher(this.REQUEST, true),
-            new SimpleResponse(this.RESPONSE)
+            new SimpleMatcher(YMockServerTest.REQUEST, true),
+            new SimpleResponse(YMockServerTest.RESPONSE)
         );
         new SimpleClient(connector).run();
     }
@@ -94,12 +97,12 @@ public final class YMockServerTest {
         final Connector connector = new SimpleConnector(provider);
         final YMockServer server = new YMockServer(SimpleClient.ID, provider);
         server.when(
-            new SimpleMatcher(this.REQUEST, true),
-            new SimpleResponse(this.RESPONSE)
+            new SimpleMatcher(YMockServerTest.REQUEST, true),
+            new SimpleResponse(YMockServerTest.RESPONSE)
         );
         server.when(
-            new SimpleMatcher(this.REQUEST, true),
-            new SimpleResponse(this.RESPONSE)
+            new SimpleMatcher(YMockServerTest.REQUEST, true),
+            new SimpleResponse(YMockServerTest.RESPONSE)
         );
         new SimpleClient(connector).run();
     }
@@ -125,7 +128,7 @@ public final class YMockServerTest {
     @Test
     public void testEntireCycleThroughLiveHttp() throws Exception {
         final YMockServer server = new YMockServer(SimpleClient.ID);
-        server.when(this.REQUEST, this.RESPONSE);
+        server.when(YMockServerTest.REQUEST, YMockServerTest.RESPONSE);
         new SimpleClient().run();
     }
 
