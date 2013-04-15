@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<!--
+ *
+ * Copyright (c) 2011-2012, yMock.com
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met: 1) Redistributions of source code must retain the above
+ * copyright notice, this list of conditions and the following
+ * disclaimer. 2) Redistributions in binary form must reproduce the above
+ * copyright notice, this list of conditions and the following
+ * disclaimer in the documentation and/or other materials provided
+ * with the distribution. 3) Neither the name of the yMock.com nor
+ * the names of its contributors may be used to endorse or promote
+ * products derived from this software without specific prior written
+ * permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
+ * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
+ * THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+ * OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * @version $Id$
+ *
+ * Release management is done with oss.sonatype.org Nexus platform. Every
+ * time you want to make a new release of the product use the
+ * instructions from this page:
+ * @link http://www.sonatype.com/books/nexus-book/reference/staging-sect-managing-plugin.html
+ -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.jcabi</groupId>
+        <artifactId>parent</artifactId>
+        <version>0.7.17</version>
+    </parent>
+    <groupId>com.ymock</groupId>
+    <artifactId>ymock</artifactId>
+    <version>2.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>ymock</name>
+    <modules>
+        <module>ymock-commons</module>
+        <module>ymock-client</module>
+        <module>ymock-server</module>
+        <module>ymock-cli</module>
+        <module>ymock-mocks</module>
+    </modules>
+    <description><![CDATA[
+        Mocking Library.
+        ]]></description>
+    <url>http://www.ymock.com</url>
+    <inceptionYear>2011</inceptionYear>
+    <organization>
+        <name>yMock.com</name>
+        <url>http://www.ymock.com</url>
+    </organization>
+    <licenses>
+        <license>
+            <name>BSD</name>
+            <url>http://www.ymock.com/LICENSE.txt</url>
+            <distribution>repo</distribution>
+            <comments><![CDATA[
+                This is free open source project, feel free to redistribute it
+                ]]></comments>
+        </license>
+    </licenses>
+    <mailingLists>
+        <mailingList>
+            <name>yMock Discussions</name>
+            <subscribe>ymock@googlegroups.com</subscribe>
+            <unsubscribe>ymock@googlegroups.com</unsubscribe>
+            <post>ymock@googlegroups.com</post>
+            <archive>http://groups.google.com/group/ymock</archive>
+        </mailingList>
+    </mailingLists>
+    <developers>
+        <developer>
+            <id>1</id>
+            <name>Yegor Bugayenko</name>
+            <email>yegor@ymock.com</email>
+            <organization>yMock.com</organization>
+            <organizationUrl>http://www.ymock.com</organizationUrl>
+            <roles>
+                <role>Architect</role>
+                <role>Developer</role>
+            </roles>
+            <timezone>-7</timezone>
+        </developer>
+    </developers>
+    <issueManagement>
+        <system>trac</system>
+        <url>http://trac.ymock.com/ymock/</url>
+    </issueManagement>
+    <ciManagement>
+        <system>jenkins</system>
+        <url>http://ci.ymock.com:8080/job/ymock</url>
+    </ciManagement>
+    <scm>
+        <connection>scm:svn:svn://svn.ymock.com/ymock/trunk</connection>
+        <developerConnection>scm:svn:svn://svn.ymock.com/ymock/trunk</developerConnection>
+        <url>http://svn.ymock.com/ymock/trunk</url>
+    </scm>
+    <properties>
+        <httpcomponents.version>4.2.4</httpcomponents.version>
+        <jersey.version>1.17.1</jersey.version>
+    </properties>
+    <distributionManagement>
+        <site>
+            <!--
+            Deploying the site to Amazon S3. "ymock.s3" server details
+            are defined in "settings.xml" file, provided by continuous integration
+            server during build cycle.
+            -->
+            <id>www.ymock.com</id>
+            <name>yMock.com Project Site</name>
+            <url>s3://www.ymock.com/</url>
+        </site>
+    </distributionManagement>
+</project>
