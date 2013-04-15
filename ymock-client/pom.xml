@@ -57,7 +57,7 @@
             -->
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.3-beta1</version>
+            <version>${httpcomponents.version}</version>
         </dependency>
         <dependency>
             <!--
@@ -65,7 +65,7 @@
             -->
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpcore</artifactId>
-            <version>4.3-beta1</version>
+            <version>${httpcomponents.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>

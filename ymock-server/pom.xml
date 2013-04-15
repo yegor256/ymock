@@ -75,17 +75,22 @@
             @link https://jersey.dev.java.net/
             -->
             <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-server</artifactId>
-            <version>1.17.1</version>
+            <artifactId>jersey-servlet</artifactId>
+            <version>${jersey.version}</version>
         </dependency>
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-core</artifactId>
-            <version>1.17.1</version>
+            <version>${jersey.version}</version>
         </dependency>
         <dependency>
             <groupId>com.sun.grizzly</groupId>
-            <artifactId>grizzly-servlet-webserver</artifactId>
+            <artifactId>grizzly-http</artifactId>
+            <version>2.0.0-M3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.grizzly</groupId>
+            <artifactId>grizzly-http-servlet</artifactId>
             <version>2.0.0-M3</version>
         </dependency>
         <dependency>
@@ -94,8 +99,8 @@
             -->
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.3-beta1</version>
-            <scope>test</scope>
+            <version>${httpcomponents.version}</version>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <!--
@@ -103,8 +108,8 @@
             -->
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpcore</artifactId>
-            <version>4.3-beta1</version>
-            <scope>test</scope>
+            <version>${httpcomponents.version}</version>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

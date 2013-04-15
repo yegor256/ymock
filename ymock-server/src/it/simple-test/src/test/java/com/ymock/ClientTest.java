@@ -8,7 +8,7 @@ import com.ymock.server.Response;
 import com.ymock.server.YMockServer;
 import com.ymock.server.matchers.RegexMatcher;
 import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers.*;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 
 public final class ClientTest {

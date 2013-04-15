@@ -56,4 +56,16 @@ public final class YMockClientTest {
         MatcherAssert.assertThat(returned, Matchers.equalTo(response));
     }
 
+    /**
+     * YMockClient can be instantiated with default connector.
+     * @throws Exception If some problem inside
+     */
+    @Test
+    public void makesInstanceWithDefaultConnector() throws Exception {
+        MatcherAssert.assertThat(
+            new YMockClient("some-test"),
+            Matchers.notNullValue()
+        );
+    }
+
 }

@@ -110,6 +110,10 @@
         <developerConnection>scm:svn:svn://svn.ymock.com/ymock/trunk</developerConnection>
         <url>http://svn.ymock.com/ymock/trunk</url>
     </scm>
+    <properties>
+        <httpcomponents.version>4.2.4</httpcomponents.version>
+        <jersey.version>1.17.1</jersey.version>
+    </properties>
     <distributionManagement>
         <site>
             <!--
