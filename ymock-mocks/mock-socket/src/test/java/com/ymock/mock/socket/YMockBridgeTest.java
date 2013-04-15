@@ -61,12 +61,15 @@ public final class YMockBridgeTest {
     @Test
     public void testSimulatesYMockClientServerInteraction() throws Exception {
         final YMockServer server = new YMockServer(YMockBridge.NAME);
-        server.when(this.quote(this.REQUEST), this.RESPONSE);
+        server.when(
+            this.quote(YMockBridgeTest.REQUEST),
+            YMockBridgeTest.RESPONSE
+        );
         final DataBridge bridge = new YMockBridge();
-        bridge.send(this.REQUEST);
+        bridge.send(YMockBridgeTest.REQUEST);
         MatcherAssert.assertThat(
             bridge.receive(),
-            Matchers.equalTo(this.RESPONSE)
+            Matchers.equalTo(YMockBridgeTest.RESPONSE)
         );
     }
 
@@ -77,7 +80,10 @@ public final class YMockBridgeTest {
     @Test(expected = IllegalStateException.class)
     public void testSimulatesDuplicateCallToReceive() throws Exception {
         final YMockServer server = new YMockServer(YMockBridge.NAME);
-        server.when(this.quote(this.REQUEST), this.RESPONSE);
+        server.when(
+            this.quote(YMockBridgeTest.REQUEST),
+            YMockBridgeTest.RESPONSE
+        );
         final DataBridge bridge = new YMockBridge();
         bridge.receive();
     }
@@ -90,7 +96,7 @@ public final class YMockBridgeTest {
     public void testCallsToError() throws Exception {
         final YMockServer server = new YMockServer(YMockBridge.NAME);
         server.when(
-            new RegexMatcher(this.quote(this.REQUEST)),
+            new RegexMatcher(this.quote(YMockBridgeTest.REQUEST)),
             new Response() {
                 // @checkstyle RedundantThrows (3 lines)
                 @Override
@@ -101,7 +107,7 @@ public final class YMockBridgeTest {
             }
         );
         final DataBridge bridge = new YMockBridge();
-        bridge.send(this.REQUEST);
+        bridge.send(YMockBridgeTest.REQUEST);
     }
 
     /**

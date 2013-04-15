@@ -74,12 +74,15 @@ public final class SMSocketTest {
             }
         );
         final String message = "POST /index HTTP/1.0\r\n"
-            + "Content-Length: " + this.REQUEST.length() + "\r\n"
+            + "Content-Length: " + SMSocketTest.REQUEST.length() + "\r\n"
             + "Content-Type: application/x-www-form-urlencoded\r\n\r\n"
-            + this.REQUEST;
+            + SMSocketTest.REQUEST;
         final String response = IOUtils.toString(socket.getInputStream());
         IOUtils.write(message, socket.getOutputStream());
-        MatcherAssert.assertThat(response, Matchers.equalTo(this.RESPONSE));
+        MatcherAssert.assertThat(
+            response,
+            Matchers.equalTo(SMSocketTest.RESPONSE)
+        );
     }
 
 }

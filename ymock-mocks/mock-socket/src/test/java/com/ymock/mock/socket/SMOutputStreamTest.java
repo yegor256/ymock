@@ -68,7 +68,7 @@ public final class SMOutputStreamTest {
                 }
             }
         );
-        IOUtils.write(this.REQUEST, stream);
+        IOUtils.write(SMOutputStreamTest.REQUEST, stream);
     }
 
 }

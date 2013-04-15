@@ -68,7 +68,7 @@ final class YMockBridge implements DataBridge {
     @Override
     public void send(final String message) throws IOException {
         try {
-            this.response = this.CLIENT.call(message);
+            this.response = YMockBridge.CLIENT.call(message);
             this.ready = true;
         } catch (YMockException ex) {
             throw new java.io.IOException(ex);

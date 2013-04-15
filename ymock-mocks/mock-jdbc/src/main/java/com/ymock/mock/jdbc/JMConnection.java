@@ -226,7 +226,7 @@ final class JMConnection implements Connection {
      */
     @Override
     public int getTransactionIsolation() {
-        return this.TRANSACTION_READ_COMMITTED;
+        return JMConnection.TRANSACTION_READ_COMMITTED;
     }
 
     /**
