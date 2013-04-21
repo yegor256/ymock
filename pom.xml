@@ -29,7 +29,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * @version $Id$
+ * @version $Id: pom.xml 366 2013-04-15 11:25:02Z yegor@tpc2.com $
  *
  * Release management is done with oss.sonatype.org Nexus platform. Every
  * time you want to make a new release of the product use the
@@ -98,18 +98,18 @@
         </developer>
     </developers>
     <issueManagement>
-        <system>trac</system>
-        <url>http://trac.ymock.com/ymock/</url>
+        <system>github</system>
+        <url>https://github.com/yegor256/ymock/issues</url>
     </issueManagement>
+    <scm>
+        <connection>scm:git:github.com:yegor256/ymock.git</connection>
+        <developerConnection>scm:git:github.com:yegor256/ymock.git</developerConnection>
+        <url>https://github.com/yegor256/ymock</url>
+    </scm>
     <ciManagement>
         <system>jenkins</system>
         <url>http://ci.ymock.com:8080/job/ymock</url>
     </ciManagement>
-    <scm>
-        <connection>scm:svn:svn://svn.ymock.com/ymock/trunk</connection>
-        <developerConnection>scm:svn:svn://svn.ymock.com/ymock/trunk</developerConnection>
-        <url>http://svn.ymock.com/ymock/trunk</url>
-    </scm>
     <properties>
         <httpcomponents.version>4.2.4</httpcomponents.version>
         <jersey.version>1.17.1</jersey.version>
